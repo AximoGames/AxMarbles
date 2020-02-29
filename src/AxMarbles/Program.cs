@@ -46,7 +46,7 @@ namespace AxEngine
             }
         }
 
-        private static RenderApplication demo;
+        private static MarblesApplication demo;
 
         private static void UIThreadMain()
         {
