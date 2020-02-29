@@ -9,8 +9,8 @@ namespace AxEngine
 
         public MarbleBoard()
         {
-            Width = 20;
-            Height = 20;
+            Width = 9;
+            Height = 9;
             MarbleArray = new Marble[Width, Height];
         }
 

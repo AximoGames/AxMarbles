@@ -51,19 +51,9 @@ namespace AxEngine
             ctx.AddObject(new GridObject()
             {
                 Name = "Grid",
+                Size = 3,
+                Center = false,
                 ModelMatrix = Matrix4.CreateTranslation(0f, 0f, 0.01f),
-                //Debug = true,
-            });
-            ctx.AddObject(new GridObject()
-            {
-                Name = "Grid",
-                ModelMatrix = Matrix4.CreateRotationY((float)Math.PI / 2) * Matrix4.CreateTranslation(-10f, 0f, 0.01f),
-                //Debug = true,
-            });
-            ctx.AddObject(new GridObject()
-            {
-                Name = "Grid",
-                ModelMatrix = Matrix4.CreateRotationX((float)Math.PI / 2) * Matrix4.CreateTranslation(0f, 10f, 0.01f),
                 //Debug = true,
             });
             ctx.AddObject(new CrossLinesObject()
@@ -110,6 +100,17 @@ namespace AxEngine
                     marble.RenderObject = new CubeObject()
                     {
                         Position = GetMarblePos(marble.Position),
+                        Material = new Material()
+                        {
+                            DiffuseImagePath = "Ressources/woodenbox.png",
+                            SpecularImagePath = "Ressources/woodenbox_specular.png",
+                            Color = new Vector3(0.0f, 0.5f, 0.0f),
+                            Ambient = 1f,
+                            Shininess = 32.0f,
+                            SpecularStrength = 0.5f,
+                            ColorBlendMode = MaterialColorBlendMode.Add,
+                        },
+
                     };
                     ctx.AddObject(marble.RenderObject);
                 }
