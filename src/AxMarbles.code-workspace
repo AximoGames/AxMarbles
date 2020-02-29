@@ -1,11 +1,12 @@
 {
 	"folders": [
 		{
-			"path": "/home/sebastian/projects/aximo/AxEngine/src"
+			"name": "AxMarbles",
+			"path": "."
 		},
 		{
-			"path": "/home/sebastian/projects/aximo/AxEngine/src/AxEngine"
+			"name": "AxEngine",
+			"path": "/home/sebastian/projects/aximo/AxEngine/src"
 		}
-	],
-	"settings": {}
+	]
 }
