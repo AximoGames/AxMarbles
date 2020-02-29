@@ -53,7 +53,7 @@ namespace AxEngine
             demo = new MarblesApplication(new RenderApplicationStartup
             {
                 WindowSize = new Vector2i(800, 600),
-                WindowTitle = "AxEngine",
+                WindowTitle = "Marbles",
             });
             demo.Run();
         }
