@@ -11,9 +11,9 @@ using System.Drawing;
 
 namespace AxEngine
 {
-    public class RenderDemo : RenderApplication
+    public class MarblesApplication : RenderApplication
     {
-        public RenderDemo(RenderApplicationStartup startup) : base(startup)
+        public MarblesApplication(RenderApplicationStartup startup) : base(startup)
         {
         }
 

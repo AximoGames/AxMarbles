@@ -50,7 +50,7 @@ namespace AxEngine
 
         private static void UIThreadMain()
         {
-            demo = new RenderDemo(new RenderApplicationStartup
+            demo = new MarblesApplication(new RenderApplicationStartup
             {
                 WindowSize = new Vector2i(800, 600),
                 WindowTitle = "AxEngine",
