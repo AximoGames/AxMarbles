@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "AxEngine",
-			"path": "/home/sebastian/projects/aximo/AxEngine/src"
+			"path": "../../AxEngine/src"
 		}
 	]
 }
