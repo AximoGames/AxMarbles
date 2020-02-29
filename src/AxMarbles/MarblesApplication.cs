@@ -21,9 +21,12 @@ namespace AxEngine
         protected override void SetupScene()
         {
 
-            ctx.Camera = new OrthographicCamera(new Vector3(0, 0, 25))
+            var camSize = new Vector2(9 * ctx.ScreenAspectRatio, 9);
+
+            ctx.Camera = new OrthographicCamera(new Vector3(4.5f + (camSize.X - camSize.Y) / 2f - 0.5f, -4.5f + 0.5f, 25))
             {
-                NearPlane = 0.01f,
+                Size = camSize,
+                NearPlane = 1f,
                 FarPlane = 100.0f,
                 Facing = (float)Math.PI / 2,
                 Pitch = -((float)(Math.PI / 2) - 0.001f),
