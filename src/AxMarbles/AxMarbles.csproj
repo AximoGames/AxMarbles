@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>AxEngine</RootNamespace>
-    <AssemblyName>AxEngine</AssemblyName>
+    <RootNamespace>AxMarbles</RootNamespace>
+    <AssemblyName>AxMarbles</AssemblyName>
     <TargetFramework>net472</TargetFramework>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
