@@ -5,7 +5,6 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using AxEngine;
 using System.IO;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Drawing;
 
@@ -91,6 +90,35 @@ namespace AxEngine
                 Position = new Vector3(0, 0, 0.5f),
                 // Enabled = false,
             });
+        }
+
+        public MarbleBoard Board;
+
+        protected override void OnUpdateFrame(FrameEventArgs e)
+        {
+            base.OnUpdateFrame(e);
+            if (Board == null)
+            {
+
+                Board = new MarbleBoard();
+                Board.NewGame();
+            }
+            foreach (var marble in Board.Marbles)
+            {
+                if (marble.RenderObject == null)
+                {
+                    marble.RenderObject = new CubeObject()
+                    {
+                        Position = GetMarblePos(marble.Position),
+                    };
+                    ctx.AddObject(marble.RenderObject);
+                }
+            }
+        }
+
+        private Vector3 GetMarblePos(Vector2i marblePos)
+        {
+            return new Vector3(marblePos.X, -marblePos.Y, 1f);
         }
 
         public override void OnRenderFrame(FrameEventArgs e)
