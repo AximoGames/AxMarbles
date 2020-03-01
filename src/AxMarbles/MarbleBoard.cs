@@ -4,6 +4,14 @@ using System.Collections.Generic;
 
 namespace AxEngine
 {
+
+    public enum MarbleState
+    {
+        Default,
+        Adding,
+        Removing,
+    }
+
     public class MarbleBoard
     {
 
@@ -66,6 +74,16 @@ namespace AxEngine
             results.Add(CheckRow(origin, new Vector2i(0, 1)));
             results.Add(CheckRow(origin, new Vector2i(1, 1)));
             results.Add(CheckRow(origin, new Vector2i(1, -1)));
+            foreach (var result in results)
+            {
+                if (result.Valid)
+                {
+                    foreach (var marble in result.Marbles)
+                    {
+                        marble.State = MarbleState.Removing;
+                    }
+                }
+            }
         }
 
         private CheckRowResult CheckRow(Vector2i origin, Vector2i step)

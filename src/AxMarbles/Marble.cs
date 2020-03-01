@@ -15,7 +15,7 @@ namespace AxEngine
         public Vector2i Position;
 
         public CubeObject RenderObject;
-
+        public MarbleState State;
 
         public void Dispose()
         {

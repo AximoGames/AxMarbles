@@ -94,9 +94,17 @@ namespace AxEngine
                 Position = new Vector3(0, 0, 0.5f),
                 // Enabled = false,
             });
+
+            ctx.AddAnimation(ScaleAnim = new Animation()
+            {
+                Duration = TimeSpan.FromSeconds(0.75),
+            });
+            ScaleAnim.AnimationFinished += OnMarbleScaled;
         }
 
         public MarbleBoard Board;
+
+        private Animation ScaleAnim;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -106,6 +114,7 @@ namespace AxEngine
                 Board = new MarbleBoard();
                 Board.NewGame();
             }
+
             foreach (var marble in Board.Marbles)
             {
                 if (marble.RenderObject == null)
@@ -119,8 +128,16 @@ namespace AxEngine
                     ctx.AddObject(marble.RenderObject);
                 }
                 var ro = marble.RenderObject;
+                if (marble.State == MarbleState.Removing)
+                {
+                    ro.Scale = new Vector3(ScaleAnim.Value);
+                }
                 ro.Position = GetMarblePos(marble.Position);
             }
+        }
+
+        private void OnMarbleScaled()
+        {
         }
 
         private Vector3 GetMarblePos(Vector2i marblePos)
@@ -182,7 +199,7 @@ namespace AxEngine
             {
                 var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
                 Console.WriteLine($"Clicked: {pos}");
-
+                ScaleAnim.Start();
                 var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
 
                 var marble = Board[pos];
