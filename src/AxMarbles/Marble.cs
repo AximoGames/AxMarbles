@@ -22,6 +22,11 @@ namespace AxEngine
             RenderObject.Context.RemoveObject(RenderObject);
             RenderObject.Free();
         }
+
+        public override string ToString()
+        {
+            return $"[Pos: {Position}, Color: {Color}]";
+        }
     }
 
 }

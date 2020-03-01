@@ -55,6 +55,7 @@ namespace AxEngine
         public Marble CreateMarble(Vector2i pos, MarbleColor color)
         {
             var marble = new Marble(color);
+            marble.Position = pos;
             MoveMarble(marble, pos);
             return marble;
         }
@@ -214,6 +215,7 @@ namespace AxEngine
 
         private Vector2i GetRandomPosition()
         {
+            //return new Vector2i(0);
             return FreePositions[GetRandomNumber(FreePositions.Count)];
         }
 

@@ -256,11 +256,14 @@ namespace AxEngine
             if (CurrentMouseWorldPositionIsValid)
             {
                 var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
-                Console.WriteLine($"Clicked: {pos}");
                 //ScaleAnim.Start();
                 var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
 
+                if (MoveAnim.Enabled || RemoveAnim.Enabled || CreateAnim.Enabled)
+                    return;
+
                 var marble = Board[pos];
+                Console.WriteLine($"Clicked: {pos}. Marble: {marble}");
                 if (marble != null)
                 {
                     SelectedMarble = marble;
