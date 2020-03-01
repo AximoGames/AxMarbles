@@ -15,12 +15,25 @@ namespace AxEngine
     public class MarbleBoard
     {
 
+        public ushort GetPathFindingCosts(int x, int y)
+        {
+            var marble = this[x, y];
+            if (marble == null)
+                return 10;
+            return ushort.MaxValue;
+        }
+
         public MarbleBoard()
         {
             Width = 9;
             Height = 9;
             MarbleArray = new Marble[Width, Height];
+
+            PathFinding = new PathFinding();
+            PathFinding.Map = new WayPointMap(this);
         }
+
+        private PathFinding PathFinding;
 
         public int Width { get; private set; }
         public int Height { get; private set; }
