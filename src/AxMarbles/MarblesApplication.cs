@@ -83,7 +83,7 @@ namespace AxEngine
                 Material = material,
                 Position = new Vector3(0, 1, 0.05f),
                 Scale = new Vector3(1.3f, 1.3f, 0.1f),
-                // Enabled = false,
+                Enabled = false,
             });
 
             ctx.AddObject(new CubeObject()
@@ -112,22 +112,14 @@ namespace AxEngine
                 {
                     marble.RenderObject = new CubeObject()
                     {
-                        Position = GetMarblePos(marble.Position),
                         PositionMatrix = Matrix4.CreateScale(1, -1, 1),
-                        Material = new Material()
-                        {
-                            DiffuseImagePath = "Ressources/woodenbox.png",
-                            SpecularImagePath = "Ressources/woodenbox_specular.png",
-                            Color = new Vector3(0.0f, 0.5f, 0.0f),
-                            Ambient = 1f,
-                            Shininess = 32.0f,
-                            SpecularStrength = 0.5f,
-                            ColorBlendMode = MaterialColorBlendMode.Add,
-                        },
+                        Material = GetMaterial(marble),
 
                     };
                     ctx.AddObject(marble.RenderObject);
                 }
+                var ro = marble.RenderObject;
+                ro.Position = GetMarblePos(marble.Position);
             }
         }
 
@@ -145,6 +137,45 @@ namespace AxEngine
             }
         }
 
+        private Marble SelectedMarble;
+
+        private Material GetMaterial(Marble marble)
+        {
+            return new Material()
+            {
+                DiffuseImagePath = "Ressources/woodenbox.png",
+                SpecularImagePath = "Ressources/woodenbox_specular.png",
+                Color = GetMaterialColor(marble),
+                Ambient = 1f,
+                Shininess = 32.0f,
+                SpecularStrength = 0.5f,
+                ColorBlendMode = MaterialColorBlendMode.Add,
+            };
+        }
+
+        private Vector3 GetMaterialColor(Marble marble)
+        {
+            switch (marble.Color)
+            {
+                case MarbleColor.Red:
+                    return new Vector3(1, 0, 0);
+                case MarbleColor.Green:
+                    return new Vector3(0, 1, 0);
+                case MarbleColor.Blue:
+                    return new Vector3(0, 0, 1);
+                case MarbleColor.Yellow:
+                    return new Vector3(1, 1, 0);
+                case MarbleColor.Orange:
+                    return new Vector3(1, 0.65f, 0);
+                case MarbleColor.White:
+                    return new Vector3(1, 1, 1);
+                case MarbleColor.Black:
+                    return new Vector3(0, 0, 0);
+                default:
+                    return new Vector3(0, 0, 0);
+            }
+        }
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             if (CurrentMouseWorldPositionIsValid)
@@ -152,8 +183,24 @@ namespace AxEngine
                 var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
                 Console.WriteLine($"Clicked: {pos}");
 
-                var selector = ctx.GetObjectByName<IPosition>("MarbleSelector");
-                selector.Position = new Vector3(pos.X, pos.Y, 0);
+                var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
+
+                var marble = Board[pos];
+                if (marble != null)
+                {
+                    SelectedMarble = marble;
+                    selector.Position = new Vector3(pos.X, pos.Y, 0);
+                    selector.Enabled = true;
+                }
+                else
+                {
+                    if (SelectedMarble != null)
+                    {
+                        Board.MoveMarble(SelectedMarble, pos);
+                        SelectedMarble = null;
+                        selector.Enabled = false;
+                    }
+                }
             }
         }
 

@@ -54,6 +54,69 @@ namespace AxEngine
             marble.Position = target;
             this[marble.Position] = marble;
             Marbles.Add(marble);
+            FreePositions.Remove(marble.Position);
+
+            CheckMatch(marble.Position);
+        }
+
+        private void CheckMatch(Vector2i origin)
+        {
+            var results = new List<CheckRowResult>();
+            results.Add(CheckRow(origin, new Vector2i(1, 0)));
+            results.Add(CheckRow(origin, new Vector2i(0, 1)));
+            results.Add(CheckRow(origin, new Vector2i(1, 1)));
+            results.Add(CheckRow(origin, new Vector2i(1, -1)));
+        }
+
+        private CheckRowResult CheckRow(Vector2i origin, Vector2i step)
+        {
+            var result = new CheckRowResult();
+            CheckRow2(origin, step, result);
+            CheckRow2(origin, step * -1, result);
+            result.Marbles.Add(this[origin]);
+            if (result.Marbles.Count >= 5)
+            {
+                Console.WriteLine("MATCH");
+                result.Valid = true;
+            }
+            return result;
+        }
+
+        private void CheckRow2(Vector2i origin, Vector2i step, CheckRowResult result)
+        {
+            var originMarble = this[origin];
+            var pos = origin + step;
+            while (PositionInMap(pos))
+            {
+                if (MarblesAreCompatible(originMarble, this[pos]))
+                {
+                    result.Marbles.Add(this[pos]);
+                }
+                else
+                {
+                    break;
+                }
+                pos += step;
+            }
+        }
+
+        private bool MarblesAreCompatible(Marble m1, Marble m2)
+        {
+            if (m1 == null || m2 == null)
+                return false;
+            return m1.Color == m2.Color;
+        }
+
+        private bool PositionInMap(Vector2i pos)
+        {
+            return pos.X >= 0 && pos.Y >= 0 && pos.X < Width && pos.Y < Height;
+        }
+
+        public class CheckRowResult
+        {
+            public List<Marble> Marbles = new List<Marble>();
+            public int Score;
+            public bool Valid;
         }
 
         public void NewGame()
@@ -76,19 +139,29 @@ namespace AxEngine
         private Random random = new Random(9);
         private int GetRandomNumber(int maxValue)
         {
+            if (maxValue == 0)
+                return 0;
             return random.Next(maxValue);
         }
 
+        private List<Vector2i> FreePositions = new List<Vector2i>();
+
         private Vector2i GetRandomPosition()
         {
-            var posX = GetRandomNumber(Width);
-            var posY = GetRandomNumber(Height);
-            return new Vector2i(posX, posY);
+            return FreePositions[GetRandomNumber(FreePositions.Count - 1)];
         }
 
         private MarbleColor GetRandomColor()
         {
-            return (MarbleColor)GetRandomNumber(3);
+            var colors = new MarbleColor[] {
+                MarbleColor.Red,
+                MarbleColor.Green,
+                MarbleColor.Blue,
+                MarbleColor.Yellow ,
+                MarbleColor.Orange,
+                MarbleColor.White,
+            };
+            return colors[GetRandomNumber(colors.Length - 1)];
         }
 
         public IEnumerable<Vector2i> AllPositions
@@ -105,6 +178,8 @@ namespace AxEngine
 
         public void ClearBoard()
         {
+            Marbles.Clear();
+            FreePositions.AddRange(AllPositions);
             foreach (var marble in Marbles.ToArray())
             {
                 RemoveMarble(marble);
@@ -123,6 +198,7 @@ namespace AxEngine
 
             Marbles.Remove(marble);
             this[marble.Position] = null;
+            FreePositions.Add(marble.Position);
         }
 
     }
