@@ -89,7 +89,6 @@ namespace AxEngine
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            base.OnUpdateFrame(e);
             if (Board == null)
             {
 
@@ -103,6 +102,7 @@ namespace AxEngine
                     marble.RenderObject = new CubeObject()
                     {
                         Position = GetMarblePos(marble.Position),
+                        PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                         Material = new Material()
                         {
                             DiffuseImagePath = "Ressources/woodenbox.png",
@@ -122,17 +122,16 @@ namespace AxEngine
 
         private Vector3 GetMarblePos(Vector2i marblePos)
         {
-            return new Vector3(marblePos.X, -marblePos.Y, 1f);
+            return new Vector3(marblePos.X, marblePos.Y, 0.5f);
         }
 
-        public override void OnRenderFrame(FrameEventArgs e)
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             if (CurrentMouseWorldPositionIsValid)
             {
                 var cursor = ctx.GetObjectByName<IPosition>("GroundCursor");
                 cursor.Position = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.Position.Z);
             }
-            base.OnRenderFrame(e);
         }
 
     }
