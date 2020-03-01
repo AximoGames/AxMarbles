@@ -20,7 +20,7 @@ namespace AxEngine
 
         protected override void SetupScene()
         {
-
+            WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
             var camSize = new Vector2(9 * ctx.ScreenAspectRatio, 9);
 
             ctx.Camera = new OrthographicCamera(new Vector3(4.5f + (camSize.X - camSize.Y) / 2f - 0.5f, -4.5f + 0.5f, 25))
@@ -132,6 +132,12 @@ namespace AxEngine
                 var cursor = ctx.GetObjectByName<IPosition>("GroundCursor");
                 cursor.Position = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.Position.Z);
             }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
+            Console.WriteLine($"Clicked: {pos}");
         }
 
     }
