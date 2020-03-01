@@ -81,11 +81,13 @@ namespace AxEngine
             this[marble.Position] = marble;
             Marbles.Add(marble);
             FreePositions.Remove(marble.Position);
-
-            CheckMatch(marble.Position);
         }
 
-        private void CheckMatch(Vector2i origin)
+        public Action OnMatch;
+        public Action OnNewMarbles;
+
+        private List<CheckRowResult> Matches = new List<CheckRowResult>();
+        public void CheckMatch(Vector2i origin)
         {
             var results = new List<CheckRowResult>();
             results.Add(CheckRow(origin, new Vector2i(1, 0)));
@@ -96,10 +98,38 @@ namespace AxEngine
             {
                 if (result.Valid)
                 {
+                    Matches.Add(result);
                     foreach (var marble in result.Marbles)
                     {
                         marble.State = MarbleState.Removing;
                     }
+                }
+            }
+            if (Matches.Count > 0)
+            {
+                OnMatch();
+            }
+            else
+            {
+                for (var i = 0; i < 3; i++)
+                {
+                    var newMarble = CreateRandomMarble();
+                    newMarble.State = MarbleState.Adding;
+                }
+                OnNewMarbles();
+            }
+        }
+
+        public void ScoreMatches()
+        {
+            for (var i = Marbles.Count - 1; i >= 0; i--)
+            {
+                var marble = Marbles[i];
+                if (marble.State == MarbleState.Removing)
+                {
+                    RemoveMarble(marble);
+                    marble.Dispose();
+                    Matches.Clear();
                 }
             }
         }
@@ -158,7 +188,7 @@ namespace AxEngine
         public void NewGame()
         {
             ClearBoard();
-            for (var i = 0; i < 15; i++)
+            for (var i = 0; i < 1; i++)
             {
                 CreateRandomMarble();
             }
@@ -184,7 +214,7 @@ namespace AxEngine
 
         private Vector2i GetRandomPosition()
         {
-            return FreePositions[GetRandomNumber(FreePositions.Count - 1)];
+            return FreePositions[GetRandomNumber(FreePositions.Count)];
         }
 
         private MarbleColor GetRandomColor()
@@ -196,8 +226,9 @@ namespace AxEngine
                 MarbleColor.Yellow ,
                 MarbleColor.Orange,
                 MarbleColor.White,
+                MarbleColor.Black,
             };
-            return colors[GetRandomNumber(colors.Length - 1)];
+            return colors[GetRandomNumber(colors.Length)];
         }
 
         public IEnumerable<Vector2i> AllPositions

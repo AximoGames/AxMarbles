@@ -19,6 +19,8 @@ namespace AxEngine
 
         public void Dispose()
         {
+            RenderObject.Context.RemoveObject(RenderObject);
+            RenderObject.Free();
         }
     }
 

@@ -86,25 +86,29 @@ namespace AxEngine
                 Enabled = false,
             });
 
-            ctx.AddObject(new CubeObject()
-            {
-                Name = "Box1",
-                Material = material,
-                Scale = new Vector3(1),
-                Position = new Vector3(0, 0, 0.5f),
-                // Enabled = false,
-            });
-
-            ctx.AddAnimation(ScaleAnim = new Animation()
+            ctx.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
             });
-            ScaleAnim.AnimationFinished += OnMarbleScaled;
+            RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
+
+            ctx.AddAnimation(CreateAnim = new Animation()
+            {
+                Duration = TimeSpan.FromSeconds(0.75),
+            });
+            CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
+
+            ctx.AddAnimation(MoveAnim = new Animation()
+            {
+            });
+            MoveAnim.AnimationFinished += OnAnimFinished_MarbleMoved;
         }
 
         public MarbleBoard Board;
 
-        private Animation ScaleAnim;
+        private Animation RemoveAnim;
+        private Animation CreateAnim;
+        private Animation MoveAnim;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -112,6 +116,8 @@ namespace AxEngine
             {
 
                 Board = new MarbleBoard();
+                Board.OnMatch = OnMatch;
+                Board.OnNewMarbles = OnNewMarbles;
                 Board.NewGame();
             }
 
@@ -128,16 +134,67 @@ namespace AxEngine
                     ctx.AddObject(marble.RenderObject);
                 }
                 var ro = marble.RenderObject;
+                if (marble.State == MarbleState.Adding)
+                {
+                    ro.Scale = new Vector3(1 - CreateAnim.Value);
+                }
                 if (marble.State == MarbleState.Removing)
                 {
-                    ro.Scale = new Vector3(ScaleAnim.Value);
+                    ro.Scale = new Vector3(RemoveAnim.Value);
                 }
-                ro.Position = GetMarblePos(marble.Position);
+                if (marble == SelectedMarble && CurrentPath != null && MoveAnim.Enabled)
+                {
+                    ro.Position = GetPathPosition(marble);
+                }
+                else
+                {
+                    ro.Position = GetMarblePos(marble.Position);
+                }
             }
         }
 
-        private void OnMarbleScaled()
+        private Vector3 GetPathPosition(Marble marble)
         {
+            var steps = CurrentPath.Count - 1;
+            var scaledPos = MoveAnim.Position * steps;
+            var step = (int)MathF.Floor(scaledPos);
+            float subPos = scaledPos - step;
+            var fromPos = CurrentPath[step];
+            var toPos = CurrentPath[step + 1];
+            var direction = toPos - fromPos;
+            var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
+            return GetMarblePos(fromPos) + subDirection;
+        }
+
+        private void OnMatch()
+        {
+            RemoveAnim.Start();
+        }
+
+        private void OnNewMarbles()
+        {
+            CreateAnim.Start();
+        }
+
+        private void OnAnimFinshed_MarbleScaled()
+        {
+            Board.ScoreMatches();
+        }
+
+        private void OnAnimationFinished_MarbleCreated()
+        {
+            foreach (var marble in Board.Marbles)
+                if (marble.State == MarbleState.Adding)
+                    marble.State = MarbleState.Default;
+        }
+
+        private void OnAnimFinished_MarbleMoved()
+        {
+            var target = CurrentPath[CurrentPath.Count - 1];
+            CurrentPath = null;
+            Board.MoveMarble(SelectedMarble, target);
+            Board.CheckMatch(target);
+            SelectedMarble = null;
         }
 
         private Vector3 GetMarblePos(Vector2i marblePos)
@@ -166,7 +223,7 @@ namespace AxEngine
                 Ambient = 1f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
-                ColorBlendMode = MaterialColorBlendMode.Add,
+                ColorBlendMode = MaterialColorBlendMode.Set,
             };
         }
 
@@ -193,13 +250,14 @@ namespace AxEngine
             }
         }
 
+        private Vector2iList CurrentPath;
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             if (CurrentMouseWorldPositionIsValid)
             {
                 var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
                 Console.WriteLine($"Clicked: {pos}");
-                ScaleAnim.Start();
+                //ScaleAnim.Start();
                 var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
 
                 var marble = Board[pos];
@@ -213,14 +271,14 @@ namespace AxEngine
                 {
                     if (SelectedMarble != null)
                     {
-
                         var path = Board.FindPath(SelectedMarble, pos);
-
-                        Console.WriteLine(path?.Count);
-
-                        Board.MoveMarble(SelectedMarble, pos);
-                        SelectedMarble = null;
-                        selector.Enabled = false;
+                        if (path != null && path.Count > 0)
+                        {
+                            CurrentPath = path;
+                            MoveAnim.Duration = TimeSpan.FromSeconds(0.15 * path.Count);
+                            MoveAnim.Start();
+                            selector.Enabled = false;
+                        }
                     }
                 }
             }
