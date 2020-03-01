@@ -21,6 +21,8 @@ namespace AxEngine
         protected override void SetupScene()
         {
             WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
+            DefaultKeyBindings = false;
+
             var camSize = new Vector2(9 * ctx.ScreenAspectRatio, 9);
 
             ctx.Camera = new OrthographicCamera(new Vector3(4.5f + (camSize.X - camSize.Y) / 2f - 0.5f, -4.5f + 0.5f, 25))
@@ -29,7 +31,7 @@ namespace AxEngine
                 NearPlane = 1f,
                 FarPlane = 100.0f,
                 Facing = (float)Math.PI / 2,
-                Pitch = -((float)(Math.PI / 2) - 0.001f),
+                Pitch = -((float)(Math.PI / 2) - 0.00001f),
             };
 
             var material = new Material()
@@ -54,9 +56,9 @@ namespace AxEngine
             ctx.AddObject(new GridObject()
             {
                 Name = "Grid",
-                Size = 3,
+                Size = 9,
                 Center = false,
-                ModelMatrix = Matrix4.CreateTranslation(0f, 0f, 0.01f),
+                ModelMatrix = Matrix4.CreateScale(1, -1, 1) * Matrix4.CreateTranslation(-0.5f, 0.5f, 0.01f),
                 //Debug = true,
             });
             ctx.AddObject(new CrossLinesObject()
@@ -66,12 +68,21 @@ namespace AxEngine
                 //Debug = true,
             });
 
-            ctx.AddObject(new TestObject()
+            ctx.AddObject(new CubeObject()
             {
                 Name = "GroundCursor",
                 Material = material,
                 Position = new Vector3(0, 1, 0.05f),
                 Scale = new Vector3(1.0f, 1.0f, 0.1f),
+                // Enabled = false,
+            });
+
+            ctx.AddObject(new CubeObject()
+            {
+                Name = "MarbleSelector",
+                Material = material,
+                Position = new Vector3(0, 1, 0.05f),
+                Scale = new Vector3(1.3f, 1.3f, 0.1f),
                 // Enabled = false,
             });
 
@@ -136,8 +147,14 @@ namespace AxEngine
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-            var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
-            Console.WriteLine($"Clicked: {pos}");
+            if (CurrentMouseWorldPositionIsValid)
+            {
+                var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
+                Console.WriteLine($"Clicked: {pos}");
+
+                var selector = ctx.GetObjectByName<IPosition>("MarbleSelector");
+                selector.Position = new Vector3(pos.X, pos.Y, 0);
+            }
         }
 
     }

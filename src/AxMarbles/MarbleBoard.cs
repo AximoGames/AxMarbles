@@ -59,7 +59,7 @@ namespace AxEngine
         public void NewGame()
         {
             ClearBoard();
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 15; i++)
             {
                 CreateRandomMarble();
             }
@@ -73,7 +73,7 @@ namespace AxEngine
             return marble;
         }
 
-        private Random random = new Random(1);
+        private Random random = new Random(9);
         private int GetRandomNumber(int maxValue)
         {
             return random.Next(maxValue);
