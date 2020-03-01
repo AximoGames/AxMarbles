@@ -64,6 +64,11 @@ namespace AxEngine
             MoveMarble(this[pos], target);
         }
 
+        public Vector2iList FindPath(Marble marble, Vector2i target)
+        {
+            return PathFinding.FindPath(marble.Position, target, new MarbleRegion[] { MarbleRegion.Default });
+        }
+
         public void MoveMarble(Marble marble, Vector2i target)
         {
             if (marble == null)

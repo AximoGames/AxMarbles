@@ -213,6 +213,11 @@ namespace AxEngine
                 {
                     if (SelectedMarble != null)
                     {
+
+                        var path = Board.FindPath(SelectedMarble, pos);
+
+                        Console.WriteLine(path?.Count);
+
                         Board.MoveMarble(SelectedMarble, pos);
                         SelectedMarble = null;
                         selector.Enabled = false;

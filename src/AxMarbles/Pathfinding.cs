@@ -214,7 +214,7 @@ namespace AxEngine
 
                 if (StartPos.Equals(ZielPos))
                     return null;
-                if (!(Allowed(Map[StartPos]) && Allowed(Map[ZielPos])))
+                if (!(Allowed(Map[ZielPos])))
                     return null;
 
                 wp = Map[StartPos];
@@ -745,6 +745,8 @@ namespace AxEngine
                         ar[x, y].HCost = 0;
                         ar[x, y].OpenIndex = 0;
                         ar[x, y].IsClosed = false;
+                        //---
+                        ar[x, y].GCost = Board.GetPathFindingCosts(x, y);
                     }
                 }
         }
