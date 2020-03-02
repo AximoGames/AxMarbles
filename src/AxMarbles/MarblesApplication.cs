@@ -278,7 +278,7 @@ namespace AxEngine
                         if (path != null && path.Count > 0)
                         {
                             CurrentPath = path;
-                            MoveAnim.Duration = TimeSpan.FromSeconds(0.15 * path.Count);
+                            MoveAnim.Duration = TimeSpan.FromSeconds(0.1 * path.Count);
                             MoveAnim.Start();
                             selector.Enabled = false;
                         }

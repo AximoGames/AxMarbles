@@ -215,8 +215,11 @@ namespace AxEngine
 
         private Vector2i GetRandomPosition()
         {
-            //return new Vector2i(0);
-            return FreePositions[GetRandomNumber(FreePositions.Count)];
+            var pos = FreePositions[GetRandomNumber(FreePositions.Count)];
+            if (this[pos] != null)
+                throw new Exception($"this[{pos}] != null");
+
+            return pos;
         }
 
         private MarbleColor GetRandomColor()
@@ -247,12 +250,12 @@ namespace AxEngine
 
         public void ClearBoard()
         {
-            Marbles.Clear();
-            FreePositions.AddRange(AllPositions);
             foreach (var marble in Marbles.ToArray())
             {
                 RemoveMarble(marble);
             }
+            Marbles.Clear();
+            FreePositions.AddRange(AllPositions);
         }
 
         public void RemoveMarble(Vector2i pos)
