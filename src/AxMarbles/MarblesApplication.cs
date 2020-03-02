@@ -114,7 +114,6 @@ namespace AxEngine
         {
             if (Board == null)
             {
-
                 Board = new MarbleBoard();
                 Board.OnMatch = OnMatch;
                 Board.OnNewMarbles = OnNewMarbles;
@@ -129,7 +128,6 @@ namespace AxEngine
                     {
                         PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                         Material = GetMaterial(marble),
-
                     };
                     ctx.AddObject(marble.RenderObject);
                 }

@@ -134,6 +134,7 @@ namespace AxEngine
                     Matches.Clear();
                 }
             }
+            Console.WriteLine($"FreePositions: {FreePositions.Count}");
         }
 
         private CheckRowResult CheckRow(Vector2i origin, Vector2i step)
@@ -190,7 +191,7 @@ namespace AxEngine
         public void NewGame()
         {
             ClearBoard();
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 3; i++)
             {
                 CreateRandomMarble();
             }
