@@ -1,6 +1,7 @@
 using System;
 using OpenTK;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AxEngine
 {
@@ -211,11 +212,11 @@ namespace AxEngine
             return random.Next(maxValue);
         }
 
-        private List<Vector2i> FreePositions = new List<Vector2i>();
+        private HashSet<Vector2i> FreePositions = new HashSet<Vector2i>();
 
         private Vector2i GetRandomPosition()
         {
-            var pos = FreePositions[GetRandomNumber(FreePositions.Count)];
+            var pos = FreePositions.ToArray()[GetRandomNumber(FreePositions.Count)];
             if (this[pos] != null)
                 throw new Exception($"this[{pos}] != null");
 
@@ -255,7 +256,7 @@ namespace AxEngine
                 RemoveMarble(marble);
             }
             Marbles.Clear();
-            FreePositions.AddRange(AllPositions);
+            FreePositions = new HashSet<Vector2i>(AllPositions);
         }
 
         public void RemoveMarble(Vector2i pos)
