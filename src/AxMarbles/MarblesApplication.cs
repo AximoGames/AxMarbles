@@ -39,7 +39,7 @@ namespace AxEngine
                 DiffuseImagePath = "Ressources/woodenbox.png",
                 SpecularImagePath = "Ressources/woodenbox_specular.png",
                 Color = new Vector3(1.0f, 1.0f, 0.0f),
-                Ambient = 1f,
+                Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
             };
@@ -84,6 +84,23 @@ namespace AxEngine
                 Position = new Vector3(0, 1, 0.05f),
                 Scale = new Vector3(1.3f, 1.3f, 0.1f),
                 Enabled = false,
+            });
+
+            ctx.AddObject(new LightObject()
+            {
+                Position = new Vector3(0, 2, 2.5f),
+                Name = "MovingLight",
+                LightType = LightType.Directional,
+                ShadowTextureIndex = 0,
+                //Enabled = false,
+            });
+
+            ctx.AddObject(new LightObject()
+            {
+                Position = new Vector3(2f, 0.5f, 3.25f),
+                Name = "StaticLight",
+                LightType = LightType.Directional,
+                ShadowTextureIndex = 1,
             });
 
             ctx.AddAnimation(RemoveAnim = new Animation()
@@ -223,10 +240,10 @@ namespace AxEngine
                 DiffuseImagePath = "Ressources/woodenbox.png",
                 SpecularImagePath = "Ressources/woodenbox_specular.png",
                 Color = GetMaterialColor(marble),
-                Ambient = 1f,
+                Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
-                ColorBlendMode = MaterialColorBlendMode.Set,
+                ColorBlendMode = MaterialColorBlendMode.Add,
             };
         }
 
