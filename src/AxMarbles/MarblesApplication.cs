@@ -89,12 +89,14 @@ namespace AxEngine
             ctx.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
+                AnimationFunc = AnimationFuncs.Reverse(MarbleScale),
             });
             RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
 
             ctx.AddAnimation(CreateAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
+                AnimationFunc = AnimationFuncs.Default(MarbleScale),
             });
             CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
 
@@ -110,6 +112,8 @@ namespace AxEngine
         private Animation CreateAnim;
         private Animation MoveAnim;
 
+        private float MarbleScale = 0.8f;
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             if (Board == null)
@@ -124,17 +128,18 @@ namespace AxEngine
             {
                 if (marble.RenderObject == null)
                 {
-                    marble.RenderObject = new CubeObject()
+                    marble.RenderObject = new SphereObject()
                     {
                         PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                         Material = GetMaterial(marble),
+                        Scale = new Vector3(MarbleScale),
                     };
                     ctx.AddObject(marble.RenderObject);
                 }
                 var ro = marble.RenderObject;
                 if (marble.State == MarbleState.Adding)
                 {
-                    ro.Scale = new Vector3(1 - CreateAnim.Value);
+                    ro.Scale = new Vector3(CreateAnim.Value);
                 }
                 if (marble.State == MarbleState.Removing)
                 {

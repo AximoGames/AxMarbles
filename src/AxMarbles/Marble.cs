@@ -14,7 +14,7 @@ namespace AxEngine
         public MarbleColor Color;
         public Vector2i Position;
 
-        public CubeObject RenderObject;
+        public SphereObject RenderObject;
         public MarbleState State;
 
         public void Dispose()
