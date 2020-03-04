@@ -89,14 +89,14 @@ namespace AxEngine
             ctx.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
-                AnimationFunc = AnimationFuncs.Reverse(MarbleScale),
+                AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
             });
             RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
 
             ctx.AddAnimation(CreateAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
-                AnimationFunc = AnimationFuncs.Default(MarbleScale),
+                AnimationFunc = AnimationFuncs.Linear(MarbleScale),
             });
             CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
 
