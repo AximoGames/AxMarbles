@@ -103,6 +103,12 @@ namespace AxEngine
                 ShadowTextureIndex = 1,
             });
 
+            ctx.AddObject(new StatsObject()
+            {
+                Name = "Stats",
+                RectanglePixels = new RectangleF(40, 40, 100f, 100f),
+            });
+
             ctx.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
