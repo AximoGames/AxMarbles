@@ -164,16 +164,19 @@ namespace AxEngine
                 }
                 if (marble == SelectedMarble && CurrentPath != null && MoveAnim.Enabled)
                 {
-                    ro.Position = GetPathPosition(marble);
+                    var result = GetPathPosition(marble);
+                    ro.Position = result.Position;
+                    ro.Rotate = result.Rotate;
                 }
                 else
                 {
                     ro.Position = GetMarblePos(marble.Position);
+                    ro.Rotate = new Vector3(); ;
                 }
             }
         }
 
-        private Vector3 GetPathPosition(Marble marble)
+        private (Vector3 Position, Vector3 Rotate) GetPathPosition(Marble marble)
         {
             var steps = CurrentPath.Count - 1;
             var scaledPos = MoveAnim.Position * steps;
@@ -183,7 +186,9 @@ namespace AxEngine
             var toPos = CurrentPath[step + 1];
             var direction = toPos - fromPos;
             var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
-            return GetMarblePos(fromPos) + subDirection;
+            var resultPos = GetMarblePos(fromPos) + subDirection;
+            var resultScale = new Vector3(direction.Y, direction.X, 0) * subPos * (MathF.PI * 2);
+            return (resultPos, resultScale);
         }
 
         private void OnMatch()
@@ -239,7 +244,7 @@ namespace AxEngine
             {
                 DiffuseImagePath = "Ressources/woodenbox.png",
                 SpecularImagePath = "Ressources/woodenbox_specular.png",
-                Color = GetMaterialColor(marble),
+                Color = GetMaterialColor(marble) + new Vector3(0.1f),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
@@ -298,7 +303,9 @@ namespace AxEngine
                         if (path != null && path.Count > 0)
                         {
                             CurrentPath = path;
-                            MoveAnim.Duration = TimeSpan.FromSeconds(0.1 * path.Count);
+                            var moveStepDuration = TimeSpan.FromSeconds(0.1);
+                            //var moveStepDuration = TimeSpan.FromSeconds(1);
+                            MoveAnim.Duration = moveStepDuration * path.Count;
                             MoveAnim.Start();
                             selector.Enabled = false;
                         }
