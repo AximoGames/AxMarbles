@@ -187,7 +187,7 @@ namespace AxEngine
             var direction = toPos - fromPos;
             var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
             var resultPos = GetMarblePos(fromPos) + subDirection;
-            var resultScale = new Vector3(direction.Y, direction.X, 0) * subPos * (MathF.PI * 2);
+            var resultScale = new Vector3(direction.Y, direction.X, 0) * subPos;
             return (resultPos, resultScale);
         }
 
