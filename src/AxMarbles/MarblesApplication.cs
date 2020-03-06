@@ -44,6 +44,10 @@ namespace AxEngine
                 SpecularStrength = 0.5f,
             };
 
+            MarbleShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag", null, false);
+            MarbleShader.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
+            MarbleShader.Compile();
+
             ctx.AddObject(new CubeObject()
             {
                 Name = "Ground",
@@ -137,6 +141,8 @@ namespace AxEngine
 
         private float MarbleScale = 0.8f;
 
+        public Shader MarbleShader;
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             if (Board == null)
@@ -156,6 +162,7 @@ namespace AxEngine
                         PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                         Material = GetMaterial(marble),
                         Scale = new Vector3(MarbleScale),
+                        Shader = MarbleShader,
                     };
                     ctx.AddObject(marble.RenderObject);
                 }
@@ -286,7 +293,7 @@ namespace AxEngine
         {
             if (CurrentMouseWorldPositionIsValid)
             {
-                var pos = CurrentMouseWorldPosition.Round().Xy.ToVector3i();
+                var pos = CurrentMouseWorldPosition.Round().Xy.ToVector2i();
                 //ScaleAnim.Start();
                 var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
 
