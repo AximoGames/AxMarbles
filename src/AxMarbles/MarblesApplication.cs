@@ -46,6 +46,7 @@ namespace AxEngine
 
             MarbleShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag", null, false);
             MarbleShader.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
+            MarbleShader.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
             MarbleShader.Compile();
 
             ctx.AddObject(new CubeObject()
@@ -165,6 +166,8 @@ namespace AxEngine
                         Shader = MarbleShader,
                     };
                     ctx.AddObject(marble.RenderObject);
+                    marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.Joker ? 1 : 0);
+                    marble.RenderObject.AddShaderParam("color2", GetMaterialColor(marble.Color2));
                 }
                 var ro = marble.RenderObject;
                 if (marble.State == MarbleState.Adding)
@@ -261,7 +264,7 @@ namespace AxEngine
             {
                 DiffuseImagePath = "Ressources/woodenbox.png",
                 SpecularImagePath = "Ressources/woodenbox_specular.png",
-                Color = GetMaterialColor(marble) + new Vector3(0.1f),
+                Color = GetMaterialColor(marble.Color1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
@@ -269,9 +272,9 @@ namespace AxEngine
             };
         }
 
-        private Vector3 GetMaterialColor(Marble marble)
+        private Vector3 GetMaterialColor(MarbleColor marbleColor)
         {
-            switch (marble.Color)
+            switch (marbleColor)
             {
                 case MarbleColor.Red:
                     return new Vector3(1, 0, 0);

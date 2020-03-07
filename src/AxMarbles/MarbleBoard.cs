@@ -173,7 +173,16 @@ namespace AxEngine
         {
             if (m1 == null || m2 == null)
                 return false;
-            return m1.Color == m2.Color;
+            if (m1.Color == m2.Color)
+                return true;
+
+            var colors1 = m1.Color.GetEnumFlags();
+            var colors2 = m2.Color.GetEnumFlags();
+            foreach (var c1 in colors1)
+                if (colors2.Contains(c1))
+                    return true;
+
+            return false;
         }
 
         private bool PositionInMap(Vector2i pos)
@@ -225,6 +234,24 @@ namespace AxEngine
         }
 
         private MarbleColor GetRandomColor()
+        {
+            var color = GetRandomColorInternal();
+            if (GetRandomNumber(3) == 0)
+            {
+                return MarbleColor.Joker;
+            }
+            else if (GetRandomNumber(3) == 0)
+            {
+                var color2 = GetRandomColorInternal();
+                return color | color2;
+            }
+            else
+            {
+                return color;
+            }
+        }
+
+        private MarbleColor GetRandomColorInternal()
         {
             var colors = new MarbleColor[] {
                 MarbleColor.Red,
