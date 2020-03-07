@@ -200,8 +200,8 @@ namespace AxEngine
             var direction = toPos - fromPos;
             var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
             var resultPos = GetMarblePos(fromPos) + subDirection;
-            var resultScale = new Vector3(direction.Y, direction.X, 0) * subPos;
-            return (resultPos, resultScale);
+            var resultRotate = new Vector3(direction.Y, direction.X, 0) * (subPos * 0.5f);
+            return (resultPos, resultRotate);
         }
 
         private void OnMatch()
@@ -261,7 +261,7 @@ namespace AxEngine
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
-                ColorBlendMode = MaterialColorBlendMode.Add,
+                ColorBlendMode = MaterialColorBlendMode.Set,
             };
         }
 
@@ -316,8 +316,8 @@ namespace AxEngine
                         if (path != null && path.Count > 0)
                         {
                             CurrentPath = path;
-                            var moveStepDuration = TimeSpan.FromSeconds(0.1);
-                            //var moveStepDuration = TimeSpan.FromSeconds(1);
+                            //var moveStepDuration = TimeSpan.FromSeconds(0.1);
+                            var moveStepDuration = TimeSpan.FromSeconds(1);
                             MoveAnim.Duration = moveStepDuration * path.Count;
                             MoveAnim.Start();
                             selector.Enabled = false;
