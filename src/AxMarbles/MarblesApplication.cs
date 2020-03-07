@@ -94,7 +94,7 @@ namespace AxEngine
             {
                 Position = new Vector3(0, 2, 2.5f),
                 Name = "MovingLight",
-                LightType = LightType.Directional,
+                LightType = LightType.Point,
                 ShadowTextureIndex = 0,
                 //Enabled = false,
             });
@@ -103,7 +103,7 @@ namespace AxEngine
             {
                 Position = new Vector3(2f, 0.5f, 3.25f),
                 Name = "StaticLight",
-                LightType = LightType.Directional,
+                LightType = LightType.Point,
                 ShadowTextureIndex = 1,
             });
 
@@ -139,7 +139,7 @@ namespace AxEngine
         private Animation CreateAnim;
         private Animation MoveAnim;
 
-        private float MarbleScale = 0.8f;
+        private float MarbleScale = MathF.PI / 2f / 2f;
 
         public Shader MarbleShader;
 
@@ -316,8 +316,8 @@ namespace AxEngine
                         if (path != null && path.Count > 0)
                         {
                             CurrentPath = path;
-                            //var moveStepDuration = TimeSpan.FromSeconds(0.1);
-                            var moveStepDuration = TimeSpan.FromSeconds(1);
+                            var moveStepDuration = TimeSpan.FromSeconds(0.1);
+                            //var moveStepDuration = TimeSpan.FromSeconds(2);
                             MoveAnim.Duration = moveStepDuration * path.Count;
                             MoveAnim.Start();
                             selector.Enabled = false;
