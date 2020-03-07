@@ -194,6 +194,10 @@ namespace AxEngine
             var steps = CurrentPath.Count - 1;
             var scaledPos = MoveAnim.Position * steps;
             var step = (int)MathF.Floor(scaledPos);
+
+            // Prevent rare exception
+            step = Math.Min(step, CurrentPath.Count - 2);
+
             float subPos = scaledPos - step;
             var fromPos = CurrentPath[step];
             var toPos = CurrentPath[step + 1];
