@@ -115,7 +115,7 @@ namespace AxEngine
                     {
                         marble.State = MarbleState.Removing;
                         if (marble.Color == MarbleColor.BombJoker)
-                            ApplyBomb(marble);
+                            ApplyBomb(marble, result.PrimaryColor);
                     }
                 }
             }
@@ -129,9 +129,33 @@ namespace AxEngine
             }
         }
 
-        private void ApplyBomb(Marble bomb)
+        private List<Marble> BombedMarbles = new List<Marble>();
+
+        private void ApplyBomb(Marble bomb, MarbleColor primaryColor)
         {
-            //
+            foreach (var mar in Marbles)
+            {
+                if (mar.Color == primaryColor)
+                {
+                    var isRegular = false;
+                    foreach (var result in Matches)
+                    {
+                        foreach (var resultMarble in result.Marbles)
+                        {
+                            if (resultMarble == mar)
+                            {
+                                isRegular = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!isRegular)
+                    {
+                        mar.State = MarbleState.Removing;
+                        BombedMarbles.Add(mar);
+                    }
+                }
+            }
         }
 
         public void ScoreMatches()
@@ -160,7 +184,11 @@ namespace AxEngine
                 matchScore += Math.Max(match.Marbles.Count - 5, 0) * 10; // More then 5 Marbles
                 sum += matchScore;
             }
+
             sum *= Matches.Count;
+
+            sum += BombedMarbles.Count * 10;
+
             return sum;
         }
 
@@ -174,6 +202,7 @@ namespace AxEngine
             {
                 Console.WriteLine("MATCH");
                 result.Valid = true;
+                result.CalculatePrimaryColor();
             }
             return result;
         }
@@ -203,8 +232,8 @@ namespace AxEngine
             if (m1.Color == m2.Color)
                 return true;
 
-            var colors1 = m1.Color.GetEnumFlags();
-            var colors2 = m2.Color.GetEnumFlags();
+            var colors1 = m1.Color.GetRegularColors();
+            var colors2 = m2.Color.GetRegularColors();
             foreach (var c1 in colors1)
                 if (colors2.Contains(c1))
                     return true;
@@ -222,6 +251,29 @@ namespace AxEngine
             public List<Marble> Marbles = new List<Marble>();
             public int Score;
             public bool Valid;
+
+            public MarbleColor PrimaryColor;
+
+            public void CalculatePrimaryColor()
+            {
+                if (!Valid)
+                    return;
+
+                var colorHash = new Dictionary<MarbleColor, int>();
+                foreach (var col in MarbleBoard.AllColors)
+                    colorHash.Add(col, 0);
+
+                foreach (var mar in Marbles)
+                {
+                    var marbleColors = mar.Color.GetRegularColors();
+                    foreach (var col in marbleColors)
+                        colorHash[col] += 1;
+                }
+
+                if (colorHash.Count > 0)
+                    PrimaryColor = colorHash.OrderByDescending(e => e.Value).First().Key;
+            }
+
         }
 
         public void NewGame()
@@ -282,9 +334,7 @@ namespace AxEngine
             }
         }
 
-        private MarbleColor GetRandomColorInternal()
-        {
-            var colors = new MarbleColor[] {
+        public static MarbleColor[] AllColors = new MarbleColor[] {
                 MarbleColor.Red,
                 MarbleColor.Green,
                 MarbleColor.Blue,
@@ -293,7 +343,10 @@ namespace AxEngine
                 MarbleColor.White,
                 MarbleColor.Black,
             };
-            return colors[GetRandomNumber(colors.Length - 1)];
+
+        private MarbleColor GetRandomColorInternal()
+        {
+            return AllColors[GetRandomNumber(AllColors.Length - 1)];
         }
 
         public int TotalScore { get; private set; }
@@ -332,6 +385,7 @@ namespace AxEngine
                 return;
 
             Marbles.Remove(marble);
+            BombedMarbles.Remove(marble);
             this[marble.Position] = null;
             FreePositions.Add(marble.Position);
         }

@@ -9,7 +9,7 @@ namespace AxEngine
         public Marble(MarbleColor color)
         {
             Color = color;
-            var colors = color.GetEnumFlags();
+            var colors = color.GetRegularColors();
             if (colors.Count == 2)
             {
                 Color1 = colors[0];

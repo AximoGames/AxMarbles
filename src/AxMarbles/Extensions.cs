@@ -7,11 +7,13 @@ namespace AxEngine
     public static class Extensions
     {
 
-        public static List<MarbleColor> GetEnumFlags(this MarbleColor marbleColors)
+        public static List<MarbleColor> GetRegularColors(this MarbleColor marbleColors)
         {
             var list = GetEnumFlags<MarbleColor>(marbleColors);
+            list.Remove(MarbleColor.None);
             list.Remove(MarbleColor.ColorJoker);
             list.Remove(MarbleColor.BombJoker);
+            list.Remove(MarbleColor.BombColor);
             return list;
         }
 
