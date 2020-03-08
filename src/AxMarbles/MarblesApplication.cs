@@ -346,6 +346,9 @@ namespace AxEngine
                 if (MoveAnim.Enabled || RemoveAnim.Enabled || CreateAnim.Enabled)
                     return;
 
+                if (Board[pos]?.Color == MarbleColor.BombJoker)
+                    return;
+
                 var marble = Board[pos];
                 Console.WriteLine($"Clicked: {pos}. Marble: {marble}");
                 if (marble != null)

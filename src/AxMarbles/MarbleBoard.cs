@@ -53,7 +53,7 @@ namespace AxEngine
             private set => MarbleArray[pos.X, pos.Y] = value;
         }
 
-        public void CreateMarbles()
+        public void CreateRandomMarbles()
         {
             for (var i = 0; i < 3; i++)
             {
@@ -65,6 +65,10 @@ namespace AxEngine
 
         public Marble CreateMarble(Vector2i pos, MarbleColor color)
         {
+            if (this[pos] != null)
+                throw new Exception($"Position {pos} not free");
+
+            Console.WriteLine($"Create {color} Marble at {pos}");
             var marble = new Marble(color);
             marble.Position = pos;
             MoveMarble(marble, pos);
@@ -125,7 +129,7 @@ namespace AxEngine
             }
             else
             {
-                CreateMarbles();
+                CreateRandomMarbles();
             }
         }
 
@@ -279,7 +283,21 @@ namespace AxEngine
         public void NewGame()
         {
             ClearBoard();
-            CreateMarbles();
+            //CreateRandomMarbles();
+            CreateTestmarbles();
+        }
+
+        private void CreateTestmarbles()
+        {
+            CreateMarble(new Vector2i(0, 2), MarbleColor.Red);
+            CreateMarble(new Vector2i(0, 3), MarbleColor.Red);
+            CreateMarble(new Vector2i(0, 4), MarbleColor.Red);
+            CreateMarble(new Vector2i(0, 5), MarbleColor.BombJoker);
+            CreateMarble(new Vector2i(2, 5), MarbleColor.Red);
+            CreateMarble(new Vector2i(2, 6), MarbleColor.Red);
+            CreateMarble(new Vector2i(2, 7), MarbleColor.Green);
+
+            OnNewMarbles();
         }
 
         private Marble CreateRandomMarble()
@@ -371,6 +389,10 @@ namespace AxEngine
                 RemoveMarble(marble);
             }
             Marbles.Clear();
+            BombedMarbles.Clear();
+            Matches.Clear();
+            TotalScore = 0;
+            LastMoveScore = 0;
             FreePositions = new HashSet<Vector2i>(AllPositions);
         }
 
