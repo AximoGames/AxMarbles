@@ -11,6 +11,7 @@ namespace AxEngine
         Default,
         Adding,
         Removing,
+        Exploding,
     }
 
     public class MarbleBoard
@@ -158,7 +159,9 @@ namespace AxEngine
             }
         }
 
-        private List<Marble> BombedMarbles = new List<Marble>();
+        public List<Marble> BombedMarbles = new List<Marble>();
+
+        public bool MatchHasBomb => Matches.Any(m => m.HasBomb);
 
         private void ApplyBomb(Marble bomb, MarbleColor primaryColor)
         {
@@ -180,7 +183,7 @@ namespace AxEngine
                     }
                     if (!isRegular)
                     {
-                        mar.State = MarbleState.Removing;
+                        mar.State = MarbleState.Exploding;
                         BombedMarbles.Add(mar);
                     }
                 }
@@ -194,7 +197,7 @@ namespace AxEngine
             for (var i = Marbles.Count - 1; i >= 0; i--)
             {
                 var marble = Marbles[i];
-                if (marble.State == MarbleState.Removing)
+                if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
                 {
                     RemoveMarble(marble);
                     marble.Dispose();
@@ -231,7 +234,7 @@ namespace AxEngine
             {
                 Console.WriteLine("MATCH");
                 result.Valid = true;
-                result.CalculatePrimaryColor();
+                result.Process();
             }
             return result;
         }
@@ -292,13 +295,16 @@ namespace AxEngine
             public List<Marble> Marbles = new List<Marble>();
             public int Score;
             public bool Valid;
+            public bool HasBomb;
 
             public MarbleColor PrimaryColor;
 
-            public void CalculatePrimaryColor()
+            public void Process()
             {
                 if (!Valid)
                     return;
+
+                HasBomb = Marbles.Any(m => m.Color == MarbleColor.BombJoker);
 
                 var colorHash = new Dictionary<MarbleColor, int>();
                 foreach (var col in MarbleBoard.AllColors)

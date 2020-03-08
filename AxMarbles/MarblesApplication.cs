@@ -203,7 +203,7 @@ namespace AxEngine
                 {
                     ro.Scale = new Vector3(CreateAnim.Value);
                 }
-                if (marble.State == MarbleState.Removing)
+                if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
                 {
                     ro.Scale = new Vector3(RemoveAnim.Value);
                 }
@@ -243,7 +243,10 @@ namespace AxEngine
         private void OnMatch()
         {
             RemoveAnim.Start();
-            AudioManager.Default.PlayAsync("Sounds/marble-removing.wav");
+            if (!Board.MatchHasBomb)
+                AudioManager.Default.PlayAsync("Sounds/marble-removing.wav");
+            else
+                AudioManager.Default.PlayAsync("Sounds/marble-explode.wav");
         }
 
         private void OnNewMarbles()
