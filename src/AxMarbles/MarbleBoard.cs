@@ -283,8 +283,8 @@ namespace AxEngine
         public void NewGame()
         {
             ClearBoard();
-            //CreateRandomMarbles();
-            CreateTestmarbles();
+            CreateRandomMarbles();
+            //CreateTestmarbles();
         }
 
         private void CreateTestmarbles()
