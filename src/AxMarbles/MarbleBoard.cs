@@ -200,7 +200,7 @@ namespace AxEngine
             return false;
         }
 
-        private bool PositionInMap(Vector2i pos)
+        public bool PositionInMap(Vector2i pos)
         {
             return pos.X >= 0 && pos.Y >= 0 && pos.X < Width && pos.Y < Height;
         }

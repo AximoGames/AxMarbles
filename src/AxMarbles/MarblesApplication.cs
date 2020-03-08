@@ -321,6 +321,10 @@ namespace AxEngine
             if (CurrentMouseWorldPositionIsValid)
             {
                 var pos = CurrentMouseWorldPosition.Round().Xy.ToVector2i();
+
+                if (!Board.PositionInMap(pos))
+                    return;
+
                 //ScaleAnim.Start();
                 var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
 
