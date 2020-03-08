@@ -253,9 +253,7 @@ namespace AxEngine
 
         private void OnAnimationFinished_MarbleCreated()
         {
-            foreach (var marble in Board.Marbles)
-                if (marble.State == MarbleState.Adding)
-                    marble.State = MarbleState.Default;
+            Board.CreatedAnimationFinished();
         }
 
         private void OnAnimFinished_MarbleMoved()
@@ -263,7 +261,10 @@ namespace AxEngine
             var target = CurrentPath[CurrentPath.Count - 1];
             CurrentPath = null;
             Board.MoveMarble(SelectedMarble, target);
-            Board.CheckMatch(target);
+            if (!Board.CheckMatch(target))
+            {
+                Board.CreateRandomMarbles();
+            }
             SelectedMarble = null;
         }
 

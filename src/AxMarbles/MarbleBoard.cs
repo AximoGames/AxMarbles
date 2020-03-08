@@ -53,14 +53,38 @@ namespace AxEngine
             private set => MarbleArray[pos.X, pos.Y] = value;
         }
 
+        private List<Marble> LastCreatedMarbles = new List<Marble>();
+
         public void CreateRandomMarbles()
         {
+            LastCreatedMarbles.Clear();
             for (var i = 0; i < 3; i++)
             {
                 var newMarble = CreateRandomMarble();
-                newMarble.State = MarbleState.Adding;
+                if (newMarble != null)
+                {
+                    newMarble.State = MarbleState.Adding;
+                    LastCreatedMarbles.Add(newMarble);
+                }
             }
-            OnNewMarbles();
+            if (LastCreatedMarbles.Count > 0)
+                OnNewMarbles();
+        }
+
+        public void CreatedAnimationFinished()
+        {
+            foreach (var marble in Marbles)
+            {
+                if (marble.State == MarbleState.Adding)
+                {
+                    marble.State = MarbleState.Default;
+
+                    if (CheckMatch(marble.Position))
+                    {
+                        return;
+                    }
+                }
+            }
         }
 
         public Marble CreateMarble(Vector2i pos, MarbleColor color)
@@ -103,7 +127,7 @@ namespace AxEngine
         public Action OnNewMarbles;
 
         private List<CheckRowResult> Matches = new List<CheckRowResult>();
-        public void CheckMatch(Vector2i origin)
+        public bool CheckMatch(Vector2i origin)
         {
             var results = new List<CheckRowResult>();
             results.Add(CheckRow(origin, new Vector2i(1, 0)));
@@ -126,10 +150,11 @@ namespace AxEngine
             if (Matches.Count > 0)
             {
                 OnMatch();
+                return true;
             }
             else
             {
-                CreateRandomMarbles();
+                return false;
             }
         }
 
@@ -300,8 +325,16 @@ namespace AxEngine
             OnNewMarbles();
         }
 
+        private int RandomMarblesCreated = 0;
+
         private Marble CreateRandomMarble()
         {
+            RandomMarblesCreated++;
+            // if (RandomMarblesCreated == 1) // Debug
+            // {
+            //     return CreateMarble(new Vector2i(0, 6), MarbleColor.Red);
+            // }
+
             var pos = GetRandomPosition();
             var color = GetRandomColor();
             var marble = CreateMarble(pos, color);
