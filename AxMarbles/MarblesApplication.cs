@@ -164,6 +164,10 @@ namespace AxEngine
                 Board.NewGame();
             }
 
+            var kbState = Keyboard.GetState();
+            if (kbState[Key.AltLeft] && kbState[Key.D])
+                DefaultKeyBindings = !DefaultKeyBindings;
+
             foreach (var marble in Board.Marbles)
             {
                 if (marble.RenderObject == null)
@@ -239,11 +243,13 @@ namespace AxEngine
         private void OnMatch()
         {
             RemoveAnim.Start();
+            AudioManager.Default.PlayAsync("Sounds/marble-removing.wav");
         }
 
         private void OnNewMarbles()
         {
             CreateAnim.Start();
+            AudioManager.Default.PlayAsync("Sounds/marble-adding.wav");
         }
 
         private void OnAnimFinshed_MarbleScaled()
@@ -370,6 +376,7 @@ namespace AxEngine
                             //var moveStepDuration = TimeSpan.FromSeconds(2);
                             MoveAnim.Duration = moveStepDuration.Multiply(path.Count);
                             MoveAnim.Start();
+                            AudioManager.Default.PlayAsync("Sounds/marble-moving.wav");
                             selector.Enabled = false;
                         }
                     }
