@@ -168,16 +168,31 @@ namespace AxEngine
             {
                 if (marble.RenderObject == null)
                 {
-                    marble.RenderObject = new SphereObject()
+                    if (marble.Color == MarbleColor.BombJoker)
                     {
-                        PositionMatrix = Matrix4.CreateScale(1, -1, 1),
-                        Material = GetMaterial(marble),
-                        Scale = new Vector3(MarbleScale),
-                        Shader = MarbleShader,
-                    };
-                    ctx.AddObject(marble.RenderObject);
-                    marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.Joker ? 1 : 0);
-                    marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
+                        marble.RenderObject = new CubeObject()
+                        {
+                            PositionMatrix = Matrix4.CreateScale(1, -1, 1),
+                            Scale = new Vector3(MarbleScale),
+                            Shader = MarbleShader,
+                        };
+                        ctx.AddObject(marble.RenderObject);
+                        marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
+                        marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
+                    }
+                    else
+                    {
+                        marble.RenderObject = new SphereObject()
+                        {
+                            PositionMatrix = Matrix4.CreateScale(1, -1, 1),
+                            Material = GetMaterial(marble),
+                            Scale = new Vector3(MarbleScale),
+                            Shader = MarbleShader,
+                        };
+                        ctx.AddObject(marble.RenderObject);
+                        marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
+                        marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
+                    }
                 }
                 var ro = marble.RenderObject;
                 if (marble.State == MarbleState.Adding)

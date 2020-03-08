@@ -10,8 +10,9 @@ namespace AxEngine
         Orange = 16,
         White = 32,
         Black = 64,
-        Joker = Red | Green | Blue | Yellow | Orange | White | Black,
-        Bomb = 128,
+        BombColor = 128,
+        ColorJoker = Red | Green | Blue | Yellow | Orange | White | Black,
+        BombJoker = ColorJoker | BombColor,
     }
 
 }

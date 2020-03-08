@@ -53,6 +53,16 @@ namespace AxEngine
             private set => MarbleArray[pos.X, pos.Y] = value;
         }
 
+        public void CreateMarbles()
+        {
+            for (var i = 0; i < 3; i++)
+            {
+                var newMarble = CreateRandomMarble();
+                newMarble.State = MarbleState.Adding;
+            }
+            OnNewMarbles();
+        }
+
         public Marble CreateMarble(Vector2i pos, MarbleColor color)
         {
             var marble = new Marble(color);
@@ -104,6 +114,8 @@ namespace AxEngine
                     foreach (var marble in result.Marbles)
                     {
                         marble.State = MarbleState.Removing;
+                        if (marble.Color == MarbleColor.BombJoker)
+                            ApplyBomb(marble);
                     }
                 }
             }
@@ -113,13 +125,13 @@ namespace AxEngine
             }
             else
             {
-                for (var i = 0; i < 3; i++)
-                {
-                    var newMarble = CreateRandomMarble();
-                    newMarble.State = MarbleState.Adding;
-                }
-                OnNewMarbles();
+                CreateMarbles();
             }
+        }
+
+        private void ApplyBomb(Marble bomb)
+        {
+            //
         }
 
         public void ScoreMatches()
@@ -215,10 +227,7 @@ namespace AxEngine
         public void NewGame()
         {
             ClearBoard();
-            for (var i = 0; i < 3; i++)
-            {
-                CreateRandomMarble();
-            }
+            CreateMarbles();
         }
 
         private Marble CreateRandomMarble()
@@ -234,14 +243,14 @@ namespace AxEngine
         {
             if (maxValue == 0)
                 return 0;
-            return random.Next(maxValue);
+            return random.Next(maxValue + 1);
         }
 
         private HashSet<Vector2i> FreePositions = new HashSet<Vector2i>();
 
         private Vector2i GetRandomPosition()
         {
-            var pos = FreePositions.ToArray()[GetRandomNumber(FreePositions.Count)];
+            var pos = FreePositions.ToArray()[GetRandomNumber(FreePositions.Count - 1)];
             if (this[pos] != null)
                 throw new Exception($"this[{pos}] != null");
 
@@ -253,7 +262,14 @@ namespace AxEngine
             var color = GetRandomColorInternal();
             if (GetRandomNumber(3) == 0)
             {
-                return MarbleColor.Joker;
+                if (GetRandomNumber(1) == 0)
+                {
+                    return MarbleColor.BombJoker;
+                }
+                else
+                {
+                    return MarbleColor.ColorJoker;
+                }
             }
             else if (GetRandomNumber(3) == 0)
             {
@@ -277,7 +293,7 @@ namespace AxEngine
                 MarbleColor.White,
                 MarbleColor.Black,
             };
-            return colors[GetRandomNumber(colors.Length)];
+            return colors[GetRandomNumber(colors.Length - 1)];
         }
 
         public int TotalScore { get; private set; }

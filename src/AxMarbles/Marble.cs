@@ -35,7 +35,7 @@ namespace AxEngine
 
         public Vector2i Position;
 
-        public SphereObject RenderObject;
+        public SimpleVertexObject RenderObject;
         public MarbleState State;
 
         public void Dispose()

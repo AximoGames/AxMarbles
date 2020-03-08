@@ -10,7 +10,8 @@ namespace AxEngine
         public static List<MarbleColor> GetEnumFlags(this MarbleColor marbleColors)
         {
             var list = GetEnumFlags<MarbleColor>(marbleColors);
-            list.Remove(MarbleColor.Joker);
+            list.Remove(MarbleColor.ColorJoker);
+            list.Remove(MarbleColor.BombJoker);
             return list;
         }
 
