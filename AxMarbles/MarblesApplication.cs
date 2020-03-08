@@ -150,7 +150,8 @@ namespace AxEngine
         private Animation CreateAnim;
         private Animation MoveAnim;
 
-        private float MarbleScale = MathF.PI / 2f / 2f;
+        private const float MarbleScale = MathF.PI / 2f / 2f;
+        private const float MarbleZ = MarbleScale / 2f;
 
         public Shader MarbleShader;
 
@@ -279,7 +280,7 @@ namespace AxEngine
 
         private Vector3 GetMarblePos(Vector2i marblePos)
         {
-            return new Vector3(marblePos.X, marblePos.Y, 0.5f);
+            return new Vector3(marblePos.X, marblePos.Y, MarbleZ);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
