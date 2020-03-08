@@ -165,7 +165,7 @@ namespace AxEngine
             }
 
             var kbState = Keyboard.GetState();
-            if (kbState[Key.AltLeft] && kbState[Key.D])
+            if (kbState[Key.AltRight] && kbState[Key.K])
                 DefaultKeyBindings = !DefaultKeyBindings;
 
             foreach (var marble in Board.Marbles)
