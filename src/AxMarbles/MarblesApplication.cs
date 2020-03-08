@@ -325,7 +325,7 @@ namespace AxEngine
                             CurrentPath = path;
                             var moveStepDuration = TimeSpan.FromSeconds(0.1);
                             //var moveStepDuration = TimeSpan.FromSeconds(2);
-                            MoveAnim.Duration = moveStepDuration * path.Count;
+                            MoveAnim.Duration = moveStepDuration.Multiply(path.Count);
                             MoveAnim.Start();
                             selector.Enabled = false;
                         }
