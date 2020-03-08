@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "AxEngine",
-			"path": "../../AxEngine/src"
+			"path": "../AxEngine"
 		}
 	]
 }

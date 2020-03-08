@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxMarbles", "AxMarbles\AxMarbles.csproj", "{779BD01D-7176-412F-99E6-8C1C18D9700F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxEngine", "..\..\AxEngine\src\AxEngine\AxEngine.csproj", "{2AFB2A37-CEA7-4859-9792-0E745889ACAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxEngine", "..\AxEngine\AxEngine\AxEngine.csproj", "{2AFB2A37-CEA7-4859-9792-0E745889ACAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net3dBool", "..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj", "{7E57CC8D-D191-4292-A383-315A25B74292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net3dBool", "..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj", "{7E57CC8D-D191-4292-A383-315A25B74292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

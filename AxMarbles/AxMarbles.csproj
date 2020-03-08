@@ -13,7 +13,7 @@
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj" />
-    <ProjectReference Include="..\..\..\AxEngine\src\AxEngine\AxEngine.csproj" />
+    <ProjectReference Include="..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj" />
+    <ProjectReference Include="..\..\AxEngine\AxEngine\AxEngine.csproj" />
   </ItemGroup>
 </Project>
