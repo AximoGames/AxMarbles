@@ -366,6 +366,7 @@ namespace AxEngine
                     SelectedMarble = marble;
                     selector.Position = new Vector3(pos.X, pos.Y, 0);
                     selector.Enabled = true;
+                    AudioManager.Default.PlayAsync("Sounds/marble-select.wav");
                 }
                 else
                 {
