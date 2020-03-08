@@ -242,7 +242,7 @@ namespace AxEngine
             var pos = origin + step;
             while (PositionInMap(pos))
             {
-                if (MarblesAreCompatible(originMarble, this[pos]))
+                if (MarblesAreCompatibleAll(originMarble, result.Marbles, this[pos]))
                 {
                     result.Marbles.Add(this[pos]);
                 }
@@ -268,6 +268,18 @@ namespace AxEngine
                     return true;
 
             return false;
+        }
+
+        private bool MarblesAreCompatibleAll(Marble origin, List<Marble> middle, Marble m2)
+        {
+            var list = new List<Marble>(middle);
+            list.Insert(0, origin);
+
+            foreach (var m1 in list)
+                if (!MarblesAreCompatible(m1, m2))
+                    return false;
+
+            return true;
         }
 
         public bool PositionInMap(Vector2i pos)
@@ -316,9 +328,9 @@ namespace AxEngine
         {
             CreateMarble(new Vector2i(0, 2), MarbleColor.Red);
             CreateMarble(new Vector2i(0, 3), MarbleColor.Red);
-            CreateMarble(new Vector2i(0, 4), MarbleColor.Red);
-            CreateMarble(new Vector2i(0, 5), MarbleColor.BombJoker);
-            CreateMarble(new Vector2i(2, 5), MarbleColor.Red);
+            CreateMarble(new Vector2i(0, 4), MarbleColor.ColorJoker);
+            CreateMarble(new Vector2i(0, 5), MarbleColor.Red);
+            CreateMarble(new Vector2i(2, 5), MarbleColor.ColorJoker);
             CreateMarble(new Vector2i(2, 6), MarbleColor.Red);
             CreateMarble(new Vector2i(2, 7), MarbleColor.Green);
 
