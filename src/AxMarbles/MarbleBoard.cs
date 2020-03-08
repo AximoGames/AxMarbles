@@ -124,6 +124,8 @@ namespace AxEngine
 
         public void ScoreMatches()
         {
+            LastMoveScore = GetMoveScores();
+            TotalScore += LastMoveScore;
             for (var i = Marbles.Count - 1; i >= 0; i--)
             {
                 var marble = Marbles[i];
@@ -135,6 +137,19 @@ namespace AxEngine
                 }
             }
             Console.WriteLine($"FreePositions: {FreePositions.Count}");
+        }
+
+        private int GetMoveScores()
+        {
+            var sum = 0;
+            foreach (var match in Matches)
+            {
+                var matchScore = 10;
+                matchScore += Math.Max(match.Marbles.Count - 5, 0) * 10; // More then 5 Marbles
+                sum += matchScore;
+            }
+            sum *= Matches.Count;
+            return sum;
         }
 
         private CheckRowResult CheckRow(Vector2i origin, Vector2i step)
@@ -264,6 +279,9 @@ namespace AxEngine
             };
             return colors[GetRandomNumber(colors.Length)];
         }
+
+        public int TotalScore { get; private set; }
+        public int LastMoveScore { get; private set; }
 
         public IEnumerable<Vector2i> AllPositions
         {

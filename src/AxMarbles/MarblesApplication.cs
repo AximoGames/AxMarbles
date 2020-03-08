@@ -52,7 +52,11 @@ namespace AxEngine
             ctx.AddObject(new CubeObject()
             {
                 Name = "Ground",
-                Material = material,
+                Material = new Material
+                {
+                    Color = new Vector3(0.4f, 0.6f, 0.6f),
+                    ColorBlendMode = MaterialColorBlendMode.Set,
+                },
                 Scale = new Vector3(50, 50, 1),
                 Position = new Vector3(0f, 0f, -0.5f),
                 // RenderShadow = false,
@@ -93,7 +97,7 @@ namespace AxEngine
 
             ctx.AddObject(new LightObject()
             {
-                Position = new Vector3(0, 2, 2.5f),
+                Position = new Vector3(0, 2, 3.5f),
                 Name = "MovingLight",
                 LightType = LightType.Point,
                 ShadowTextureIndex = 0,
@@ -102,16 +106,22 @@ namespace AxEngine
 
             ctx.AddObject(new LightObject()
             {
-                Position = new Vector3(2f, 0.5f, 3.25f),
+                Position = new Vector3(2f, 0.5f, 4.25f),
                 Name = "StaticLight",
                 LightType = LightType.Point,
                 ShadowTextureIndex = 1,
             });
 
-            ctx.AddObject(new StatsObject()
+            // ctx.AddObject(new StatsObject()
+            // {
+            //     Name = "Stats",
+            //     RectanglePixels = new RectangleF(40, 40, 100f, 100f),
+            // });
+
+            ctx.AddObject(new UIObject()
             {
-                Name = "Stats",
-                RectanglePixels = new RectangleF(40, 40, 100f, 100f),
+                Name = "UI",
+                RectanglePixels = new RectangleF(0, 0, ctx.ScreenSize.X, ctx.ScreenSize.Y),
             });
 
             ctx.AddAnimation(RemoveAnim = new Animation()
@@ -167,7 +177,7 @@ namespace AxEngine
                     };
                     ctx.AddObject(marble.RenderObject);
                     marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.Joker ? 1 : 0);
-                    marble.RenderObject.AddShaderParam("color2", GetMaterialColor(marble.Color2));
+                    marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
                 }
                 var ro = marble.RenderObject;
                 if (marble.State == MarbleState.Adding)
@@ -264,12 +274,22 @@ namespace AxEngine
             {
                 DiffuseImagePath = "Ressources/woodenbox.png",
                 SpecularImagePath = "Ressources/woodenbox_specular.png",
-                Color = GetMaterialColor(marble.Color1),
+                Color = GetMaterialColorShader(marble.Color1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
                 ColorBlendMode = MaterialColorBlendMode.Set,
             };
+        }
+
+        private Vector3 GetMaterialColorShader(MarbleColor marbleColor)
+        {
+            var color = GetMaterialColor(marbleColor);
+            var addColor = new Vector3(0);
+            if (color == Vector3.Zero)
+                addColor = new Vector3(0.3f);
+            color += addColor;
+            return (color) * 0.5f;
         }
 
         private Vector3 GetMaterialColor(MarbleColor marbleColor)

@@ -11,6 +11,6 @@ if(joker==0.0)
         color = color2;}
 else
 {
-    color = abs(Normal.xyz);
+    color = abs(Normal.xyz) * 0.8;
 }
 
