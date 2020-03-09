@@ -15,6 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxRender", "..\AxEngine\AxR
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{3DE6BF95-9668-4E01-B6B2-BF806D4FCF2A}"
+	ProjectSection(SolutionItems) = preProject
+		..\AxEngine\props\default.ruleset = ..\AxEngine\props\default.ruleset
+		..\AxEngine\props\SharedProjectSettings.props = ..\AxEngine\props\SharedProjectSettings.props
+		..\AxEngine\props\stylecop.json = ..\AxEngine\props\stylecop.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +57,7 @@ Global
 		{7E57CC8D-D191-4292-A383-315A25B74292} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
 		{7EAB4D06-D4F5-490E-904E-5343240F44C9} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
 		{E72DCF45-B09C-40F0-85E2-1857D6F11960} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
+		{3DE6BF95-9668-4E01-B6B2-BF806D4FCF2A} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1AAC3E5-6971-4275-B049-04F488C4421C}

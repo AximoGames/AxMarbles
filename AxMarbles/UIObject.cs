@@ -1,10 +1,7 @@
-﻿using Aximo.Engine;
-using Aximo.Render;
-using OpenTK;
-using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
+using Aximo.Engine;
+using Aximo.Render;
 
 namespace Aximo.Marbles
 {
@@ -14,17 +11,20 @@ namespace Aximo.Marbles
         private DateTime LastStatUpdate;
         private Font DefaultFont = new Font(FontFamily.GenericSansSerif, 15, GraphicsUnit.Point);
 
-        public UIObject() {
+        public UIObject()
+        {
         }
 
-        public override void Init() {
+        public override void Init()
+        {
             GfxTexture = new GraphicsTexture(Context.ScreenSize);
             GfxTexture.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
             SourceTexture = GfxTexture.Texture;
             base.Init();
         }
 
-        public void OnUpdateFrame() {
+        public void OnUpdateFrame()
+        {
             if ((DateTime.UtcNow - LastStatUpdate).TotalSeconds < 0.5)
                 return;
             LastStatUpdate = DateTime.UtcNow;

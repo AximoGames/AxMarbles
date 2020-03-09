@@ -1,7 +1,7 @@
-using OpenTK;
 using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using OpenTK;
 
 namespace Aximo.Marbles
 {
@@ -214,7 +214,7 @@ namespace Aximo.Marbles
 
                 if (StartPos.Equals(ZielPos))
                     return null;
-                if (!(Allowed(Map[ZielPos])))
+                if (!Allowed(Map[ZielPos]))
                     return null;
 
                 wp = Map[StartPos];
@@ -655,7 +655,7 @@ namespace Aximo.Marbles
 
         private int Compare(WayPoint wp1, WayPoint wp2)
         {
-            return (wp1.GWCost + wp1.HCost) - (wp2.GWCost + wp2.HCost);
+            return wp1.GWCost + wp1.HCost - (wp2.GWCost + wp2.HCost);
         }
 
         private void Swap(WayPoint p1, WayPoint p2)

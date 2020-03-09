@@ -8,20 +8,24 @@ namespace Aximo.Marbles
     public class Marble : IDisposable
     {
 
-        public Marble(MarbleColor color) {
+        public Marble(MarbleColor color)
+        {
             Color = color;
             var colors = color.GetRegularColors();
-            if (colors.Count == 2) {
+            if (colors.Count == 2)
+            {
                 Color1 = colors[0];
                 Color2 = colors[1];
             }
-            else {
+            else
+            {
                 Color1 = color;
                 Color2 = color;
             }
         }
 
-        public Marble(MarbleColor color1, MarbleColor color2) {
+        public Marble(MarbleColor color1, MarbleColor color2)
+        {
             Color1 = color1;
             Color2 = color2;
             Color = color1 | Color2;
@@ -36,12 +40,14 @@ namespace Aximo.Marbles
         public SimpleVertexObject RenderObject;
         public MarbleState State;
 
-        public void Dispose() {
+        public void Dispose()
+        {
             RenderObject.Context.RemoveObject(RenderObject);
             RenderObject.Free();
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"[Pos: {Position}, Color: {Color}]";
         }
     }

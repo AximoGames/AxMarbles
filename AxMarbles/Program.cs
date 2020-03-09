@@ -1,9 +1,7 @@
 ﻿using System;
-using OpenTK.Graphics.OpenGL4;
 using System.Threading;
-using OpenTK;
-using System.Runtime.InteropServices;
 using Aximo.Engine;
+using OpenTK;
 
 namespace Aximo.Marbles
 {
@@ -12,7 +10,8 @@ namespace Aximo.Marbles
 
         private static Thread th;
 
-        public static void Main(string[] args) {
+        public static void Main(string[] args)
+        {
             UIThreadMain();
             return;
 
@@ -27,13 +26,16 @@ namespace Aximo.Marbles
             Environment.Exit(0);
         }
 
-        private static void ConsoleLoop() {
-            while (true) {
+        private static void ConsoleLoop()
+        {
+            while (true)
+            {
                 var cmd = Console.ReadLine();
                 var args = cmd.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (args.Length == 0)
                     continue;
-                switch (cmd) {
+                switch (cmd)
+                {
                     case "q":
                         return;
                     default:
@@ -45,8 +47,10 @@ namespace Aximo.Marbles
 
         private static MarblesApplication demo;
 
-        private static void UIThreadMain() {
-            demo = new MarblesApplication(new RenderApplicationStartup {
+        private static void UIThreadMain()
+        {
+            demo = new MarblesApplication(new RenderApplicationStartup
+            {
                 WindowTitle = "Marbles",
                 WindowSize = new Vector2i(800, 600),
                 WindowBorder = WindowBorder.Fixed,

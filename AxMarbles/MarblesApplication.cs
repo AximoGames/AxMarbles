@@ -1,22 +1,20 @@
 using System;
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Input;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Drawing;
 using Aximo.Engine;
 using Aximo.Render;
+using OpenTK;
+using OpenTK.Input;
 
 namespace Aximo.Marbles
 {
     public class MarblesApplication : RenderApplication
     {
-        public MarblesApplication(RenderApplicationStartup startup) : base(startup) {
+        public MarblesApplication(RenderApplicationStartup startup) : base(startup)
+        {
         }
 
-        protected override void SetupScene() {
+        protected override void SetupScene()
+        {
             Board = new MarbleBoard();
             Board.OnMatch = OnMatch;
             Board.OnNewMarbles = OnNewMarbles;
@@ -27,7 +25,8 @@ namespace Aximo.Marbles
 
             var camSize = new Vector2(9 * ctx.ScreenAspectRatio, 9);
 
-            ctx.Camera = new OrthographicCamera(new Vector3(4.5f + (camSize.X - camSize.Y) / 2f - 0.5f, -4.5f + 0.5f, 25)) {
+            ctx.Camera = new OrthographicCamera(new Vector3(4.5f + (camSize.X - camSize.Y) / 2f - 0.5f, -4.5f + 0.5f, 25))
+            {
                 Size = camSize,
                 NearPlane = 1f,
                 FarPlane = 100.0f,
@@ -35,7 +34,8 @@ namespace Aximo.Marbles
                 Pitch = -((float)(Math.PI / 2) - 0.00001f),
             };
 
-            var material = new Material() {
+            var material = new Material()
+            {
                 DiffuseImagePath = "Textures/woodenbox.png",
                 SpecularImagePath = "Textures/woodenbox_specular.png",
                 Color = new Vector3(1.0f, 1.0f, 0.0f),
@@ -49,9 +49,11 @@ namespace Aximo.Marbles
             MarbleShader.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
             MarbleShader.Compile();
 
-            ctx.AddObject(new CubeObject() {
+            ctx.AddObject(new CubeObject()
+            {
                 Name = "Ground",
-                Material = new Material {
+                Material = new Material
+                {
                     Color = new Vector3(0.4f, 0.6f, 0.6f),
                     ColorBlendMode = MaterialColorBlendMode.Set,
                 },
@@ -75,20 +77,23 @@ namespace Aximo.Marbles
             //     PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
             // });
 
-            ctx.AddObject(new GridObject() {
+            ctx.AddObject(new GridObject()
+            {
                 Name = "Grid",
                 Size = 9,
                 Center = false,
                 ModelMatrix = Matrix4.CreateScale(1, -1, 1) * Matrix4.CreateTranslation(-0.5f, 0.5f, 0.01f),
                 //Debug = true,
             });
-            ctx.AddObject(new CrossLinesObject() {
+            ctx.AddObject(new CrossLinesObject()
+            {
                 Name = "CenterCross",
                 ModelMatrix = Matrix4.CreateScale(2.0f) * Matrix4.CreateTranslation(0f, 0f, 0.02f),
                 //Debug = true,
             });
 
-            ctx.AddObject(new CubeObject() {
+            ctx.AddObject(new CubeObject()
+            {
                 Name = "GroundCursor",
                 Material = material,
                 Position = new Vector3(0, 1, 0.05f),
@@ -96,7 +101,8 @@ namespace Aximo.Marbles
                 // Enabled = false,
             });
 
-            ctx.AddObject(new CubeObject() {
+            ctx.AddObject(new CubeObject()
+            {
                 Name = "MarbleSelector",
                 Material = material,
                 Position = new Vector3(0, 1, 0.05f),
@@ -104,7 +110,8 @@ namespace Aximo.Marbles
                 Enabled = false,
             });
 
-            ctx.AddObject(new LightObject() {
+            ctx.AddObject(new LightObject()
+            {
                 Position = new Vector3(0, 2, 3.5f),
                 Name = "MovingLight",
                 LightType = LightType.Point,
@@ -112,7 +119,8 @@ namespace Aximo.Marbles
                 //Enabled = false,
             });
 
-            ctx.AddObject(new LightObject() {
+            ctx.AddObject(new LightObject()
+            {
                 Position = new Vector3(2f, 0.5f, 4.25f),
                 Name = "StaticLight",
                 LightType = LightType.Point,
@@ -125,24 +133,28 @@ namespace Aximo.Marbles
             //     RectanglePixels = new RectangleF(40, 40, 100f, 100f),
             // });
 
-            ctx.AddObject(new UIObject() {
+            ctx.AddObject(new UIObject()
+            {
                 Name = "UI",
                 RectanglePixels = new RectangleF(0, 0, ctx.ScreenSize.X, ctx.ScreenSize.Y),
             });
 
-            gameCtx.AddAnimation(RemoveAnim = new Animation() {
+            gameCtx.AddAnimation(RemoveAnim = new Animation()
+            {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
             });
             RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
 
-            gameCtx.AddAnimation(CreateAnim = new Animation() {
+            gameCtx.AddAnimation(CreateAnim = new Animation()
+            {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.Linear(MarbleScale),
             });
             CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
 
-            gameCtx.AddAnimation(MoveAnim = new Animation() {
+            gameCtx.AddAnimation(MoveAnim = new Animation()
+            {
             });
             MoveAnim.AnimationFinished += OnAnimFinished_MarbleMoved;
         }
@@ -158,8 +170,10 @@ namespace Aximo.Marbles
 
         public Shader MarbleShader;
 
-        protected override void OnUpdateFrame(FrameEventArgs e) {
-            if (Board.Marbles.Count == 0) {
+        protected override void OnUpdateFrame(FrameEventArgs e)
+        {
+            if (Board.Marbles.Count == 0)
+            {
                 Board.NewGame();
             }
 
@@ -167,10 +181,14 @@ namespace Aximo.Marbles
             if (kbState[Key.AltRight] && kbState[Key.K])
                 DefaultKeyBindings = !DefaultKeyBindings;
 
-            foreach (var marble in Board.Marbles) {
-                if (marble.RenderObject == null) {
-                    if (marble.Color == MarbleColor.BombJoker) {
-                        marble.RenderObject = new CubeObject() {
+            foreach (var marble in Board.Marbles)
+            {
+                if (marble.RenderObject == null)
+                {
+                    if (marble.Color == MarbleColor.BombJoker)
+                    {
+                        marble.RenderObject = new CubeObject()
+                        {
                             PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                             Scale = new Vector3(MarbleScale),
                             Shader = MarbleShader,
@@ -179,8 +197,10 @@ namespace Aximo.Marbles
                         marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
                         marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
                     }
-                    else {
-                        marble.RenderObject = new SphereObject() {
+                    else
+                    {
+                        marble.RenderObject = new SphereObject()
+                        {
                             PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                             Material = GetMaterial(marble),
                             Scale = new Vector3(MarbleScale),
@@ -192,25 +212,30 @@ namespace Aximo.Marbles
                     }
                 }
                 var ro = marble.RenderObject;
-                if (marble.State == MarbleState.Adding) {
+                if (marble.State == MarbleState.Adding)
+                {
                     ro.Scale = new Vector3(CreateAnim.Value);
                 }
-                if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding) {
+                if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
+                {
                     ro.Scale = new Vector3(RemoveAnim.Value);
                 }
-                if (marble == SelectedMarble && CurrentPath != null && MoveAnim.Enabled) {
+                if (marble == SelectedMarble && CurrentPath != null && MoveAnim.Enabled)
+                {
                     var result = GetPathPosition(marble);
                     ro.Position = result.Position;
                     ro.Rotate = result.Rotate;
                 }
-                else {
+                else
+                {
                     ro.Position = GetMarblePos(marble.Position);
                     ro.Rotate = new Vector3(); ;
                 }
             }
         }
 
-        private (Vector3 Position, Vector3 Rotate) GetPathPosition(Marble marble) {
+        private (Vector3 Position, Vector3 Rotate) GetPathPosition(Marble marble)
+        {
             var steps = CurrentPath.Count - 1;
             var scaledPos = MoveAnim.Position * steps;
             var step = (int)MathF.Floor(scaledPos);
@@ -228,7 +253,8 @@ namespace Aximo.Marbles
             return (resultPos, resultRotate);
         }
 
-        private void OnMatch() {
+        private void OnMatch()
+        {
             RemoveAnim.Start();
             if (!Board.MatchHasBomb)
                 AudioManager.Default.PlayAsync("Sounds/marble-removing.wav");
@@ -236,35 +262,43 @@ namespace Aximo.Marbles
                 AudioManager.Default.PlayAsync("Sounds/marble-explode.wav");
         }
 
-        private void OnNewMarbles() {
+        private void OnNewMarbles()
+        {
             CreateAnim.Start();
             AudioManager.Default.PlayAsync("Sounds/marble-adding.wav");
         }
 
-        private void OnAnimFinshed_MarbleScaled() {
+        private void OnAnimFinshed_MarbleScaled()
+        {
             Board.ScoreMatches();
         }
 
-        private void OnAnimationFinished_MarbleCreated() {
+        private void OnAnimationFinished_MarbleCreated()
+        {
             Board.CreatedAnimationFinished();
         }
 
-        private void OnAnimFinished_MarbleMoved() {
+        private void OnAnimFinished_MarbleMoved()
+        {
             var target = CurrentPath[CurrentPath.Count - 1];
             CurrentPath = null;
             Board.MoveMarble(SelectedMarble, target);
-            if (!Board.CheckMatch(target)) {
+            if (!Board.CheckMatch(target))
+            {
                 Board.CreateRandomMarbles();
             }
             SelectedMarble = null;
         }
 
-        private Vector3 GetMarblePos(Vector2i marblePos) {
+        private Vector3 GetMarblePos(Vector2i marblePos)
+        {
             return new Vector3(marblePos.X, marblePos.Y, MarbleZ);
         }
 
-        protected override void OnRenderFrame(FrameEventArgs e) {
-            if (CurrentMouseWorldPositionIsValid) {
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            if (CurrentMouseWorldPositionIsValid)
+            {
                 var cursor = ctx.GetObjectByName<IPosition>("GroundCursor");
                 cursor.Position = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.Position.Z);
             }
@@ -272,8 +306,10 @@ namespace Aximo.Marbles
 
         private Marble SelectedMarble;
 
-        private Material GetMaterial(Marble marble) {
-            return new Material() {
+        private Material GetMaterial(Marble marble)
+        {
+            return new Material()
+            {
                 DiffuseImagePath = "Textures/woodenbox.png",
                 SpecularImagePath = "Textures/woodenbox_specular.png",
                 Color = GetMaterialColorShader(marble.Color1),
@@ -284,17 +320,20 @@ namespace Aximo.Marbles
             };
         }
 
-        private Vector3 GetMaterialColorShader(MarbleColor marbleColor) {
+        private Vector3 GetMaterialColorShader(MarbleColor marbleColor)
+        {
             var color = GetMaterialColor(marbleColor);
             var addColor = new Vector3(0);
             if (color == Vector3.Zero)
                 addColor = new Vector3(0.3f);
             color += addColor;
-            return (color) * 0.5f;
+            return color * 0.5f;
         }
 
-        private Vector3 GetMaterialColor(MarbleColor marbleColor) {
-            switch (marbleColor) {
+        private Vector3 GetMaterialColor(MarbleColor marbleColor)
+        {
+            switch (marbleColor)
+            {
                 case MarbleColor.Red:
                     return new Vector3(1, 0, 0);
                 case MarbleColor.Green:
@@ -315,8 +354,10 @@ namespace Aximo.Marbles
         }
 
         private Vector2iList CurrentPath;
-        protected override void OnMouseDown(MouseButtonEventArgs e) {
-            if (CurrentMouseWorldPositionIsValid) {
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            if (CurrentMouseWorldPositionIsValid)
+            {
                 var pos = CurrentMouseWorldPosition.Round().Xy.ToVector2i();
 
                 if (!Board.PositionInMap(pos))
@@ -333,16 +374,20 @@ namespace Aximo.Marbles
 
                 var marble = Board[pos];
                 Console.WriteLine($"Clicked: {pos}. Marble: {marble}");
-                if (marble != null) {
+                if (marble != null)
+                {
                     SelectedMarble = marble;
                     selector.Position = new Vector3(pos.X, pos.Y, 0);
                     selector.Enabled = true;
                     AudioManager.Default.PlayAsync("Sounds/marble-select.wav");
                 }
-                else {
-                    if (SelectedMarble != null) {
+                else
+                {
+                    if (SelectedMarble != null)
+                    {
                         var path = Board.FindPath(SelectedMarble, pos);
-                        if (path != null && path.Count > 0) {
+                        if (path != null && path.Count > 0)
+                        {
                             CurrentPath = path;
                             var moveStepDuration = TimeSpan.FromSeconds(0.1);
                             //var moveStepDuration = TimeSpan.FromSeconds(2);
