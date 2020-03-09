@@ -129,19 +129,19 @@ namespace AxEngine
                 RectanglePixels = new RectangleF(0, 0, ctx.ScreenSize.X, ctx.ScreenSize.Y),
             });
 
-            ctx.AddAnimation(RemoveAnim = new Animation() {
+            gameCtx.AddAnimation(RemoveAnim = new Animation() {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
             });
             RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
 
-            ctx.AddAnimation(CreateAnim = new Animation() {
+            gameCtx.AddAnimation(CreateAnim = new Animation() {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.Linear(MarbleScale),
             });
             CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
 
-            ctx.AddAnimation(MoveAnim = new Animation() {
+            gameCtx.AddAnimation(MoveAnim = new Animation() {
             });
             MoveAnim.AnimationFinished += OnAnimFinished_MarbleMoved;
         }
