@@ -14,6 +14,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj" />
+    <ProjectReference Include="..\..\AxEngine\AxEngine\AxCommon.csproj" />
+    <ProjectReference Include="..\..\AxEngine\AxEngine\AxRender.csproj" />
     <ProjectReference Include="..\..\AxEngine\AxEngine\AxEngine.csproj" />
   </ItemGroup>
 </Project>
