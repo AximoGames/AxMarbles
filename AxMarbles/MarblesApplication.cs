@@ -20,6 +20,10 @@ namespace AxEngine
 
         protected override void SetupScene()
         {
+            Board = new MarbleBoard();
+            Board.OnMatch = OnMatch;
+            Board.OnNewMarbles = OnNewMarbles;
+
             WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
             DefaultKeyBindings = false;
 
@@ -62,6 +66,21 @@ namespace AxEngine
                 // RenderShadow = false,
                 PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
             });
+
+            // ctx.AddObject(new CubeObject()
+            // {
+            //     Name = "Board",
+            //     Material = new Material
+            //     {
+            //         Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
+            //         ColorBlendMode = MaterialColorBlendMode.Set,
+            //     },
+            //     Scale = new Vector3(Board.Width, Board.Height, 1),
+            //     Position = new Vector3(Board.Width / 2f - 0.5f, Board.Height / 2f - 0.5f, -0.45f),
+            //     // RenderShadow = false,
+            //     PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
+            // });
+
             ctx.AddObject(new GridObject()
             {
                 Name = "Grid",
@@ -157,11 +176,8 @@ namespace AxEngine
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            if (Board == null)
+            if (Board.Marbles.Count == 0)
             {
-                Board = new MarbleBoard();
-                Board.OnMatch = OnMatch;
-                Board.OnNewMarbles = OnNewMarbles;
                 Board.NewGame();
             }
 
