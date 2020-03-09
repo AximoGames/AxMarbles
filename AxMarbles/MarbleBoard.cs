@@ -3,7 +3,7 @@ using OpenTK;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AxEngine
+namespace Aximo.Marbles
 {
 
     public enum MarbleState

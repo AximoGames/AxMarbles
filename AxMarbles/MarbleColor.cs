@@ -1,4 +1,4 @@
-namespace AxEngine
+namespace Aximo.Marbles
 {
     public enum MarbleColor
     {

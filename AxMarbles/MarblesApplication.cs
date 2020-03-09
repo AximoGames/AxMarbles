@@ -3,12 +3,13 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
-using AxEngine;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using Aximo.Engine;
+using Aximo.Render;
 
-namespace AxEngine
+namespace Aximo.Marbles
 {
     public class MarblesApplication : RenderApplication
     {
