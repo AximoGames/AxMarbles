@@ -7,6 +7,7 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
     <NoWarn>CS0162</NoWarn>
+	<CodeAnalysisRuleSet>..\..\AxEngine\props\default.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="OpenTK" Version="3.1.0" />
@@ -18,4 +19,5 @@
     <ProjectReference Include="..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj" />
     <ProjectReference Include="..\..\AxEngine\AxEngine\AxEngine.csproj" />
   </ItemGroup>
+  <Import Project="..\..\AxEngine\props\SharedProjectSettings.props" />
 </Project>

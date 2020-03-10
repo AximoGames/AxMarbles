@@ -1,7 +1,12 @@
+﻿// This file is part of Aximo Marbles, a Game written in C# with the Aximo Game Engine. Web: https://github.com/AximoGames
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using OpenTK;
+
+#pragma warning disable CA1010 // Collections should implement generic interface
 
 namespace Aximo.Marbles
 {
@@ -93,7 +98,7 @@ namespace Aximo.Marbles
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //~ Enumeration ERelativeWay																																												~
+    //~ Enumeration ERelativeWay
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Flags]
     public enum RelativeWayDirection : int
@@ -102,7 +107,7 @@ namespace Aximo.Marbles
         Left = 1,
         Right = 2,
         Up = 4,
-        Down = 8
+        Down = 8,
     }
 
     public class RelativeWayList : List<RelativeWay>
@@ -113,11 +118,11 @@ namespace Aximo.Marbles
             var list = new Vector2iList();
             var vek = new Vector2i();
 
-            //			SRelativeWay Way = new SRelativeWay();
-            foreach (var Way in this)
+            //          SRelativeWay Way = new SRelativeWay();
+            foreach (var way in this)
             {
-                vek.X += Way.RelX;
-                vek.Y += Way.RelY;
+                vek.X += way.RelX;
+                vek.Y += way.RelY;
                 if (vek.X != 0 && vek.Y != 0)
                 {
                     list.Add(vek);
@@ -134,23 +139,22 @@ namespace Aximo.Marbles
         {
             var list = new RelativeWayList();
 
-
-            //			SPoint Vek = new SPoint();
-            foreach (var Vek in vektorList)
+            //          SPoint Vek = new SPoint();
+            foreach (var vek in vektorList)
             {
-                if (Vek.X != 0)
+                if (vek.X != 0)
                 {
-                    if (Vek.X > 0)
-                        list.Add(new RelativeWay(Vek.X, RelativeWayDirection.Right));
+                    if (vek.X > 0)
+                        list.Add(new RelativeWay(vek.X, RelativeWayDirection.Right));
                     else
-                        list.Add(new RelativeWay(Vek.X, RelativeWayDirection.Left));
+                        list.Add(new RelativeWay(vek.X, RelativeWayDirection.Left));
                 }
-                if (Vek.Y != 0)
+                if (vek.Y != 0)
                 {
-                    if (Vek.Y > 0)
-                        list.Add(new RelativeWay(Vek.Y, RelativeWayDirection.Down));
+                    if (vek.Y > 0)
+                        list.Add(new RelativeWay(vek.Y, RelativeWayDirection.Down));
                     else
-                        list.Add(new RelativeWay(Vek.Y, RelativeWayDirection.Up));
+                        list.Add(new RelativeWay(vek.Y, RelativeWayDirection.Up));
                 }
             }
             return list;
@@ -165,7 +169,7 @@ namespace Aximo.Marbles
 
     public enum MarbleRegion
     {
-        Default
+        Default,
     }
 
     public class PathFinding
@@ -493,9 +497,9 @@ namespace Aximo.Marbles
         }
 
         //******************************************************************************************************************
-        //* Klasse	TWegPunktStack																																													*
+        //* Klasse  TWegPunktStack                                                                                                                                                                                  *
         //******************************************************************************************************************
-        public class WayPointStack : Stack
+        public class WayPointStack : Stack<WayPoint>
         {
 
             public void Add(WayPoint itm)
@@ -507,7 +511,6 @@ namespace Aximo.Marbles
         }
 
     }
-
 
     public class WayPoint
     {
@@ -579,7 +582,7 @@ namespace Aximo.Marbles
                 if (Compare(wp, parent) < 1)
                 {
                     Swap(wp, parent);
-                    pos = pos / 2;
+                    pos /= 2;
                 }
                 else
                 {
@@ -644,7 +647,7 @@ namespace Aximo.Marbles
                 if (Compare(wp, parent) < 1)
                 {
                     Swap(wp, parent);
-                    pos = pos / 2;
+                    pos /= 2;
                 }
                 else
                 {
@@ -679,7 +682,7 @@ namespace Aximo.Marbles
         public int MinSektorCost = 10;
         private int LenX;
         private int LenY;
-        public WayPoint[,] ar;
+        public WayPoint[,] Items;
         public JumpHolePointToPointList JumpHoles = new JumpHolePointToPointList();
         public MarbleBoard Board;
 
@@ -699,17 +702,19 @@ namespace Aximo.Marbles
                 if ((y < 0) || (y > LenY - 1))
                     return null;
 
-                if (ar[x, y] == null)
+                if (Items[x, y] == null)
                 {
-                    var itm = new WayPoint(this);
-                    itm.Position = new Vector2i(x, y);
-                    //itm.GCost = CByte(SektorMapArray(x, y).DefaultPlanet.EinflugKosten)
-                    itm.GCost = (ushort)Board.GetPathFindingCosts(x, y);
-                    itm.IsClosed = false;
-                    itm.Region = MarbleRegion.Default;
-                    ar[x, y] = itm;
+                    var itm = new WayPoint(this)
+                    {
+                        Position = new Vector2i(x, y),
+                        //itm.GCost = CByte(SektorMapArray(x, y).DefaultPlanet.EinflugKosten)
+                        GCost = (ushort)Board.GetPathFindingCosts(x, y),
+                        IsClosed = false,
+                        Region = MarbleRegion.Default,
+                    };
+                    Items[x, y] = itm;
                 }
-                return ar[x, y];
+                return Items[x, y];
             }
         }
 
@@ -728,9 +733,9 @@ namespace Aximo.Marbles
 
         public void Reset()
         {
-            if (ar == null)
+            if (Items == null)
             {
-                ar = new WayPoint[LenX, LenY];
+                Items = new WayPoint[LenX, LenY];
                 return;
             }
             var x = 0;
@@ -738,22 +743,22 @@ namespace Aximo.Marbles
             for (y = 0; y < LenY; y++)
                 for (x = 0; x < LenX; x++)
                 {
-                    if (!(ar[x, y] == null))
+                    if (!(Items[x, y] == null))
                     {
-                        ar[x, y].Parent = null;
-                        ar[x, y].GWCost = 0;
-                        ar[x, y].HCost = 0;
-                        ar[x, y].OpenIndex = 0;
-                        ar[x, y].IsClosed = false;
+                        Items[x, y].Parent = null;
+                        Items[x, y].GWCost = 0;
+                        Items[x, y].HCost = 0;
+                        Items[x, y].OpenIndex = 0;
+                        Items[x, y].IsClosed = false;
                         //---
-                        ar[x, y].GCost = Board.GetPathFindingCosts(x, y);
+                        Items[x, y].GCost = Board.GetPathFindingCosts(x, y);
                     }
                 }
         }
 
         public void Clear()
         {
-            ar = null;
+            Items = null;
         }
 
     }
@@ -817,8 +822,10 @@ namespace Aximo.Marbles
             JumpHolePointList list = null;
             if (!InnerList.TryGetValue(start, out list))
             {
-                list = new JumpHolePointList();
-                list.Position = start;
+                list = new JumpHolePointList
+                {
+                    Position = start,
+                };
                 InnerList.Add(start, list);
             }
 

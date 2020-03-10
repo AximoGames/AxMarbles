@@ -1,3 +1,6 @@
+﻿// This file is part of Aximo Marbles, a Game written in C# with the Aximo Game Engine. Web: https://github.com/AximoGames
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+
 using System;
 using System.Drawing;
 using Aximo.Engine;
@@ -15,17 +18,19 @@ namespace Aximo.Marbles
 
         protected override void SetupScene()
         {
-            Board = new MarbleBoard();
-            Board.OnMatch = OnMatch;
-            Board.OnNewMarbles = OnNewMarbles;
+            Board = new MarbleBoard
+            {
+                OnMatch = OnMatch,
+                OnNewMarbles = OnNewMarbles,
+            };
 
-            ctx.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
-            ctx.PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>();
+            RenderContext.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
+            RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
 
-            var camSize = new Vector2(9 * ctx.ScreenAspectRatio, 9);
+            var camSize = new Vector2(9 * RenderContext.ScreenAspectRatio, 9);
 
-            ctx.Camera = new OrthographicCamera(new Vector3(4.5f + (camSize.X - camSize.Y) / 2f - 0.5f, -4.5f + 0.5f, 25))
+            RenderContext.Camera = new OrthographicCamera(new Vector3(4.5f + ((camSize.X - camSize.Y) / 2f) - 0.5f, -4.5f + 0.5f, 25))
             {
                 Size = camSize,
                 NearPlane = 1f,
@@ -49,7 +54,7 @@ namespace Aximo.Marbles
             MarbleShader.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
             MarbleShader.Compile();
 
-            ctx.AddObject(new CubeObject()
+            RenderContext.AddObject(new CubeObject()
             {
                 Name = "Ground",
                 Material = new Material
@@ -60,7 +65,7 @@ namespace Aximo.Marbles
                 Scale = new Vector3(50, 50, 1),
                 Position = new Vector3(0f, 0f, -0.5f),
                 // RenderShadow = false,
-                PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
+                PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>(),
             });
 
             // ctx.AddObject(new CubeObject()
@@ -77,7 +82,7 @@ namespace Aximo.Marbles
             //     PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
             // });
 
-            ctx.AddObject(new GridObject()
+            RenderContext.AddObject(new GridObject()
             {
                 Name = "Grid",
                 Size = 9,
@@ -85,14 +90,14 @@ namespace Aximo.Marbles
                 ModelMatrix = Matrix4.CreateScale(1, -1, 1) * Matrix4.CreateTranslation(-0.5f, 0.5f, 0.01f),
                 //Debug = true,
             });
-            ctx.AddObject(new CrossLinesObject()
+            RenderContext.AddObject(new CrossLinesObject()
             {
                 Name = "CenterCross",
                 ModelMatrix = Matrix4.CreateScale(2.0f) * Matrix4.CreateTranslation(0f, 0f, 0.02f),
                 //Debug = true,
             });
 
-            ctx.AddObject(new CubeObject()
+            RenderContext.AddObject(new CubeObject()
             {
                 Name = "GroundCursor",
                 Material = material,
@@ -101,7 +106,7 @@ namespace Aximo.Marbles
                 // Enabled = false,
             });
 
-            ctx.AddObject(new CubeObject()
+            RenderContext.AddObject(new CubeObject()
             {
                 Name = "MarbleSelector",
                 Material = material,
@@ -110,7 +115,7 @@ namespace Aximo.Marbles
                 Enabled = false,
             });
 
-            ctx.AddObject(new LightObject()
+            RenderContext.AddObject(new LightObject()
             {
                 Position = new Vector3(0, 2, 3.5f),
                 Name = "MovingLight",
@@ -119,7 +124,7 @@ namespace Aximo.Marbles
                 //Enabled = false,
             });
 
-            ctx.AddObject(new LightObject()
+            RenderContext.AddObject(new LightObject()
             {
                 Position = new Vector3(2f, 0.5f, 4.25f),
                 Name = "StaticLight",
@@ -133,27 +138,27 @@ namespace Aximo.Marbles
             //     RectanglePixels = new RectangleF(40, 40, 100f, 100f),
             // });
 
-            ctx.AddObject(new UIObject()
+            RenderContext.AddObject(new UIObject()
             {
                 Name = "UI",
-                RectanglePixels = new RectangleF(0, 0, ctx.ScreenSize.X, ctx.ScreenSize.Y),
+                RectanglePixels = new RectangleF(0, 0, RenderContext.ScreenSize.X, RenderContext.ScreenSize.Y),
             });
 
-            gameCtx.AddAnimation(RemoveAnim = new Animation()
+            GameContext.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
             });
             RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
 
-            gameCtx.AddAnimation(CreateAnim = new Animation()
+            GameContext.AddAnimation(CreateAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.Linear(MarbleScale),
             });
             CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
 
-            gameCtx.AddAnimation(MoveAnim = new Animation()
+            GameContext.AddAnimation(MoveAnim = new Animation()
             {
             });
             MoveAnim.AnimationFinished += OnAnimFinished_MarbleMoved;
@@ -193,7 +198,7 @@ namespace Aximo.Marbles
                             Scale = new Vector3(MarbleScale),
                             Shader = MarbleShader,
                         };
-                        ctx.AddObject(marble.RenderObject);
+                        RenderContext.AddObject(marble.RenderObject);
                         marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
                         marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
                     }
@@ -206,7 +211,7 @@ namespace Aximo.Marbles
                             Scale = new Vector3(MarbleScale),
                             Shader = MarbleShader,
                         };
-                        ctx.AddObject(marble.RenderObject);
+                        RenderContext.AddObject(marble.RenderObject);
                         marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
                         marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
                     }
@@ -229,7 +234,7 @@ namespace Aximo.Marbles
                 else
                 {
                     ro.Position = GetMarblePos(marble.Position);
-                    ro.Rotate = new Vector3(); ;
+                    ro.Rotate = new Vector3();
                 }
             }
         }
@@ -299,7 +304,7 @@ namespace Aximo.Marbles
         {
             if (CurrentMouseWorldPositionIsValid)
             {
-                var cursor = ctx.GetObjectByName<IPosition>("GroundCursor");
+                var cursor = RenderContext.GetObjectByName<IPosition>("GroundCursor");
                 cursor.Position = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.Position.Z);
             }
         }
@@ -364,7 +369,7 @@ namespace Aximo.Marbles
                     return;
 
                 //ScaleAnim.Start();
-                var selector = ctx.GetObjectByName<CubeObject>("MarbleSelector");
+                var selector = RenderContext.GetObjectByName<CubeObject>("MarbleSelector");
 
                 if (MoveAnim.Enabled || RemoveAnim.Enabled || CreateAnim.Enabled)
                     return;

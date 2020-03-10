@@ -1,3 +1,6 @@
+﻿// This file is part of Aximo Marbles, a Game written in C# with the Aximo Game Engine. Web: https://github.com/AximoGames
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +34,10 @@ namespace Aximo.Marbles
             Height = 9;
             MarbleArray = new Marble[Width, Height];
 
-            PathFinding = new PathFinding();
-            PathFinding.Map = new WayPointMap(this);
+            PathFinding = new PathFinding
+            {
+                Map = new WayPointMap(this),
+            };
         }
 
         private PathFinding PathFinding;
@@ -94,8 +99,10 @@ namespace Aximo.Marbles
                 throw new Exception($"Position {pos} not free");
 
             Console.WriteLine($"Create {color} Marble at {pos}");
-            var marble = new Marble(color);
-            marble.Position = pos;
+            var marble = new Marble(color)
+            {
+                Position = pos,
+            };
             MoveMarble(marble, pos);
             return marble;
         }
@@ -403,15 +410,16 @@ namespace Aximo.Marbles
             }
         }
 
-        public static MarbleColor[] AllColors = new MarbleColor[] {
-                MarbleColor.Red,
-                MarbleColor.Green,
-                MarbleColor.Blue,
-                MarbleColor.Yellow ,
-                MarbleColor.Orange,
-                MarbleColor.White,
-                MarbleColor.Black,
-            };
+        public static MarbleColor[] AllColors = new MarbleColor[]
+        {
+            MarbleColor.Red,
+            MarbleColor.Green,
+            MarbleColor.Blue,
+            MarbleColor.Yellow,
+            MarbleColor.Orange,
+            MarbleColor.White,
+            MarbleColor.Black,
+        };
 
         private MarbleColor GetRandomColorInternal()
         {
