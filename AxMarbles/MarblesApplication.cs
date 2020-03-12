@@ -25,7 +25,7 @@ namespace Aximo.Marbles
             };
 
             RenderContext.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
-            RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
+            Renderer.PrimaryRenderPipeline = Renderer.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
 
             var camSize = new Vector2(9 * RenderContext.ScreenAspectRatio, 9);
@@ -65,7 +65,7 @@ namespace Aximo.Marbles
                 Scale = new Vector3(50, 50, 1),
                 Position = new Vector3(0f, 0f, -0.5f),
                 // RenderShadow = false,
-                PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>(),
+                PrimaryRenderPipeline = Renderer.GetPipeline<ForwardRenderPipeline>(),
             });
 
             // ctx.AddObject(new CubeObject()
