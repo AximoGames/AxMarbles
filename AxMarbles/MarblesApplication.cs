@@ -39,6 +39,11 @@ namespace Aximo.Marbles
                 Pitch = -((float)(Math.PI / 2) - 0.00001f),
             };
 
+            MarbleShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag", null, false);
+            MarbleShader.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
+            MarbleShader.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
+            MarbleShader.Compile();
+
             var material = new Material()
             {
                 DiffuseImagePath = "Textures/woodenbox.png",
@@ -47,12 +52,8 @@ namespace Aximo.Marbles
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
+                Shader = MarbleShader,
             };
-
-            MarbleShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag", null, false);
-            MarbleShader.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
-            MarbleShader.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
-            MarbleShader.Compile();
 
             RenderContext.AddObject(new CubeObject()
             {
@@ -196,7 +197,6 @@ namespace Aximo.Marbles
                         {
                             PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                             Scale = new Vector3(MarbleScale),
-                            Shader = MarbleShader,
                         };
                         RenderContext.AddObject(marble.RenderObject);
                         marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
@@ -209,7 +209,6 @@ namespace Aximo.Marbles
                             PositionMatrix = Matrix4.CreateScale(1, -1, 1),
                             Material = GetMaterial(marble),
                             Scale = new Vector3(MarbleScale),
-                            Shader = MarbleShader,
                         };
                         RenderContext.AddObject(marble.RenderObject);
                         marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
@@ -322,6 +321,7 @@ namespace Aximo.Marbles
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
                 ColorBlendMode = MaterialColorBlendMode.Set,
+                Shader = MarbleShader,
             };
         }
 
