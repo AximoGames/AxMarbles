@@ -233,12 +233,12 @@ namespace Aximo.Marbles
                 else
                 {
                     ro.Position = GetMarblePos(marble.Position);
-                    ro.Rotate = new Vector3();
+                    ro.Rotate = new Quaternion();
                 }
             }
         }
 
-        private (Vector3 Position, Vector3 Rotate) GetPathPosition(Marble marble)
+        private (Vector3 Position, Quaternion Rotate) GetPathPosition(Marble marble)
         {
             var steps = CurrentPath.Count - 1;
             var scaledPos = MoveAnim.Position * steps;
@@ -253,7 +253,8 @@ namespace Aximo.Marbles
             var direction = toPos - fromPos;
             var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
             var resultPos = GetMarblePos(fromPos) + subDirection;
-            var resultRotate = new Vector3(direction.Y, direction.X, 0) * (subPos * 0.5f);
+            var resultRotate = new Quaternion(direction.Y, direction.X, 0) * (subPos * 0.5f);
+
             return (resultPos, resultRotate);
         }
 
