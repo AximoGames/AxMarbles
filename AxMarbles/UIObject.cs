@@ -8,30 +8,21 @@ using Aximo.Render;
 
 namespace Aximo.Marbles
 {
-    public class UIObject : ScreenTextureObject, IUpdateFrame
+    public class UIComponent : GraphicsScreenTextureComponent
     {
-        private GraphicsTexture GfxTexture;
         private DateTime LastStatUpdate;
         private Font DefaultFont = new Font(FontFamily.GenericSansSerif, 15, GraphicsUnit.Point);
 
-        public UIObject()
+        public UIComponent() : base(RenderContext.Current.ScreenSize.X, RenderContext.Current.ScreenSize.Y)
         {
         }
 
-        public override void Init()
-        {
-            GfxTexture = new GraphicsTexture(Context.ScreenSize);
-            GfxTexture.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-            SourceTexture = GfxTexture.Texture;
-            base.Init();
-        }
-
-        public void OnUpdateFrame()
+        public override void UpdateFrame()
         {
             if ((DateTime.UtcNow - LastStatUpdate).TotalSeconds < 0.5)
                 return;
             LastStatUpdate = DateTime.UtcNow;
-            GfxTexture.Graphics.Clear(Color.Transparent);
+            Graphics.Clear(Color.Transparent);
             var app = RenderApplication.Current as MarblesApplication;
             var board = app.Board;
             if (board == null)
@@ -39,9 +30,10 @@ namespace Aximo.Marbles
             var txt = board.TotalScore.ToString();
             if (board.LastMoveScore > 0)
                 txt += "\n+" + board.LastMoveScore.ToString();
-            GfxTexture.Graphics.DrawString(txt, DefaultFont, Brushes.White, new PointF(620f, 20f));
-            GfxTexture.UpdateTexture();
+            Graphics.DrawString(txt, DefaultFont, Brushes.White, new PointF(620f, 20f));
+            UpdateTexture();
         }
+
     }
 
 }

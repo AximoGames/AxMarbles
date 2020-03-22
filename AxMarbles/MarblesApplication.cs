@@ -41,19 +41,19 @@ namespace Aximo.Marbles
                 Pitch = -((float)(Math.PI / 2) - 0.00001f),
             };
 
-            RenderContext.AddObject(new CubeObject()
+            GameContext.AddActor(new Actor(new CubeComponent()
             {
                 Name = "Ground",
-                Material = new Material
+                Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f),
                     ColorBlendMode = MaterialColorBlendMode.Set,
+                    PipelineType = PipelineType.Forward,
                 },
-                Scale = new Vector3(50, 50, 1),
-                Position = new Vector3(0f, 0f, -0.5f),
-                // RenderShadow = false,
-                PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>(),
-            });
+                RelativeScale = new Vector3(50, 50, 1),
+                RelativeTranslation = new Vector3(0f, 0f, -0.5f),
+                //RenderShadow = false,
+            }));
 
             // ctx.AddObject(new CubeObject()
             // {
@@ -82,14 +82,14 @@ namespace Aximo.Marbles
                 RelativeScale = new Vector3(1.0f),
             }));
 
-            RenderContext.AddObject(new CubeObject()
+            GameContext.AddActor(new Actor(new CubeComponent()
             {
                 Name = "GroundCursor",
                 //Material = material,
-                Position = new Vector3(0, 1, 0.05f),
-                Scale = new Vector3(1.0f, 1.0f, 0.1f),
+                RelativeTranslation = new Vector3(0, 1, 0.05f),
+                RelativeScale = new Vector3(1.0f, 1.0f, 0.1f),
                 // Enabled = false,
-            });
+            }));
 
             GameContext.AddActor(new Actor(new CubeComponent()
             {
@@ -101,22 +101,18 @@ namespace Aximo.Marbles
                 Visible = false,
             }));
 
-            RenderContext.AddObject(new LightObject()
+            GameContext.AddActor(new Actor(new PointLightComponent()
             {
-                Position = new Vector3(0, 2, 3.5f),
+                RelativeTranslation = new Vector3(0, 2, 3.5f),
                 Name = "MovingLight",
-                LightType = LightType.Point,
-                ShadowTextureIndex = 0,
                 //Enabled = false,
-            });
+            }));
 
-            RenderContext.AddObject(new LightObject()
+            GameContext.AddActor(new Actor(new PointLightComponent()
             {
-                Position = new Vector3(2f, 0.5f, 4.25f),
+                RelativeTranslation = new Vector3(2f, 0.5f, 4.25f),
                 Name = "StaticLight",
-                LightType = LightType.Point,
-                ShadowTextureIndex = 1,
-            });
+            }));
 
             // ctx.AddObject(new StatsObject()
             // {
@@ -124,11 +120,11 @@ namespace Aximo.Marbles
             //     RectanglePixels = new RectangleF(40, 40, 100f, 100f),
             // });
 
-            RenderContext.AddObject(new UIObject()
+            GameContext.AddActor(new Actor(new UIComponent()
             {
                 Name = "UI",
                 RectanglePixels = new RectangleF(0, 0, RenderContext.ScreenSize.X, RenderContext.ScreenSize.Y),
-            });
+            }));
 
             GameContext.AddAnimation(RemoveAnim = new Animation()
             {
@@ -294,8 +290,8 @@ namespace Aximo.Marbles
         {
             if (CurrentMouseWorldPositionIsValid)
             {
-                var cursor = RenderContext.GetObjectByName<IPosition>("GroundCursor");
-                cursor.Position = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.Position.Z);
+                var cursor = GameContext.GetActor("GroundCursor").RootComponent;
+                cursor.RelativeTranslation = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.RelativeTranslation.Z);
             }
         }
 
@@ -312,6 +308,7 @@ namespace Aximo.Marbles
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
                 ColorBlendMode = MaterialColorBlendMode.Set,
+                CastShadow = true,
             };
             material.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
             material.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");

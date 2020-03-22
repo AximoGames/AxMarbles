@@ -46,7 +46,8 @@ namespace Aximo.Marbles
 
         public void Dispose()
         {
-            RenderObject.Detach();
+            RenderObject.Dispose();
+            RenderObject = null;
         }
 
         public override string ToString()
