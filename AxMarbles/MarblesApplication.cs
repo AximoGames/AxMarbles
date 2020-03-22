@@ -41,22 +41,6 @@ namespace Aximo.Marbles
                 Pitch = -((float)(Math.PI / 2) - 0.00001f),
             };
 
-            MarbleShader = new Shader("Shaders/shader.vert", "Shaders/lighting.frag", null, false);
-            MarbleShader.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
-            MarbleShader.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
-            MarbleShader.Compile();
-
-            var material = new Material()
-            {
-                DiffuseImagePath = "Textures/woodenbox.png",
-                SpecularImagePath = "Textures/woodenbox_specular.png",
-                Color = new Vector3(1.0f, 1.0f, 0.0f),
-                Ambient = 0.5f,
-                Shininess = 32.0f,
-                SpecularStrength = 0.5f,
-                Shader = MarbleShader,
-            };
-
             RenderContext.AddObject(new CubeObject()
             {
                 Name = "Ground",
@@ -101,7 +85,7 @@ namespace Aximo.Marbles
             RenderContext.AddObject(new CubeObject()
             {
                 Name = "GroundCursor",
-                Material = material,
+                //Material = material,
                 Position = new Vector3(0, 1, 0.05f),
                 Scale = new Vector3(1.0f, 1.0f, 0.1f),
                 // Enabled = false,
@@ -175,7 +159,6 @@ namespace Aximo.Marbles
         private const float MarbleScale = MathF.PI / 2f / 2f;
         private const float MarbleZ = MarbleScale / 2f;
 
-        public Shader MarbleShader;
         public Actor BoardActor;
         public SceneComponent BoardComponent;
 
@@ -214,7 +197,7 @@ namespace Aximo.Marbles
                         {
                             TranslationMatrix = BoardTranslationMatrix,
                             //TranslationTransform = Transform.CreateScale(1, -1, 1),
-                            //Material = GetMaterial(marble),
+                            Material = GetMaterial(marble),
                             RelativeScale = new Vector3(MarbleScale),
                         };
                         BoardComponent.AddComponent(marble.RenderObject);
@@ -318,19 +301,21 @@ namespace Aximo.Marbles
 
         private Marble SelectedMarble;
 
-        private Material GetMaterial(Marble marble)
+        private GameMaterial GetMaterial(Marble marble)
         {
-            return new Material()
+            var material = new GameMaterial()
             {
-                DiffuseImagePath = "Textures/woodenbox.png",
-                SpecularImagePath = "Textures/woodenbox_specular.png",
+                DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
                 Color = GetMaterialColorShader(marble.Color1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
                 ColorBlendMode = MaterialColorBlendMode.Set,
-                Shader = MarbleShader,
             };
+            material.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
+            material.SetDefine("FRAG_HEADER_FILE", "marble.params.glsl");
+            return material;
         }
 
         private Vector3 GetMaterialColorShader(MarbleColor marbleColor)
