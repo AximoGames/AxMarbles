@@ -24,9 +24,11 @@ namespace Aximo.Marbles
                 OnNewMarbles = OnNewMarbles,
             };
 
-            RenderContext.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
+            //RenderContext.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
             RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
+
+            GameContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()));
 
             var camSize = new Vector2(9 * RenderContext.ScreenAspectRatio, 9);
 
@@ -175,6 +177,10 @@ namespace Aximo.Marbles
         private const float MarbleZ = MarbleScale / 2f;
 
         public Shader MarbleShader;
+        public Actor BoardActor;
+        public SceneComponent BoardComponent;
+
+        public Matrix4 BoardTranslationMatrix = Matrix4.CreateScale(1, -1, 1);
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
@@ -193,47 +199,49 @@ namespace Aximo.Marbles
                 {
                     if (marble.Color == MarbleColor.BombJoker)
                     {
-                        marble.RenderObject = new CubeObject()
+                        marble.RenderObject = new CubeComponent()
                         {
-                            PositionMatrix = Matrix4.CreateScale(1, -1, 1),
-                            Scale = new Vector3(MarbleScale),
+                            TranslationMatrix = BoardTranslationMatrix,
+                            //TranslationTransform = Transform.CreateScale(1, -1, 1),
+                            RelativeScale = new Vector3(MarbleScale),
                         };
-                        RenderContext.AddObject(marble.RenderObject);
-                        marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
-                        marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
+                        BoardComponent.AddComponent(marble.RenderObject);
+                        marble.RenderObject.Material.AddParameter("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
+                        marble.RenderObject.Material.AddParameter("color2", GetMaterialColorShader(marble.Color2));
                     }
                     else
                     {
-                        marble.RenderObject = new SphereObject()
+                        marble.RenderObject = new SphereComponent()
                         {
-                            PositionMatrix = Matrix4.CreateScale(1, -1, 1),
-                            Material = GetMaterial(marble),
-                            Scale = new Vector3(MarbleScale),
+                            TranslationMatrix = BoardTranslationMatrix,
+                            //TranslationTransform = Transform.CreateScale(1, -1, 1),
+                            //Material = GetMaterial(marble),
+                            RelativeScale = new Vector3(MarbleScale),
                         };
-                        RenderContext.AddObject(marble.RenderObject);
-                        marble.RenderObject.AddShaderParam("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
-                        marble.RenderObject.AddShaderParam("color2", GetMaterialColorShader(marble.Color2));
+                        BoardComponent.AddComponent(marble.RenderObject);
+                        marble.RenderObject.Material.AddParameter("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
+                        marble.RenderObject.Material.AddParameter("color2", GetMaterialColorShader(marble.Color2));
                     }
                 }
                 var ro = marble.RenderObject;
                 if (marble.State == MarbleState.Adding)
                 {
-                    ro.Scale = new Vector3(CreateAnim.Value);
+                    ro.RelativeScale = new Vector3(CreateAnim.Value);
                 }
                 if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
                 {
-                    ro.Scale = new Vector3(RemoveAnim.Value);
+                    ro.RelativeScale = new Vector3(RemoveAnim.Value);
                 }
                 if (marble == SelectedMarble && CurrentPath != null && MoveAnim.Enabled)
                 {
                     var result = GetPathPosition(marble);
-                    ro.Position = result.Position;
-                    ro.Rotate = result.Rotate;
+                    ro.RelativeTranslation = result.Position;
+                    ro.RelativeRotation = result.Rotate;
                 }
                 else
                 {
-                    ro.Position = GetMarblePos(marble.Position);
-                    ro.Rotate = new Quaternion();
+                    ro.RelativeTranslation = GetMarblePos(marble.Position);
+                    ro.RelativeRotation = Quaternion.Identity;
                 }
             }
         }
@@ -253,9 +261,9 @@ namespace Aximo.Marbles
             var direction = toPos - fromPos;
             var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
             var resultPos = GetMarblePos(fromPos) + subDirection;
-            var resultRotate = new Quaternion(direction.Y, direction.X, 0) * (subPos * 0.5f);
+            var resultRotate = new Vector3(direction.Y, direction.X, 0) * (subPos * 0.5f);
 
-            return (resultPos, resultRotate);
+            return (resultPos, resultRotate.ToQuaternion());
         }
 
         private void OnMatch()
@@ -364,7 +372,8 @@ namespace Aximo.Marbles
         {
             if (CurrentMouseWorldPositionIsValid)
             {
-                var pos = CurrentMouseWorldPosition.Round().Xy.ToVector2i();
+                var translatedPos = (new Vector4(CurrentMouseWorldPosition, 1) * BoardTranslationMatrix).Xyz;
+                var pos = translatedPos.Round().Xy.ToVector2i();
 
                 if (!Board.PositionInMap(pos))
                     return;

@@ -2,6 +2,7 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
+using Aximo.Engine;
 using Aximo.Render;
 using OpenTK;
 
@@ -40,13 +41,12 @@ namespace Aximo.Marbles
 
         public Vector2i Position;
 
-        public SimpleVertexObject RenderObject;
+        public StaticMeshComponent RenderObject;
         public MarbleState State;
 
         public void Dispose()
         {
-            RenderObject.Context.RemoveObject(RenderObject);
-            RenderObject.Free();
+            RenderObject.Detach();
         }
 
         public override string ToString()
