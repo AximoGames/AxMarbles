@@ -85,20 +85,18 @@ namespace Aximo.Marbles
             //     PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
             // });
 
-            RenderContext.AddObject(new GridObject()
+            GameContext.AddActor(new Actor(new GridPlaneComponent(9, false)
             {
                 Name = "Grid",
-                Size = 9,
-                Center = false,
-                ModelMatrix = Matrix4.CreateScale(1, -1, 1) * Matrix4.CreateTranslation(-0.5f, 0.5f, 0.01f),
-                //Debug = true,
-            });
-            RenderContext.AddObject(new CrossLinesObject()
+                RelativeTranslation = new Vector3(-0.5f, -0.5f + 9, 0.01f),
+                TranslationMatrix = BoardTranslationMatrix,
+            }));
+            GameContext.AddActor(new Actor(new CrossLineComponent(10, true)
             {
                 Name = "CenterCross",
-                ModelMatrix = Matrix4.CreateScale(2.0f) * Matrix4.CreateTranslation(0f, 0f, 0.02f),
-                //Debug = true,
-            });
+                RelativeTranslation = new Vector3(0f, 0f, 0.02f),
+                RelativeScale = new Vector3(1.0f),
+            }));
 
             RenderContext.AddObject(new CubeObject()
             {
@@ -109,14 +107,15 @@ namespace Aximo.Marbles
                 // Enabled = false,
             });
 
-            RenderContext.AddObject(new CubeObject()
+            GameContext.AddActor(new Actor(new CubeComponent()
             {
                 Name = "MarbleSelector",
-                Material = material,
-                Position = new Vector3(0, 1, 0.05f),
-                Scale = new Vector3(1.3f, 1.3f, 0.1f),
-                Enabled = false,
-            });
+                TranslationMatrix = BoardTranslationMatrix,
+                //Material = material,
+                RelativeTranslation = new Vector3(0, 1, 0.05f),
+                RelativeScale = new Vector3(1.3f, 1.3f, 0.1f),
+                Visible = false,
+            }));
 
             RenderContext.AddObject(new LightObject()
             {
@@ -379,7 +378,7 @@ namespace Aximo.Marbles
                     return;
 
                 //ScaleAnim.Start();
-                var selector = RenderContext.GetObjectByName<CubeObject>("MarbleSelector");
+                var selector = GameContext.GetActor("MarbleSelector").RootComponent;
 
                 if (MoveAnim.Enabled || RemoveAnim.Enabled || CreateAnim.Enabled)
                     return;
@@ -392,8 +391,8 @@ namespace Aximo.Marbles
                 if (marble != null)
                 {
                     SelectedMarble = marble;
-                    selector.Position = new Vector3(pos.X, pos.Y, 0);
-                    selector.Enabled = true;
+                    selector.RelativeTranslation = new Vector3(pos.X, pos.Y, 0);
+                    selector.Visible = true;
                     AudioManager.Default.PlayAsync("Sounds/marble-select.wav");
                 }
                 else
@@ -409,7 +408,7 @@ namespace Aximo.Marbles
                             MoveAnim.Duration = moveStepDuration.Multiply(path.Count);
                             MoveAnim.Start();
                             AudioManager.Default.PlayAsync("Sounds/marble-moving.wav");
-                            selector.Enabled = false;
+                            selector.Visible = false;
                         }
                     }
                 }
