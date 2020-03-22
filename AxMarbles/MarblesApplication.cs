@@ -28,7 +28,11 @@ namespace Aximo.Marbles
             RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
 
-            GameContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()));
+            GameContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()
+            {
+                //RelativeRotation = new Vector3(0, 0, 0.02f).ToQuaternion(),
+                RelativeTranslation = new Vector3(0, 0, 0.05f),
+            }));
 
             var camSize = new Vector2(9 * RenderContext.ScreenAspectRatio, 9);
 
@@ -55,6 +59,21 @@ namespace Aximo.Marbles
                 //RenderShadow = false,
             }));
 
+            BoardComponent.AddComponent(new CubeComponent()
+            {
+                Name = "Board",
+                Material = new GameMaterial
+                {
+                    Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
+                    ColorBlendMode = MaterialColorBlendMode.Set,
+                    PipelineType = PipelineType.Forward,
+                },
+                RelativeScale = new Vector3(Board.Width, Board.Height, 1),
+                RelativeTranslation = new Vector3(Board.Width / 2f - 0.5f, Board.Height / 2f - 0.5f, -0.5f),
+                TranslationMatrix = BoardTranslationMatrix,
+                //RenderShadow = false,
+            });
+
             // ctx.AddObject(new CubeObject()
             // {
             //     Name = "Board",
@@ -69,12 +88,12 @@ namespace Aximo.Marbles
             //     PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
             // });
 
-            GameContext.AddActor(new Actor(new GridPlaneComponent(9, false)
+            BoardComponent.AddComponent(new GridPlaneComponent(9, false)
             {
                 Name = "Grid",
                 RelativeTranslation = new Vector3(-0.5f, -0.5f + 9, 0.01f),
                 TranslationMatrix = BoardTranslationMatrix,
-            }));
+            });
             GameContext.AddActor(new Actor(new CrossLineComponent(10, true)
             {
                 Name = "CenterCross",
@@ -82,16 +101,16 @@ namespace Aximo.Marbles
                 RelativeScale = new Vector3(1.0f),
             }));
 
-            GameContext.AddActor(new Actor(new CubeComponent()
+            BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "GroundCursor",
                 //Material = material,
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
                 RelativeScale = new Vector3(1.0f, 1.0f, 0.1f),
                 // Enabled = false,
-            }));
+            });
 
-            GameContext.AddActor(new Actor(new CubeComponent()
+            BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "MarbleSelector",
                 TranslationMatrix = BoardTranslationMatrix,
@@ -99,7 +118,7 @@ namespace Aximo.Marbles
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
                 RelativeScale = new Vector3(1.3f, 1.3f, 0.1f),
                 Visible = false,
-            }));
+            });
 
             GameContext.AddActor(new Actor(new PointLightComponent()
             {
@@ -113,12 +132,6 @@ namespace Aximo.Marbles
                 RelativeTranslation = new Vector3(2f, 0.5f, 4.25f),
                 Name = "StaticLight",
             }));
-
-            // ctx.AddObject(new StatsObject()
-            // {
-            //     Name = "Stats",
-            //     RectanglePixels = new RectangleF(40, 40, 100f, 100f),
-            // });
 
             GameContext.AddActor(new Actor(new UIComponent()
             {
@@ -290,7 +303,7 @@ namespace Aximo.Marbles
         {
             if (CurrentMouseWorldPositionIsValid)
             {
-                var cursor = GameContext.GetActor("GroundCursor").RootComponent;
+                var cursor = BoardActor.GetComponent<SceneComponent>("GroundCursor");
                 cursor.RelativeTranslation = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.RelativeTranslation.Z);
             }
         }
@@ -354,13 +367,14 @@ namespace Aximo.Marbles
             if (CurrentMouseWorldPositionIsValid)
             {
                 var translatedPos = (new Vector4(CurrentMouseWorldPosition, 1) * BoardTranslationMatrix).Xyz;
+                Console.WriteLine(translatedPos);
                 var pos = translatedPos.Round().Xy.ToVector2i();
 
                 if (!Board.PositionInMap(pos))
                     return;
 
                 //ScaleAnim.Start();
-                var selector = GameContext.GetActor("MarbleSelector").RootComponent;
+                var selector = BoardActor.GetComponent<SceneComponent>("MarbleSelector");
 
                 if (MoveAnim.Enabled || RemoveAnim.Enabled || CreateAnim.Enabled)
                     return;
