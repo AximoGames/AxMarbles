@@ -184,6 +184,12 @@ namespace Aximo.Marbles
             if (kbState[Key.AltRight] && kbState[Key.K])
                 DefaultKeyBindings = !DefaultKeyBindings;
 
+            if (kbState[Key.Escape])
+            {
+                Exit();
+                return;
+            }
+
             foreach (var marble in Board.Marbles)
             {
                 if (marble.RenderObject == null)
