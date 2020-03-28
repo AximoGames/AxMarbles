@@ -59,6 +59,7 @@ namespace Aximo.Marbles
                 WindowBorder = WindowBorder.Fixed,
             });
             demo.Run();
+            Environment.Exit(0);
         }
 
     }
