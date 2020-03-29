@@ -69,7 +69,7 @@ namespace Aximo.Marbles
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(Board.Width, Board.Height, 1),
-                RelativeTranslation = new Vector3(Board.Width / 2f - 0.5f, Board.Height / 2f - 0.5f, -0.5f),
+                RelativeTranslation = new Vector3((Board.Width / 2f) - 0.5f, (Board.Height / 2f) - 0.5f, -0.5f),
                 TranslationMatrix = BoardTranslationMatrix,
                 //RenderShadow = false,
             });
