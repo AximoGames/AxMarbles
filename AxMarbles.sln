@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{3DE6BF95
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxDemo", "..\AxEngine\AxDemo\AxDemo.csproj", "{79F838C7-8EB7-440B-98FE-A427EEBDA95E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AxTests", "..\AxEngine\AxTests\AxTests.csproj", "{D03CB932-B322-4EEB-AEB5-CE82B4A75594}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{79F838C7-8EB7-440B-98FE-A427EEBDA95E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F838C7-8EB7-440B-98FE-A427EEBDA95E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79F838C7-8EB7-440B-98FE-A427EEBDA95E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03CB932-B322-4EEB-AEB5-CE82B4A75594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03CB932-B322-4EEB-AEB5-CE82B4A75594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03CB932-B322-4EEB-AEB5-CE82B4A75594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03CB932-B322-4EEB-AEB5-CE82B4A75594}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{E72DCF45-B09C-40F0-85E2-1857D6F11960} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
 		{3DE6BF95-9668-4E01-B6B2-BF806D4FCF2A} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
 		{79F838C7-8EB7-440B-98FE-A427EEBDA95E} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
+		{D03CB932-B322-4EEB-AEB5-CE82B4A75594} = {D2DB116D-4DA7-4C56-9A48-3E930CC5C0B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1AAC3E5-6971-4275-B049-04F488C4421C}

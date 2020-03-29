@@ -8,7 +8,7 @@ using OpenTK;
 
 namespace Aximo.Marbles
 {
-    internal class MainClass
+    internal class Program
     {
 
         private static Thread th;
