@@ -1,4 +1,4 @@
-matDiffuse = BlendColor(texture(material.diffuse, TexCoords).rgb, material.color, material.colorBlendMode);
+matDiffuse = BlendColor(texture(material.DiffuseMap, TexCoords).rgb, material.DiffuseColor, material.ColorBlendMode);
 
 if(joker == 0.0)
 {
