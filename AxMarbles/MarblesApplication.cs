@@ -51,9 +51,7 @@ namespace Aximo.Marbles
                 Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f),
-                    Ambient = 0.3f,
-                    Shininess = 32.0f,
-                    SpecularStrength = 0.5f,
+                    Shininess = 1.0f,
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(50, 50, 1),
@@ -67,9 +65,7 @@ namespace Aximo.Marbles
                 Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
-                    Ambient = 0.3f,
-                    Shininess = 32.0f,
-                    SpecularStrength = 0.5f,
+                    Shininess = 1.0f,
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(Board.Width, Board.Height, 1),
@@ -108,7 +104,15 @@ namespace Aximo.Marbles
             BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "GroundCursor",
-                //Material = material,
+                Material = new GameMaterial()
+                {
+                    DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                    SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                    Ambient = 0.3f,
+                    Shininess = 32.0f,
+                    SpecularStrength = 0.5f,
+                    CastShadow = true,
+                },
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
                 RelativeScale = new Vector3(1.0f, 1.0f, 0.1f),
                 // Enabled = false,
@@ -117,6 +121,15 @@ namespace Aximo.Marbles
             BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "MarbleSelector",
+                Material = new GameMaterial()
+                {
+                    DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                    SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                    Ambient = 0.3f,
+                    Shininess = 32.0f,
+                    SpecularStrength = 0.5f,
+                    CastShadow = true,
+                },
                 TranslationMatrix = BoardTranslationMatrix,
                 //Material = material,
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
@@ -202,6 +215,15 @@ namespace Aximo.Marbles
                     {
                         marble.RenderObject = new CubeComponent()
                         {
+                            Material = new GameMaterial()
+                            {
+                                DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                                SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                                Ambient = 0.3f,
+                                Shininess = 32.0f,
+                                SpecularStrength = 0.5f,
+                                CastShadow = true,
+                            },
                             TranslationMatrix = BoardTranslationMatrix,
                             //TranslationTransform = Transform.CreateScale(1, -1, 1),
                             RelativeScale = new Vector3(MarbleScale),
@@ -324,8 +346,6 @@ namespace Aximo.Marbles
         {
             var material = new GameMaterial()
             {
-                DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
-                SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
                 Color = GetMaterialColorShader(marble.Color1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
