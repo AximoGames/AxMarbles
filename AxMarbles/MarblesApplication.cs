@@ -51,7 +51,9 @@ namespace Aximo.Marbles
                 Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f),
-                    ColorBlendMode = MaterialColorBlendMode.Set,
+                    Ambient = 0.3f,
+                    Shininess = 32.0f,
+                    SpecularStrength = 0.5f,
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(50, 50, 1),
@@ -65,7 +67,9 @@ namespace Aximo.Marbles
                 Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
-                    ColorBlendMode = MaterialColorBlendMode.Set,
+                    Ambient = 0.3f,
+                    Shininess = 32.0f,
+                    SpecularStrength = 0.5f,
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(Board.Width, Board.Height, 1),
@@ -326,7 +330,6 @@ namespace Aximo.Marbles
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
-                ColorBlendMode = MaterialColorBlendMode.Set,
                 CastShadow = true,
             };
             material.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
