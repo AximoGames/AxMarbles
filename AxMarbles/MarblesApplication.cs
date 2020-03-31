@@ -3,6 +3,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using Aximo.Engine;
 using Aximo.Render;
 using OpenTK;
@@ -25,7 +26,7 @@ namespace Aximo.Marbles
             };
 
             //RenderContext.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
-            RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
+            //RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
 
             GameContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()
@@ -267,6 +268,9 @@ namespace Aximo.Marbles
                     ro.RelativeRotation = Quaternion.Identity;
                 }
             }
+
+            // Test Rotation:
+            //Board.Marbles.Last().RenderObject.RelativeRotation = Quaternion.FromEulerAngles(0.2f, 0.5f, 0.7f);
         }
 
         private (Vector3 Position, Quaternion Rotate) GetPathPosition(Marble marble)
@@ -282,7 +286,7 @@ namespace Aximo.Marbles
             var fromPos = CurrentPath[step];
             var toPos = CurrentPath[step + 1];
             var direction = toPos - fromPos;
-            var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
+            var subDirection = new Vector3(direction.X, direction.Y, 0.0f) * subPos;
             var resultPos = GetMarblePos(fromPos) + subDirection;
             var resultRotate = new Vector3(direction.Y, direction.X, 0) * (subPos * 0.5f);
 

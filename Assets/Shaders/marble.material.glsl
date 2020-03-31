@@ -1,16 +1,16 @@
 matDiffuse = texture(material.DiffuseMap, TexCoords).rgb * material.DiffuseColor;
-
+vec3 dir = NormalRotated;
 if(joker == 0.0)
 {
     if(
-        (Normal.y>0 && Normal.x>0 && Normal.z>0)
-        || (Normal.y<0 && Normal.x<0 && Normal.z>0)
-        ||  (Normal.y>0 && Normal.x<0 && Normal.z<0)
-        ||  (Normal.y<0 && Normal.x>0 && Normal.z<0)
+        (dir.y>0 && dir.x>0 && dir.z>0)
+        || (dir.y<0 && dir.x<0 && dir.z>0)
+        ||  (dir.y>0 && dir.x<0 && dir.z<0)
+        ||  (dir.y<0 && dir.x>0 && dir.z<0)
         )
         matDiffuse = color2;}
 else
 {
-    matDiffuse = abs(Normal.xyz) * 0.8;
+    matDiffuse = abs(dir.xyz) * 0.8;
 }
 
