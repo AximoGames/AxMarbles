@@ -1,5 +1,5 @@
 matDiffuse = texture(material.DiffuseMap, TexCoords).rgb * material.DiffuseColor;
-vec3 dir = NormalRotated;
+vec3 dir = NormalTransposed;
 if(joker == 0.0)
 {
     if(
