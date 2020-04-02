@@ -4,7 +4,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using OpenTK;
+using OpenToolkit;
+using OpenToolkit.Mathematics;
 
 #pragma warning disable CA1010 // Collections should implement generic interface
 

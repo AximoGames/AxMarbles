@@ -2,12 +2,15 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Drawing;
+using SixLabors.Primitives;
 using System.Linq;
 using Aximo.Engine;
 using Aximo.Render;
-using OpenTK;
-using OpenTK.Input;
+using OpenToolkit;
+using OpenToolkit.Input;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Windowing.Common;
+using OpenToolkit.Windowing.Common.Input;
 
 namespace Aximo.Marbles
 {
@@ -198,13 +201,13 @@ namespace Aximo.Marbles
                 Board.NewGame();
             }
 
-            var kbState = Keyboard.GetState();
+            var kbState = KeyboardState;
             if (kbState[Key.AltRight] && kbState[Key.K])
                 DefaultKeyBindings = !DefaultKeyBindings;
 
             if (kbState[Key.Escape])
             {
-                Exit();
+                Close();
                 return;
             }
 
