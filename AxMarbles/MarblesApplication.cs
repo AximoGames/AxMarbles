@@ -2,11 +2,15 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Drawing;
+using SixLabors.Primitives;
+using System.Linq;
 using Aximo.Engine;
 using Aximo.Render;
-using OpenTK;
-using OpenTK.Input;
+using OpenToolkit;
+using OpenToolkit.Input;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Windowing.Common;
+using OpenToolkit.Windowing.Common.Input;
 
 namespace Aximo.Marbles
 {
@@ -25,7 +29,7 @@ namespace Aximo.Marbles
             };
 
             //RenderContext.WorldPositionMatrix = Matrix4.CreateScale(1, -1, 1);
-            RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
+            //RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
 
             GameContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()
@@ -51,7 +55,7 @@ namespace Aximo.Marbles
                 Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f),
-                    ColorBlendMode = MaterialColorBlendMode.Set,
+                    Shininess = 1.0f,
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(50, 50, 1),
@@ -65,7 +69,7 @@ namespace Aximo.Marbles
                 Material = new GameMaterial
                 {
                     Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
-                    ColorBlendMode = MaterialColorBlendMode.Set,
+                    Shininess = 1.0f,
                     PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(Board.Width, Board.Height, 1),
@@ -104,7 +108,15 @@ namespace Aximo.Marbles
             BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "GroundCursor",
-                //Material = material,
+                Material = new GameMaterial()
+                {
+                    DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                    SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                    Ambient = 0.3f,
+                    Shininess = 32.0f,
+                    SpecularStrength = 0.5f,
+                    CastShadow = true,
+                },
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
                 RelativeScale = new Vector3(1.0f, 1.0f, 0.1f),
                 // Enabled = false,
@@ -113,6 +125,15 @@ namespace Aximo.Marbles
             BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "MarbleSelector",
+                Material = new GameMaterial()
+                {
+                    DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                    SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                    Ambient = 0.3f,
+                    Shininess = 32.0f,
+                    SpecularStrength = 0.5f,
+                    CastShadow = true,
+                },
                 TranslationMatrix = BoardTranslationMatrix,
                 //Material = material,
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
@@ -180,13 +201,13 @@ namespace Aximo.Marbles
                 Board.NewGame();
             }
 
-            var kbState = Keyboard.GetState();
+            var kbState = KeyboardState;
             if (kbState[Key.AltRight] && kbState[Key.K])
                 DefaultKeyBindings = !DefaultKeyBindings;
 
             if (kbState[Key.Escape])
             {
-                Exit();
+                Close();
                 return;
             }
 
@@ -198,6 +219,15 @@ namespace Aximo.Marbles
                     {
                         marble.RenderObject = new CubeComponent()
                         {
+                            Material = new GameMaterial()
+                            {
+                                DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
+                                SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                                Ambient = 0.3f,
+                                Shininess = 32.0f,
+                                SpecularStrength = 0.5f,
+                                CastShadow = true,
+                            },
                             TranslationMatrix = BoardTranslationMatrix,
                             //TranslationTransform = Transform.CreateScale(1, -1, 1),
                             RelativeScale = new Vector3(MarbleScale),
@@ -241,6 +271,9 @@ namespace Aximo.Marbles
                     ro.RelativeRotation = Quaternion.Identity;
                 }
             }
+
+            // Test Rotation:
+            //Board.Marbles.Last().RenderObject.RelativeRotation = Quaternion.FromEulerAngles(0.2f, 0.5f, 0.7f);
         }
 
         private (Vector3 Position, Quaternion Rotate) GetPathPosition(Marble marble)
@@ -256,7 +289,7 @@ namespace Aximo.Marbles
             var fromPos = CurrentPath[step];
             var toPos = CurrentPath[step + 1];
             var direction = toPos - fromPos;
-            var subDirection = new Vector3(direction.X, direction.Y, 0.5f) * subPos;
+            var subDirection = new Vector3(direction.X, direction.Y, 0.0f) * subPos;
             var resultPos = GetMarblePos(fromPos) + subDirection;
             var resultRotate = new Vector3(direction.Y, direction.X, 0) * (subPos * 0.5f);
 
@@ -320,13 +353,10 @@ namespace Aximo.Marbles
         {
             var material = new GameMaterial()
             {
-                DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
-                SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
                 Color = GetMaterialColorShader(marble.Color1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
-                ColorBlendMode = MaterialColorBlendMode.Set,
                 CastShadow = true,
             };
             material.SetDefine("OVERRIDE_GET_MATERIAL_DIFFUSE_FILE", "marble.material.glsl");
