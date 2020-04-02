@@ -5,18 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
-            "type": "mono",
+            "name": "Launch Marbles",
+            "type": "coreclr",
             "request": "launch",
-            "program": "${workspaceRoot}/AxMarbles/bin/Debug/net472/AxMarbles.exe",
-            "cwd": "${workspaceRoot}"
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/AxMarbles/bin/Debug/netcoreapp3.1/AxMarbles.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
-        {
-            "name": "Attach",
-            "type": "mono",
-            "request": "attach",
-            "address": "localhost",
-            "port": 55555
-        }
     ]
 }
