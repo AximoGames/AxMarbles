@@ -2,15 +2,15 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Linq;
 using Aximo.Engine;
 using Aximo.Render;
+using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
 using SixLabors.Shapes;
-using SixLabors.Fonts;
-using System.Linq;
 
 namespace Aximo.Marbles
 {

@@ -2,7 +2,6 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
-using SixLabors.Primitives;
 using System.Linq;
 using Aximo.Engine;
 using Aximo.Render;
@@ -11,6 +10,7 @@ using OpenToolkit.Input;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Common.Input;
+using SixLabors.Primitives;
 
 namespace Aximo.Marbles
 {
