@@ -16,7 +16,7 @@ namespace Aximo.Marbles
 {
     public class MarblesApplication : RenderApplication
     {
-        public MarblesApplication(RenderApplicationStartup startup) : base(startup)
+        public MarblesApplication(RenderApplicationConfig startup) : base(startup)
         {
         }
 

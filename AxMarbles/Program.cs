@@ -13,55 +13,16 @@ namespace Aximo.Marbles
     internal class Program
     {
 
-        private static Thread th;
-
         public static void Main(string[] args)
         {
-            UIThreadMain();
-            return;
-
-            th = new Thread(UIThreadMain);
-            th.Start();
-
-            ConsoleLoop();
-
-            demo.Close();
-            demo.Dispose();
-            th.Abort();
-            Environment.Exit(0);
-        }
-
-        private static void ConsoleLoop()
-        {
-            while (true)
-            {
-                var cmd = Console.ReadLine();
-                var args = cmd.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (args.Length == 0)
-                    continue;
-                switch (cmd)
-                {
-                    case "q":
-                        return;
-                    default:
-                        Console.WriteLine("Unknown command");
-                        break;
-                }
-            }
-        }
-
-        private static MarblesApplication demo;
-
-        private static void UIThreadMain()
-        {
-            demo = new MarblesApplication(new RenderApplicationStartup
+            var config = new RenderApplicationConfig
             {
                 WindowTitle = "Marbles",
                 WindowSize = new Vector2i(800, 600),
                 WindowBorder = WindowBorder.Fixed,
-            });
-            demo.Run();
-            Environment.Exit(0);
+            };
+
+            new GameStartup<MarblesApplication, GtkUI>(config).Start();
         }
 
     }
