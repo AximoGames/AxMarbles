@@ -7,8 +7,9 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
     <NoWarn>CS0162</NoWarn>
-	<CodeAnalysisRuleSet>..\..\AxEngine\props\default.ruleset</CodeAnalysisRuleSet>
+  	<CodeAnalysisRuleSet>..\..\AxEngine\props\default.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <Import Project="..\..\AxEngine\props\SharedProjectSettings.props" />
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
@@ -43,5 +44,4 @@
       <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Windowing.Desktop.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="..\..\AxEngine\props\SharedProjectSettings.props" />
 </Project>
