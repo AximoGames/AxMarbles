@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/AxMarbles/bin/Debug/netcoreapp3.1/AxMarbles.dll",
+            "program": "${workspaceFolder}/Marbles/bin/Debug/netcoreapp3.1/AxMarbles.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
