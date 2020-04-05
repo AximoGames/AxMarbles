@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Aximo.Engine;
 using Aximo.Render;
+using OpenToolkit.Mathematics;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -14,12 +15,12 @@ using SixLabors.Shapes;
 
 namespace Aximo.Marbles
 {
-    public class UIComponent : GraphicsScreenTextureComponent
+    public class UIMarbles : UIComponent
     {
         private DateTime LastStatUpdate;
         private Font DefaultFont = new Font(SystemFonts.Families.First(), 15, FontStyle.Regular);
 
-        public UIComponent() : base(RenderContext.Current.ScreenSize.X, RenderContext.Current.ScreenSize.Y)
+        public UIMarbles() : base(new Vector2i(RenderContext.Current.ScreenSize.X, RenderContext.Current.ScreenSize.Y))
         {
         }
 

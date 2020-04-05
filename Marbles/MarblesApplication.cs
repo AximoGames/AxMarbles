@@ -154,7 +154,7 @@ namespace Aximo.Marbles
                 Name = "StaticLight",
             }));
 
-            GameContext.AddActor(new Actor(new UIComponent()
+            GameContext.AddActor(new Actor(new UIMarbles()
             {
                 Name = "UI",
                 RectanglePixels = new RectangleF(0, 0, RenderContext.ScreenSize.X, RenderContext.ScreenSize.Y),
