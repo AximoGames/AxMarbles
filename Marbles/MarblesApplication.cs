@@ -10,7 +10,7 @@ using OpenToolkit.Input;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Common.Input;
-using SixLabors.Primitives;
+using SixLabors.ImageSharp;
 
 namespace Aximo.Marbles
 {
