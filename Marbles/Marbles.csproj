@@ -11,9 +11,6 @@
   </PropertyGroup>
   <Import Project="..\..\AxEngine\props\SharedProjectSettings.props" />
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\AxEngine\Common\Common.csproj" />
     <ProjectReference Include="..\..\AxEngine\Render\Render.csproj" />
     <ProjectReference Include="..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj" />
