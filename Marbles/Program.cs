@@ -20,6 +20,7 @@ namespace Aximo.Marbles
                 WindowTitle = "Marbles",
                 WindowSize = new Vector2i(800, 600),
                 WindowBorder = WindowBorder.Fixed,
+                UseConsole = true,
             };
 
             new GameStartup<MarblesApplication, GtkUI>(config).Start();

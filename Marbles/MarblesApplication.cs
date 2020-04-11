@@ -11,6 +11,7 @@ using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Common.Input;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Aximo.Marbles
 {
@@ -154,11 +155,50 @@ namespace Aximo.Marbles
                 Name = "StaticLight",
             }));
 
-            GameContext.AddActor(new Actor(new UIMarbles()
+            var flowContainer = new UIFlowContainer()
             {
-                Name = "UI",
-                RectanglePixels = new RectangleF(0, 0, RenderContext.ScreenSize.X, RenderContext.ScreenSize.Y),
+                DefaultChildSizes = new Vector2(0, 50),
+                ExtraChildMargin = new UIAnchors(10, 10, 10, 0),
+                Location = new Vector2(600, 0),
+                Size = new Vector2(200, 0),
+            };
+            GameContext.AddActor(new Actor(flowContainer));
+
+            // flowContainer.AddComponent(new UIMarbles()
+            // {
+            //     Name = "UI",
+            // });
+
+            flowContainer.AddComponent(new UILabelComponent()
+            {
+                Name = "Score",
+                Text = "Score",
+                Color = Color.White,
+            });
+            flowContainer.AddComponent(new UILabelComponent()
+            {
+                Name = "Score2",
+                Text = "X",
+                Color = Color.White,
+            });
+
+            GameContext.AddActor(new Actor(new StatsComponent()
+            {
+                Name = "Stats",
+                RectanglePixels = new RectangleF(10, 10, 200f, 100f),
             }));
+
+            flowContainer.AddComponent(new UIButton()
+            {
+                Name = "Exit",
+                Text = "Exit",
+                Color = Color.White,
+                BackColor = new Color(new Rgba32(0, 0, 0, 0.5f)),
+                BackColorHover = new Color(new Rgba32(0, 0, 0, 0.8f)),
+                BorderColor = new Color(new Rgba32(0, 0, 0, 0.8f)),
+                // Location = new Vector2(620, 200),
+                // Size = new Vector2(100, 100),
+            });
 
             GameContext.AddAnimation(RemoveAnim = new Animation()
             {
