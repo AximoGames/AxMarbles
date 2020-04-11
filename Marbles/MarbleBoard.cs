@@ -20,6 +20,13 @@ namespace Aximo.Marbles
         PreDefault,
     }
 
+    public enum MarblePreview
+    {
+        None,
+        Board,
+        Side,
+    }
+
     public class MarbleBoard
     {
 
@@ -101,6 +108,12 @@ namespace Aximo.Marbles
 
         public void CreatedAnimationFinished()
         {
+            foreach (var marble in Marbles)
+            {
+                if (marble.State == MarbleState.PreAdding)
+                    marble.State = MarbleState.PreDefault;
+            }
+
             foreach (var marble in Marbles)
             {
                 if (marble.State == MarbleState.Adding)
@@ -491,6 +504,8 @@ namespace Aximo.Marbles
             this[marble.Position] = null;
             FreePositions.Add(marble.Position);
         }
+
+        public MarblePreview PreviewMode { get; private set; } = MarblePreview.Side;
 
     }
 
