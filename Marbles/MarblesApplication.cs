@@ -194,6 +194,13 @@ namespace Aximo.Marbles
 
         public Matrix4 BoardTranslationMatrix = Matrix4.CreateScale(1, -1, 1);
 
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            var kbState = KeyboardState;
+            if (kbState[Key.AltRight] && kbState[Key.K])
+                DefaultKeyBindings = !DefaultKeyBindings;
+        }
+
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             if (Board.Marbles.Count == 0)
@@ -202,8 +209,6 @@ namespace Aximo.Marbles
             }
 
             var kbState = KeyboardState;
-            if (kbState[Key.AltRight] && kbState[Key.K])
-                DefaultKeyBindings = !DefaultKeyBindings;
 
             if (kbState[Key.Escape])
             {
