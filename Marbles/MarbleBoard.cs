@@ -16,6 +16,8 @@ namespace Aximo.Marbles
         Adding,
         Removing,
         Exploding,
+        PreAdding,
+        PreDefault,
     }
 
     public class MarbleBoard
@@ -62,18 +64,37 @@ namespace Aximo.Marbles
 
         private List<Marble> LastCreatedMarbles = new List<Marble>();
 
-        public void CreateRandomMarbles()
+        public List<Marble> NextMarbles = new List<Marble>();
+        public void PreCreateRandomMarbles()
         {
-            LastCreatedMarbles.Clear();
+            NextMarbles.Clear();
             for (var i = 0; i < 3; i++)
             {
                 var newMarble = CreateRandomMarble();
-                if (newMarble != null)
-                {
-                    newMarble.State = MarbleState.Adding;
-                    LastCreatedMarbles.Add(newMarble);
-                }
+                newMarble.State = MarbleState.PreAdding;
+                NextMarbles.Add(newMarble);
+                Marbles.Add(newMarble);
             }
+        }
+
+        public void CreateRandomMarbles()
+        {
+            LastCreatedMarbles.Clear();
+
+            if (NextMarbles.Count == 0)
+                PreCreateRandomMarbles();
+
+            foreach (var nextMarble in NextMarbles.ToArray())
+            {
+                if (this[nextMarble.Position] != null)
+                    nextMarble.Position = GetRandomPosition();
+
+                MoveMarble(nextMarble, nextMarble.Position);
+                nextMarble.State = MarbleState.Adding;
+                LastCreatedMarbles.Add(nextMarble);
+                NextMarbles.Remove(nextMarble);
+            }
+            PreCreateRandomMarbles();
             if (LastCreatedMarbles.Count > 0)
                 OnNewMarbles();
         }
@@ -104,7 +125,6 @@ namespace Aximo.Marbles
             {
                 Position = pos,
             };
-            MoveMarble(marble, pos);
             return marble;
         }
 

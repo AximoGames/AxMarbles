@@ -55,6 +55,9 @@ namespace Aximo.Marbles
         {
             return $"[Pos: {Position}, Color: {Color}]";
         }
+
+        public bool OnBoard => State != MarbleState.PreAdding && State != MarbleState.PreDefault;
+
     }
 
 }
