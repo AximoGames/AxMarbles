@@ -217,7 +217,7 @@ namespace Aximo.Marbles
             });
             bt.Click += (e) =>
             {
-                Close();
+                Stop();
             };
 
             GameContext.AddAnimation(RemoveAnim = new Animation()
@@ -274,7 +274,7 @@ namespace Aximo.Marbles
 
             if (kbState[Key.Escape])
             {
-                Close();
+                Stop();
                 return;
             }
 
