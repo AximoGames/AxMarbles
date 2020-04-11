@@ -157,6 +157,7 @@ namespace Aximo.Marbles
 
             var flowContainer = new UIFlowContainer()
             {
+                Name = "UI",
                 DefaultChildSizes = new Vector2(0, 50),
                 ExtraChildMargin = new UIAnchors(10, 10, 10, 0),
                 Location = new Vector2(600, 0),
@@ -171,14 +172,12 @@ namespace Aximo.Marbles
 
             flowContainer.AddComponent(new UILabelComponent()
             {
-                Name = "Score",
-                Text = "Score",
+                Name = "LastScore",
                 Color = Color.White,
             });
             flowContainer.AddComponent(new UILabelComponent()
             {
-                Name = "Score2",
-                Text = "X",
+                Name = "TotalScore",
                 Color = Color.White,
             });
 
@@ -188,7 +187,8 @@ namespace Aximo.Marbles
                 RectanglePixels = new RectangleF(10, 10, 200f, 100f),
             }));
 
-            flowContainer.AddComponent(new UIButton()
+            UIButton bt;
+            flowContainer.AddComponent(bt = new UIButton()
             {
                 Name = "Exit",
                 Text = "Exit",
@@ -199,6 +199,10 @@ namespace Aximo.Marbles
                 // Location = new Vector2(620, 200),
                 // Size = new Vector2(100, 100),
             });
+            bt.Click += (e) =>
+            {
+                Close();
+            };
 
             GameContext.AddAnimation(RemoveAnim = new Animation()
             {
@@ -316,6 +320,9 @@ namespace Aximo.Marbles
                     ro.RelativeRotation = Quaternion.Identity;
                 }
             }
+
+            GameContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
+            GameContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
 
             // Test Rotation:
             //Board.Marbles.Last().RenderObject.RelativeRotation = Quaternion.FromEulerAngles(0.2f, 0.5f, 0.7f);
@@ -443,7 +450,7 @@ namespace Aximo.Marbles
         }
 
         private Vector2iList CurrentPath;
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        protected override void OnMouseDown(MouseButtonArgs e)
         {
             if (CurrentMouseWorldPositionIsValid)
             {
