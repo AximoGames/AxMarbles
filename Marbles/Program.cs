@@ -12,7 +12,6 @@ namespace Aximo.Marbles
 {
     internal class Program
     {
-
         public static void Main(string[] args)
         {
             var config = new RenderApplicationConfig
@@ -25,6 +24,5 @@ namespace Aximo.Marbles
 
             new GameStartup<MarblesApplication, GtkUI>(config).Start();
         }
-
     }
 }

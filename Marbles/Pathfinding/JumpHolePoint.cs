@@ -17,5 +17,4 @@ namespace Aximo.Marbles.PathFinding
             Position = pos;
         }
     }
-
 }

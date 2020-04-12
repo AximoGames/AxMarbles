@@ -9,7 +9,6 @@ namespace Aximo.Marbles.PathFinding
 {
     public class WayPoint
     {
-
         private WayPointMap Map;
         public WayPoint(WayPointMap map)
         {
@@ -26,7 +25,5 @@ namespace Aximo.Marbles.PathFinding
         public bool IsClosed;
 
         public ushort GCost;
-
     }
-
 }

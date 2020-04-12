@@ -90,7 +90,5 @@ namespace Aximo.Marbles.PathFinding
                 }
             }
         }
-
     }
-
 }

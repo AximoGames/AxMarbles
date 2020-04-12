@@ -16,5 +16,4 @@ namespace Aximo.Marbles.PathFinding
         Up = 4,
         Down = 8,
     }
-
 }

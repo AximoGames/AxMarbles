@@ -39,7 +39,5 @@ namespace Aximo.Marbles
             Image.Mutate(ctx => ctx.DrawText(txt, DefaultFont, Color.White, new PointF(620, 20)));
             UpdateTexture();
         }
-
     }
-
 }

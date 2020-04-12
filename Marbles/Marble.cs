@@ -9,10 +9,8 @@ using OpenToolkit.Mathematics;
 
 namespace Aximo.Marbles
 {
-
     public class Marble : IDisposable
     {
-
         public Marble(MarbleColor color)
         {
             Color = color;
@@ -57,7 +55,5 @@ namespace Aximo.Marbles
         }
 
         public bool OnBoard => State != MarbleState.PreAdding && State != MarbleState.PreDefault;
-
     }
-
 }

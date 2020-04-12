@@ -10,7 +10,6 @@ using OpenToolkit.Mathematics;
 
 namespace Aximo.Marbles
 {
-
     public enum MarbleState
     {
         Default,
@@ -30,7 +29,6 @@ namespace Aximo.Marbles
 
     public class MarbleBoard
     {
-
         public ushort GetPathFindingCosts(int x, int y)
         {
             var marble = this[x, y];
@@ -362,7 +360,6 @@ namespace Aximo.Marbles
                 if (colorHash.Count > 0)
                     PrimaryColor = colorHash.OrderByDescending(e => e.Value).First().Key;
             }
-
         }
 
         public void NewGame()
@@ -507,7 +504,5 @@ namespace Aximo.Marbles
         }
 
         public MarblePreview PreviewMode { get; private set; } = MarblePreview.Side;
-
     }
-
 }

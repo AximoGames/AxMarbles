@@ -44,7 +44,5 @@ namespace Aximo.Marbles.PathFinding
             foreach (var itm in InnerList)
                 itm.Used = false;
         }
-
     }
-
 }

@@ -9,5 +9,4 @@ namespace Aximo.Marbles.PathFinding
     {
         Default,
     }
-
 }

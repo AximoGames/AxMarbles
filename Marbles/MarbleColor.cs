@@ -17,5 +17,4 @@ namespace Aximo.Marbles
         ColorJoker = Red | Green | Blue | Yellow | Orange | White | Black,
         BombJoker = ColorJoker | BombColor,
     }
-
 }

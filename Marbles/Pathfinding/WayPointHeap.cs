@@ -9,7 +9,6 @@ namespace Aximo.Marbles.PathFinding
 {
     public class WayPointHeap
     {
-
         public WayPoint[] List;
 
         public WayPointHeap()
@@ -145,7 +144,5 @@ namespace Aximo.Marbles.PathFinding
             p1.OpenIndex = p2.OpenIndex;
             p2.OpenIndex = tempPos;
         }
-
     }
-
 }

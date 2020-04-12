@@ -9,7 +9,6 @@ namespace Aximo.Marbles.PathFinding
 {
     public class WayPointMap
     {
-
         public int JumpCost = 10;
         public int MinSektorCost = 10;
         private int LenX;
@@ -92,7 +91,5 @@ namespace Aximo.Marbles.PathFinding
         {
             Items = null;
         }
-
     }
-
 }

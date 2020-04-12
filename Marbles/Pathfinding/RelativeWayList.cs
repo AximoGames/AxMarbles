@@ -10,7 +10,6 @@ namespace Aximo.Marbles.PathFinding
 {
     public class RelativeWayList : List<RelativeWay>
     {
-
         public Vector2iList ToVektorList()
         {
             var list = new Vector2iList();
@@ -57,7 +56,5 @@ namespace Aximo.Marbles.PathFinding
             }
             return list;
         }
-
     }
-
 }

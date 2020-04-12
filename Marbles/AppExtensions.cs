@@ -6,10 +6,8 @@ using System.Collections.Generic;
 
 namespace Aximo.Marbles
 {
-
     public static class AppExtensions
     {
-
         public static List<MarbleColor> GetRegularColors(this MarbleColor marbleColors)
         {
             var list = GetEnumFlags<MarbleColor>(marbleColors);
@@ -31,7 +29,5 @@ namespace Aximo.Marbles
             }
             return result;
         }
-
     }
-
 }

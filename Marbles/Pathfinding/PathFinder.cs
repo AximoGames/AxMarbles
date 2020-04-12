@@ -11,7 +11,6 @@ namespace Aximo.Marbles.PathFinding
 {
     public class PathFinder
     {
-
         public WayPointMap Map;
         private WayPointHeap OpenList = new WayPointHeap();
         private Vector2i StartPos;
@@ -335,15 +334,11 @@ namespace Aximo.Marbles.PathFinding
 
         public class WayPointStack : Stack<WayPoint>
         {
-
             public void Add(WayPoint itm)
             {
                 if (itm != null)
                     Push(itm);
             }
-
         }
-
     }
-
 }

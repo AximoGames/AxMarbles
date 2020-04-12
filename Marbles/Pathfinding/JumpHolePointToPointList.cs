@@ -10,7 +10,6 @@ using OpenToolkit.Mathematics;
 
 namespace Aximo.Marbles.PathFinding
 {
-
     public class JumpHolePointToPointList
     {
         private SortedList<Vector2i, JumpHolePointList> InnerList = new SortedList<Vector2i, JumpHolePointList>();
@@ -72,7 +71,5 @@ namespace Aximo.Marbles.PathFinding
             foreach (var itm in InnerList.Values)
                 itm.ResetUsed();
         }
-
     }
-
 }
