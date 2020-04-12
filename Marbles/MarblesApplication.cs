@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using Aximo.Engine;
+using Aximo.Marbles.PathFinding;
 using Aximo.Render;
 using OpenToolkit;
 using OpenToolkit.Input;
@@ -47,7 +48,7 @@ namespace Aximo.Marbles
 
             BoardComponent.AddComponent(NextMarbleBoardComponent = new SceneComponent()
             {
-                RelativeTranslation = new Vector3(0, 0, -0.2f)
+                RelativeTranslation = new Vector3(0, 0, -0.2f),
                 // RelativeScale = new Vector3(0.5f),
                 // TranslationMatrix = Matrix4.CreateScale(2),
                 // IsAbsoluteRotation = true,

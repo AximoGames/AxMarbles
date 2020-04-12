@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Aximo.Marbles.PathFinding;
 using OpenToolkit;
 using OpenToolkit.Mathematics;
 
@@ -44,13 +45,13 @@ namespace Aximo.Marbles
             Height = 9;
             MarbleArray = new Marble[Width, Height];
 
-            PathFinding = new PathFinding
+            PathFinding = new PathFinding.PathFinder
             {
                 Map = new WayPointMap(this),
             };
         }
 
-        private PathFinding PathFinding;
+        private PathFinding.PathFinder PathFinding;
 
         public int Width { get; private set; }
         public int Height { get; private set; }
