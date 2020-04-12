@@ -201,7 +201,6 @@ namespace Aximo.Marbles
             GameContext.AddActor(new Actor(new StatsComponent()
             {
                 Name = "Stats",
-                RectanglePixels = new RectangleF(10, 10, 200f, 100f),
             }));
 
             UIButton bt;
