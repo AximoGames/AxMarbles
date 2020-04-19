@@ -16,27 +16,4 @@
     <ProjectReference Include="..\..\AxEngine\External\Net3dBool\src\Net3dBool\Net3dBool.csproj" />
     <ProjectReference Include="..\..\AxEngine\Engine\Engine.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="OpenToolkit.Core">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenToolkit.Graphics">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenToolkit.GraphicsLibraryFramework">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.GraphicsLibraryFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenToolkit.Input">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Input.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenToolkit.Mathematics">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenToolkit.Windowing.Common">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Windowing.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenToolkit.Windowing.Desktop">
-      <HintPath>..\..\libs\OpenToolkit\OpenToolkit.Windowing.Desktop.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
