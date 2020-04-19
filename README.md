@@ -12,7 +12,11 @@ git clone --recursive https://github.com/AximoGames/AxMarbles.git
 Build from command line:
 
 ```
-cd AxMarbles/src
-dotnet restore
-dotnet msbuild /p:Configuration=Debug /property:GenerateFullPaths=true
+cd AxMarbles
+dotnet build
+```
+
+Run:
+```
+dotnet run -p Marbles
 ```
