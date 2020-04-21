@@ -1,4 +1,10 @@
+
+#ifdef USE_VERTEX_UV
 matDiffuse = texture(material.DiffuseMap, TexCoords).rgb * material.DiffuseColor;
+#else
+matDiffuse = material.DiffuseColor;
+#endif
+
 vec3 dir = NormalTransposed;
 if(joker == 0.0)
 {
