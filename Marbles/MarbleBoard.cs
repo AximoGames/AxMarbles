@@ -43,13 +43,13 @@ namespace Aximo.Marbles
             Height = 9;
             MarbleArray = new Marble[Width, Height];
 
-            PathFinding = new PathFinding.PathFinder
+            PathFinding = new PathFinder
             {
                 Map = new WayPointMap(this),
             };
         }
 
-        private PathFinding.PathFinder PathFinding;
+        private PathFinder PathFinding;
 
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -347,7 +347,7 @@ namespace Aximo.Marbles
                 HasBomb = Marbles.Any(m => m.Color == MarbleColor.BombJoker);
 
                 var colorHash = new Dictionary<MarbleColor, int>();
-                foreach (var col in MarbleBoard.AllColors)
+                foreach (var col in AllColors)
                     colorHash.Add(col, 0);
 
                 foreach (var mar in Marbles)
