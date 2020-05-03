@@ -284,21 +284,10 @@ namespace Aximo.Marbles
                 {
                     if (marble.Color == MarbleColor.BombJoker)
                     {
-                        marble.RenderObject = new CubeComponent()
-                        {
-                            Material = new GameMaterial()
-                            {
-                                DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
-                                SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
-                                Ambient = 0.3f,
-                                Shininess = 32.0f,
-                                SpecularStrength = 0.5f,
-                                CastShadow = true,
-                            },
-                            TranslationMatrix = BoardTranslationMatrix,
-                            //TranslationTransform = Transform.CreateScale(1, -1, 1),
-                            RelativeScale = new Vector3(MarbleScale),
-                        };
+                        marble.RenderObject = CreateBompComponent();
+                        marble.RenderObject.TranslationMatrix = BoardTranslationMatrix;
+                        marble.RenderObject.RelativeScale = new Vector3(MarbleScale);
+                        marble.RenderObject.RelativeRotation = new Vector3(-0.15f, 0.15f, 0f).ToQuaternion();
                         marble.RenderObject.Material.AddParameter("joker", marble.Color == MarbleColor.ColorJoker ? 1 : 0);
                         marble.RenderObject.Material.AddParameter("color2", GetMaterialColorShader(marble.Color2));
                     }
@@ -351,12 +340,14 @@ namespace Aximo.Marbles
                 {
                     var result = GetPathPosition(marble);
                     ro.RelativeTranslation = result.Position;
-                    ro.RelativeRotation = result.Rotate;
+                    if (marble.Color != MarbleColor.BombJoker)
+                        ro.RelativeRotation = result.Rotate;
                 }
                 else
                 {
                     ro.RelativeTranslation = GetMarblePos(marble);
-                    ro.RelativeRotation = Quaternion.Identity;
+                    if (marble.Color != MarbleColor.BombJoker)
+                        ro.RelativeRotation = Quaternion.Identity;
                 }
             }
 
@@ -365,6 +356,52 @@ namespace Aximo.Marbles
 
             // Test Rotation:
             //Board.Marbles.Last().RenderObject.RelativeRotation = Quaternion.FromEulerAngles(0.2f, 0.5f, 0.7f);
+        }
+
+        private StaticMeshComponent CreateBompComponent()
+        {
+            var tmp = Mesh.CreateSphere();
+
+            var m2 = Mesh.CreateCylinder();
+            m2.Scale(0.3f, 0.3f);
+            m2.Translate(new Vector3(0, 0, 0.05f));
+            tmp.AddMesh(m2, 0, 1);
+
+            var m3 = Mesh.CreateCylinder();
+            m2.Scale(0.15f, 0.15f);
+            m2.Translate(new Vector3(0, 0, 0.3f));
+            tmp.AddMesh(m2, 0, 2);
+
+            var comp = new StaticMeshComponent(tmp);
+
+            comp.AddMaterial(new GameMaterial()
+            {
+                Color = new Vector3(0.2f, 0.2f, 0.2f),
+                Ambient = 0.5f,
+                Shininess = 64.0f,
+                SpecularStrength = 1f,
+                CastShadow = true,
+            });
+
+            comp.AddMaterial(new GameMaterial()
+            {
+                Color = new Vector3(0.1f, 0.1f, 0.1f),
+                Ambient = 0.5f,
+                Shininess = 32.0f,
+                SpecularStrength = 0.5f,
+                CastShadow = true,
+            });
+
+            comp.AddMaterial(new GameMaterial()
+            {
+                Color = new Vector3(0.5f, 1 / 255f * 165 * 0.5f, 0),
+                Ambient = 0.5f,
+                Shininess = 32.0f,
+                SpecularStrength = 0.5f,
+                CastShadow = true,
+            });
+
+            return comp;
         }
 
         private (Vector3 Position, Quaternion Rotate) GetPathPosition(Marble marble)
