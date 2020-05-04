@@ -72,7 +72,7 @@ namespace Aximo.Marbles
                 Name = "Ground",
                 Material = new GameMaterial
                 {
-                    Color = new Vector3(0.4f, 0.6f, 0.6f),
+                    Color = new Vector4(0.4f, 0.6f, 0.6f, 1),
                     Shininess = 1.0f,
                     PipelineType = PipelineType.Forward,
                 },
@@ -86,7 +86,7 @@ namespace Aximo.Marbles
                 Name = "Board",
                 Material = new GameMaterial
                 {
-                    Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
+                    Color = new Vector4(0.4f, 0.6f, 0.6f, 1) * 1.1f,
                     Shininess = 1.0f,
                     PipelineType = PipelineType.Forward,
                 },
@@ -376,7 +376,7 @@ namespace Aximo.Marbles
 
             comp.AddMaterial(new GameMaterial()
             {
-                Color = new Vector3(0.2f, 0.2f, 0.2f),
+                Color = new Vector4(0.2f, 0.2f, 0.2f, 1),
                 Ambient = 0.5f,
                 Shininess = 64.0f,
                 SpecularStrength = 1f,
@@ -385,7 +385,7 @@ namespace Aximo.Marbles
 
             comp.AddMaterial(new GameMaterial()
             {
-                Color = new Vector3(0.1f, 0.1f, 0.1f),
+                Color = new Vector4(0.1f, 0.1f, 0.1f, 1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
@@ -394,7 +394,7 @@ namespace Aximo.Marbles
 
             comp.AddMaterial(new GameMaterial()
             {
-                Color = new Vector3(0.5f, 1 / 255f * 165 * 0.5f, 0),
+                Color = new Vector4(0.5f, 1 / 255f * 165 * 0.5f, 0, 1),
                 Ambient = 0.5f,
                 Shininess = 32.0f,
                 SpecularStrength = 0.5f,
@@ -508,36 +508,36 @@ namespace Aximo.Marbles
             return material;
         }
 
-        private Vector3 GetMaterialColorShader(MarbleColor marbleColor)
+        private Vector4 GetMaterialColorShader(MarbleColor marbleColor)
         {
             var color = GetMaterialColor(marbleColor);
-            var addColor = new Vector3(0);
-            if (color == Vector3.Zero)
-                addColor = new Vector3(0.3f);
+            var addColor = new Vector4(0, 0, 0, 1);
+            if (color == Vector4.Zero)
+                addColor = new Vector4(0.3f, 0, 0, 1);
             color += addColor;
             return color * 0.5f;
         }
 
-        private Vector3 GetMaterialColor(MarbleColor marbleColor)
+        private Vector4 GetMaterialColor(MarbleColor marbleColor)
         {
             switch (marbleColor)
             {
                 case MarbleColor.Red:
-                    return new Vector3(1, 0, 0);
+                    return new Vector4(1, 0, 0, 1);
                 case MarbleColor.Green:
-                    return new Vector3(0, 1, 0);
+                    return new Vector4(0, 1, 0, 1);
                 case MarbleColor.Blue:
-                    return new Vector3(0, 0, 1);
+                    return new Vector4(0, 0, 1, 1);
                 case MarbleColor.Yellow:
-                    return new Vector3(1, 1, 0);
+                    return new Vector4(1, 1, 0, 1);
                 case MarbleColor.Orange:
-                    return new Vector3(1, 0.65f, 0);
+                    return new Vector4(1, 0.65f, 0, 1);
                 case MarbleColor.White:
-                    return new Vector3(1, 1, 1);
+                    return new Vector4(1, 1, 1, 1);
                 case MarbleColor.Black:
-                    return new Vector3(0, 0, 0);
+                    return new Vector4(0, 0, 0, 1);
                 default:
-                    return new Vector3(0, 0, 0);
+                    return new Vector4(0, 0, 0, 1);
             }
         }
 

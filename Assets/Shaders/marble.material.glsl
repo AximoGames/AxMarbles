@@ -1,6 +1,6 @@
 
 #ifdef USE_VERTEX_UV
-matDiffuse = texture(material.DiffuseMap, TexCoords).rgb * material.DiffuseColor;
+matDiffuse = texture(material.DiffuseMap, TexCoords) * material.DiffuseColor;
 #else
 matDiffuse = material.DiffuseColor;
 #endif
@@ -17,6 +17,6 @@ if(joker == 0.0)
         matDiffuse = color2;}
 else
 {
-    matDiffuse = abs(dir.xyz) * 0.8;
+    matDiffuse = vec4(abs(dir.xyz) * 0.8, 1.0);
 }
 
