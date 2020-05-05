@@ -20,6 +20,12 @@ namespace Aximo.Marbles
                 WindowSize = new Vector2i(800, 600),
                 WindowBorder = WindowBorder.Fixed,
                 UseConsole = true,
+                // IsMultiThreaded = true,
+                // RenderFrequency = 0,
+                // UpdateFrequency = 0,
+                // IdleRenderFrequency = 0,
+                // IdleUpdateFrequency = 0,
+                // VSync = VSyncMode.Off,
             };
 
             new GameStartup<MarblesApplication, GtkUI>(config).Start();
