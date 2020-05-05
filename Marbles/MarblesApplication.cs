@@ -78,7 +78,6 @@ namespace Aximo.Marbles
                 },
                 RelativeScale = new Vector3(50, 50, 1),
                 RelativeTranslation = new Vector3(0f, 0f, -0.5f),
-                //RenderShadow = false,
             }));
 
             BoardComponent.AddComponent(new CubeComponent()
@@ -123,21 +122,20 @@ namespace Aximo.Marbles
                 RelativeScale = new Vector3(1.0f),
             }));
 
-            BoardComponent.AddComponent(new CubeComponent()
+            BoardComponent.AddComponent(new QuadComponent()
             {
                 Name = "GroundCursor",
                 Material = new GameMaterial()
                 {
-                    DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
-                    SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                    DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
                     Ambient = 0.3f,
                     Shininess = 32.0f,
                     SpecularStrength = 0.5f,
-                    CastShadow = true,
+                    CastShadow = false,
+                    PipelineType = PipelineType.Forward,
                 },
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
-                RelativeScale = new Vector3(1.0f, 1.0f, 0.1f),
-                // Enabled = false,
+                RelativeScale = new Vector3(2f, 2f, 0.1f),
             });
 
             BoardComponent.AddComponent(new CubeComponent()
