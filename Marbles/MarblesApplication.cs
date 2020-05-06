@@ -74,7 +74,7 @@ namespace Aximo.Marbles
                 {
                     Color = new Vector4(0.4f, 0.6f, 0.6f, 1),
                     Shininess = 1.0f,
-                    PipelineType = PipelineType.Forward,
+                    //PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(50, 50, 1),
                 RelativeTranslation = new Vector3(0f, 0f, -0.5f),
@@ -87,7 +87,7 @@ namespace Aximo.Marbles
                 {
                     Color = new Vector4(0.4f, 0.6f, 0.6f, 1) * 1.1f,
                     Shininess = 1.0f,
-                    PipelineType = PipelineType.Forward,
+                    //PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(Board.Width, Board.Height, 1),
                 RelativeTranslation = new Vector3((Board.Width / 2f) - 0.5f, (Board.Height / 2f) - 0.5f, -0.5f),

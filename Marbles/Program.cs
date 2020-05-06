@@ -4,6 +4,7 @@
 using System;
 using System.Threading;
 using Aximo.Engine;
+using Aximo.Render;
 using OpenToolkit;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
@@ -20,12 +21,13 @@ namespace Aximo.Marbles
                 WindowSize = new Vector2i(800, 600),
                 WindowBorder = WindowBorder.Fixed,
                 UseConsole = true,
-                // IsMultiThreaded = true,
-                // RenderFrequency = 0,
-                // UpdateFrequency = 0,
-                // IdleRenderFrequency = 0,
-                // IdleUpdateFrequency = 0,
-                // VSync = VSyncMode.Off,
+                IsMultiThreaded = true,
+                RenderFrequency = 0,
+                UpdateFrequency = 0,
+                IdleRenderFrequency = 0,
+                IdleUpdateFrequency = 0,
+                VSync = VSyncMode.Off,
+                //FlushRenderBackend = FlushRenderBackend.Draw,
             };
 
             new GameStartup<MarblesApplication, GtkUI>(config).Start();
