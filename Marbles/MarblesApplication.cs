@@ -133,9 +133,11 @@ namespace Aximo.Marbles
                     SpecularStrength = 0.5f,
                     CastShadow = false,
                     PipelineType = PipelineType.Forward,
+                    UseTransparency = true,
                 },
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
                 RelativeScale = new Vector3(2f, 2f, 0.1f),
+                DrawPriority = 100,
             });
 
             BoardComponent.AddComponent(new CubeComponent()
