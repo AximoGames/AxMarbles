@@ -105,9 +105,15 @@ namespace Aximo.Marbles
                 RelativeScale = new Vector3(1.0f),
             }));
 
+            var alchemyCircleOptions = new Generators.AlchemyCircle.AlchemyCircleOptions
+            {
+                Seed = 1919654508,
+                Size = 256,
+                Thickness = 4
+            };
             var decalMaterial = new GameMaterial()
             {
-                DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
+                DiffuseTexture = GameTexture.CreateFromFile(DirectoryHelper.GetAssetsPath("Textures/AlchemyCircle/.png", alchemyCircleOptions)),
                 Color = new Vector4(57f / 255f, 1, 20f / 255f, 1),
                 Ambient = 0.3f,
                 Shininess = 32.0f,
