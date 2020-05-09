@@ -512,8 +512,8 @@ namespace Aximo.Marbles
         {
             var color = GetMaterialColor(marbleColor);
             var addColor = new Vector4(0, 0, 0, 1);
-            if (color == Vector4.Zero)
-                addColor = new Vector4(0.3f, 0, 0, 1);
+            if (color.Xyz == Vector3.Zero)
+                addColor = new Vector4(0.3f, 0.3f, 0.3f, 1);
             color += addColor;
             return color * 0.5f;
         }
