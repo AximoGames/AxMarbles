@@ -74,7 +74,6 @@ namespace Aximo.Marbles
                 {
                     Color = new Vector4(0.4f, 0.6f, 0.6f, 1),
                     Shininess = 1.0f,
-                    //PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(50, 50, 1),
                 RelativeTranslation = new Vector3(0f, 0f, -0.5f),
@@ -87,27 +86,11 @@ namespace Aximo.Marbles
                 {
                     Color = new Vector4(0.4f, 0.6f, 0.6f, 1) * 1.1f,
                     Shininess = 1.0f,
-                    //PipelineType = PipelineType.Forward,
                 },
                 RelativeScale = new Vector3(Board.Width, Board.Height, 1),
                 RelativeTranslation = new Vector3((Board.Width / 2f) - 0.5f, (Board.Height / 2f) - 0.5f, -0.5f),
                 TranslationMatrix = BoardTranslationMatrix,
-                //RenderShadow = false,
             });
-
-            // ctx.AddObject(new CubeObject()
-            // {
-            //     Name = "Board",
-            //     Material = new Material
-            //     {
-            //         Color = new Vector3(0.4f, 0.6f, 0.6f) * 1.1f,
-            //         ColorBlendMode = MaterialColorBlendMode.Set,
-            //     },
-            //     Scale = new Vector3(Board.Width, Board.Height, 1),
-            //     Position = new Vector3(Board.Width / 2f - 0.5f, Board.Height / 2f - 0.5f, -0.45f),
-            //     // RenderShadow = false,
-            //     PrimaryRenderPipeline = ctx.GetPipeline<ForwardRenderPipeline>(),
-            // });
 
             BoardComponent.AddComponent(new GridPlaneComponent(9, false)
             {
@@ -534,8 +517,8 @@ namespace Aximo.Marbles
                     return new Vector4(1, 0.65f, 0, 1);
                 case MarbleColor.White:
                     return new Vector4(1, 1, 1, 1);
-                case MarbleColor.Black:
-                    return new Vector4(0, 0, 0, 1);
+                case MarbleColor.Cyan:
+                    return new Vector4(0, 1, 1, 1);
                 default:
                     return new Vector4(0, 0, 0, 1);
             }

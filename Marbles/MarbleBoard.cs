@@ -450,7 +450,7 @@ namespace Aximo.Marbles
             MarbleColor.Yellow,
             MarbleColor.Orange,
             MarbleColor.White,
-            MarbleColor.Black,
+            MarbleColor.Cyan,
         };
 
         private MarbleColor GetRandomColorInternal()

@@ -12,9 +12,9 @@ namespace Aximo.Marbles
         Yellow = 8,
         Orange = 16,
         White = 32,
-        Black = 64,
+        Cyan = 64,
         BombColor = 128,
-        ColorJoker = Red | Green | Blue | Yellow | Orange | White | Black,
+        ColorJoker = Red | Green | Blue | Yellow | Orange | White | Cyan,
         BombJoker = ColorJoker | BombColor,
     }
 }
