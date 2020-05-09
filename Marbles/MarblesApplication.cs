@@ -111,6 +111,7 @@ namespace Aximo.Marbles
                 Material = new GameMaterial()
                 {
                     DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
+                    //Color = new Vector4(0.5f, 0, 0, 1),
                     Ambient = 0.3f,
                     Shininess = 32.0f,
                     SpecularStrength = 0.5f,
@@ -123,23 +124,25 @@ namespace Aximo.Marbles
                 DrawPriority = 100,
             });
 
-            BoardComponent.AddComponent(new CubeComponent()
+            BoardComponent.AddComponent(new QuadComponent()
             {
                 Name = "MarbleSelector",
                 Material = new GameMaterial()
                 {
-                    DiffuseTexture = GameTexture.GetFromFile("Textures/woodenbox.png"),
-                    SpecularTexture = GameTexture.GetFromFile("Textures/woodenbox_specular.png"),
+                    DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
                     Ambient = 0.3f,
                     Shininess = 32.0f,
                     SpecularStrength = 0.5f,
-                    CastShadow = true,
+                    CastShadow = false,
+                    PipelineType = PipelineType.Forward,
+                    UseTransparency = true,
                 },
                 TranslationMatrix = BoardTranslationMatrix,
                 //Material = material,
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
-                RelativeScale = new Vector3(1.3f, 1.3f, 0.1f),
+                RelativeScale = new Vector3(2f, 2f, 0.1f),
                 Visible = false,
+                DrawPriority = 100,
             });
 
             GameContext.AddActor(new Actor(new PointLightComponent()
@@ -203,6 +206,14 @@ namespace Aximo.Marbles
                 Stop();
             };
 
+            GameContext.AddAnimation(SelectorAnim = new Animation()
+            {
+                Duration = TimeSpan.FromSeconds(10),
+                AnimationFunc = AnimationFuncs.Linear(MathF.PI * 2),
+                Repeat = true,
+            });
+            SelectorAnim.Start();
+
             GameContext.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
@@ -228,6 +239,7 @@ namespace Aximo.Marbles
         private Animation RemoveAnim;
         private Animation CreateAnim;
         private Animation MoveAnim;
+        private Animation SelectorAnim;
 
         private const float MarbleScale = MathF.PI / 2f / 2f;
         private const float MarbleZ = MarbleScale / 2f;
@@ -334,6 +346,7 @@ namespace Aximo.Marbles
                 }
             }
 
+            BoardActor.GetComponent<SceneComponent>("MarbleSelector").RelativeRotation = Quaternion.FromEulerAngles(0, 0, SelectorAnim.Value);
             GameContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
             GameContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
 
@@ -550,7 +563,7 @@ namespace Aximo.Marbles
                 if (marble != null)
                 {
                     SelectedMarble = marble;
-                    selector.RelativeTranslation = new Vector3(pos.X, pos.Y, 0);
+                    selector.RelativeTranslation = new Vector3(pos.X, pos.Y, selector.RelativeTranslation.Z);
                     selector.Visible = true;
                     AudioManager.Default.PlayAsync("Sounds/marble-select.wav");
                 }
