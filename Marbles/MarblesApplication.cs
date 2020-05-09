@@ -105,38 +105,31 @@ namespace Aximo.Marbles
                 RelativeScale = new Vector3(1.0f),
             }));
 
+            var decalMaterial = new GameMaterial()
+            {
+                DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
+                Color = new Vector4(57f / 255f, 1, 20f / 255f, 1),
+                Ambient = 0.3f,
+                Shininess = 32.0f,
+                SpecularStrength = 0.5f,
+                CastShadow = false,
+                PipelineType = PipelineType.Forward,
+                UseTransparency = true,
+            };
+
             BoardComponent.AddComponent(new QuadComponent()
             {
+                Material = decalMaterial,
                 Name = "GroundCursor",
-                Material = new GameMaterial()
-                {
-                    DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
-                    //Color = new Vector4(0.5f, 0, 0, 1),
-                    Ambient = 0.3f,
-                    Shininess = 32.0f,
-                    SpecularStrength = 0.5f,
-                    CastShadow = false,
-                    PipelineType = PipelineType.Forward,
-                    UseTransparency = true,
-                },
-                RelativeTranslation = new Vector3(0, 1, 0.05f),
+                RelativeTranslation = new Vector3(0, 1, 0.051f),
                 RelativeScale = new Vector3(2f, 2f, 0.1f),
-                DrawPriority = 100,
+                DrawPriority = 101,
             });
 
             BoardComponent.AddComponent(new QuadComponent()
             {
                 Name = "MarbleSelector",
-                Material = new GameMaterial()
-                {
-                    DiffuseTexture = GameTexture.GetFromFile("/tmp/blubb.png"),
-                    Ambient = 0.3f,
-                    Shininess = 32.0f,
-                    SpecularStrength = 0.5f,
-                    CastShadow = false,
-                    PipelineType = PipelineType.Forward,
-                    UseTransparency = true,
-                },
+                Material = decalMaterial,
                 TranslationMatrix = BoardTranslationMatrix,
                 //Material = material,
                 RelativeTranslation = new Vector3(0, 1, 0.05f),
