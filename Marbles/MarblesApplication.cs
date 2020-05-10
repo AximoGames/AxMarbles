@@ -218,7 +218,7 @@ namespace Aximo.Marbles
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
             });
-            RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleScaled;
+            RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleRemoved;
 
             GameContext.AddAnimation(CreateAnim = new Animation()
             {
@@ -434,7 +434,7 @@ namespace Aximo.Marbles
             AudioManager.Default.PlayAsync("Sounds/marble-adding.wav");
         }
 
-        private void OnAnimFinshed_MarbleScaled()
+        private void OnAnimFinshed_MarbleRemoved()
         {
             Board.ScoreMatches();
         }
