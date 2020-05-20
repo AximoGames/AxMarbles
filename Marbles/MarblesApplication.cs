@@ -18,6 +18,8 @@ namespace Aximo.Marbles
 {
     public class MarblesApplication : RenderApplication
     {
+        private static Serilog.ILogger Log = Aximo.Log.ForContext<MarblesApplication>();
+
         public MarblesApplication(RenderApplicationConfig startup) : base(startup)
         {
         }
@@ -558,7 +560,7 @@ namespace Aximo.Marbles
                     return;
 
                 var marble = Board[pos];
-                Console.WriteLine($"Clicked: {pos}. Marble: {marble}");
+                Log.Verbose("Clicked: {position}. Marble: {marble}", pos, marble);
                 if (marble != null)
                 {
                     SelectedMarble = marble;

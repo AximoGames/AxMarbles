@@ -29,6 +29,8 @@ namespace Aximo.Marbles
 
     public class MarbleBoard
     {
+        private static Serilog.ILogger Log = Aximo.Log.ForContext<MarbleBoard>();
+
         public ushort GetPathFindingCosts(int x, int y)
         {
             var marble = this[x, y];
@@ -132,7 +134,7 @@ namespace Aximo.Marbles
             if (this[pos] != null)
                 throw new Exception($"Position {pos} not free");
 
-            Console.WriteLine($"Create {color} Marble at {pos}");
+            Log.Info("Create {color} Marble at {position}", color, pos);
             var marble = new Marble(color)
             {
                 Position = pos,
