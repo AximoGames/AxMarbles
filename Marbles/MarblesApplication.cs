@@ -4,6 +4,11 @@
 using System;
 using System.Linq;
 using Aximo.Engine;
+using Aximo.Engine.Audio;
+using Aximo.Engine.Components.Geometry;
+using Aximo.Engine.Components.Lights;
+using Aximo.Engine.Components.UI;
+using Aximo.Engine.Windows;
 using Aximo.Marbles.PathFinding;
 using Aximo.Render;
 using OpenToolkit;
@@ -111,7 +116,7 @@ namespace Aximo.Marbles
             {
                 Seed = 1919654508,
                 Size = 256,
-                Thickness = 4
+                Thickness = 4,
             };
             var decalMaterial = new GameMaterial()
             {
