@@ -120,7 +120,7 @@ namespace Aximo.Marbles
             };
             var decalMaterial = new GameMaterial()
             {
-                DiffuseTexture = GameTexture.CreateFromFile(DirectoryHelper.GetAssetsPath("Textures/AlchemyCircle/.png", alchemyCircleOptions)),
+                DiffuseTexture = GameTexture.CreateFromFile(AssetManager.GetAssetsPath("Textures/AlchemyCircle/.png", alchemyCircleOptions)),
                 Color = new Vector4(57f / 255f, 1, 20f / 255f, 1),
                 Ambient = 0.3f,
                 Shininess = 32.0f,
@@ -356,6 +356,12 @@ namespace Aximo.Marbles
             GameContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
             GameContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
 
+            if (CurrentMouseWorldPositionIsValid)
+            {
+                var cursor = BoardActor.GetComponent<SceneComponent>("GroundCursor");
+                cursor.RelativeTranslation = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.RelativeTranslation.Z);
+            }
+
             // Test Rotation:
             //Board.Marbles.Last().RenderObject.RelativeRotation = Quaternion.FromEulerAngles(0.2f, 0.5f, 0.7f);
         }
@@ -481,15 +487,6 @@ namespace Aximo.Marbles
             else
             {
                 return Vector3.Zero;
-            }
-        }
-
-        protected override void OnRenderFrame(FrameEventArgs e)
-        {
-            if (CurrentMouseWorldPositionIsValid)
-            {
-                var cursor = BoardActor.GetComponent<SceneComponent>("GroundCursor");
-                cursor.RelativeTranslation = new Vector3(CurrentMouseWorldPosition.X, CurrentMouseWorldPosition.Y, cursor.RelativeTranslation.Z);
             }
         }
 
