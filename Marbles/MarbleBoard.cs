@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Aximo.Marbles.PathFinding;
-using OpenToolkit;
 using OpenToolkit.Mathematics;
 
 namespace Aximo.Marbles

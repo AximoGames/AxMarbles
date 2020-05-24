@@ -21,10 +21,6 @@ namespace Aximo.Marbles
     {
         private static Serilog.ILogger Log = Aximo.Log.ForContext<MarblesApplication>();
 
-        public MarblesApplication(ApplicationConfig startup) : base(startup)
-        {
-        }
-
         protected override void SetupScene()
         {
             Board = new MarbleBoard

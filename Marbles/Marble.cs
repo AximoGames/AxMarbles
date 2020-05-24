@@ -2,10 +2,7 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
-using Aximo.Engine;
 using Aximo.Engine.Components.Geometry;
-using Aximo.Render;
-using OpenToolkit;
 using OpenToolkit.Mathematics;
 
 namespace Aximo.Marbles
