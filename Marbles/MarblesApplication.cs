@@ -10,7 +10,6 @@ using Aximo.Engine.Components.Lights;
 using Aximo.Engine.Components.UI;
 using Aximo.Engine.Windows;
 using Aximo.Marbles.PathFinding;
-using Aximo.Render;
 using OpenToolkit;
 using OpenToolkit.Input;
 using OpenToolkit.Mathematics;
