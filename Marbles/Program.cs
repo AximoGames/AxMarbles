@@ -16,7 +16,7 @@ namespace Aximo.Marbles
     {
         public static void Main(string[] args)
         {
-            var config = new RenderApplicationConfig
+            var config = new ApplicationConfig
             {
                 WindowTitle = "Marbles",
                 WindowSize = new Vector2i(800, 600),
@@ -31,7 +31,7 @@ namespace Aximo.Marbles
                 //FlushRenderBackend = FlushRenderBackend.Draw,
             };
 
-            new GameStartup<MarblesApplication, GtkUI>(config).Start();
+            new Startup<MarblesApplication, GtkUI>(config).Start();
         }
     }
 }

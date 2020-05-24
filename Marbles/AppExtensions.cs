@@ -10,7 +10,7 @@ namespace Aximo.Marbles
     {
         public static List<MarbleColor> GetRegularColors(this MarbleColor marbleColors)
         {
-            var list = GetEnumFlags<MarbleColor>(marbleColors);
+            var list = GetEnumFlags(marbleColors);
             list.Remove(MarbleColor.None);
             list.Remove(MarbleColor.ColorJoker);
             list.Remove(MarbleColor.BombJoker);

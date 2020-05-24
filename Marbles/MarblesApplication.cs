@@ -2,7 +2,6 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Linq;
 using Aximo.Engine;
 using Aximo.Engine.Audio;
 using Aximo.Engine.Components.Geometry;
@@ -10,8 +9,6 @@ using Aximo.Engine.Components.Lights;
 using Aximo.Engine.Components.UI;
 using Aximo.Engine.Windows;
 using Aximo.Marbles.PathFinding;
-using OpenToolkit;
-using OpenToolkit.Input;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Common.Input;
@@ -20,11 +17,11 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Aximo.Marbles
 {
-    public class MarblesApplication : RenderApplication
+    public class MarblesApplication : Application
     {
         private static Serilog.ILogger Log = Aximo.Log.ForContext<MarblesApplication>();
 
-        public MarblesApplication(RenderApplicationConfig startup) : base(startup)
+        public MarblesApplication(ApplicationConfig startup) : base(startup)
         {
         }
 
@@ -40,7 +37,7 @@ namespace Aximo.Marbles
             //RenderContext.PrimaryRenderPipeline = RenderContext.GetPipeline<ForwardRenderPipeline>();
             DefaultKeyBindings = false;
 
-            GameContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()
+            SceneContext.AddActor(BoardActor = new Actor(BoardComponent = new SceneComponent()
             {
                 //RelativeRotation = new Vector3(0, 0, 0.02f).ToQuaternion(),
                 RelativeTranslation = new Vector3(0, 0, 0.05f),
@@ -73,10 +70,10 @@ namespace Aximo.Marbles
                 Pitch = -((float)(Math.PI / 2) - 0.00001f),
             };
 
-            GameContext.AddActor(new Actor(new CubeComponent()
+            SceneContext.AddActor(new Actor(new CubeComponent()
             {
                 Name = "Ground",
-                Material = new GameMaterial
+                Material = new Material
                 {
                     Color = new Vector4(0.4f, 0.6f, 0.6f, 1),
                     Shininess = 1.0f,
@@ -88,7 +85,7 @@ namespace Aximo.Marbles
             BoardComponent.AddComponent(new CubeComponent()
             {
                 Name = "Board",
-                Material = new GameMaterial
+                Material = new Material
                 {
                     Color = new Vector4(0.4f, 0.6f, 0.6f, 1) * 1.1f,
                     Shininess = 1.0f,
@@ -104,7 +101,7 @@ namespace Aximo.Marbles
                 RelativeTranslation = new Vector3(-0.5f, -0.5f + 9, 0.01f),
                 TranslationMatrix = BoardTranslationMatrix,
             });
-            GameContext.AddActor(new Actor(new CrossLineComponent(10, true)
+            SceneContext.AddActor(new Actor(new CrossLineComponent(10, true)
             {
                 Name = "CenterCross",
                 RelativeTranslation = new Vector3(0f, 0f, 0.02f),
@@ -117,9 +114,9 @@ namespace Aximo.Marbles
                 Size = 256,
                 Thickness = 4,
             };
-            var decalMaterial = new GameMaterial()
+            var decalMaterial = new Material()
             {
-                DiffuseTexture = GameTexture.CreateFromFile(AssetManager.GetAssetsPath("Textures/AlchemyCircle/.png", alchemyCircleOptions)),
+                DiffuseTexture = Texture.CreateFromFile(AssetManager.GetAssetsPath("Textures/AlchemyCircle/.png", alchemyCircleOptions)),
                 Color = new Vector4(57f / 255f, 1, 20f / 255f, 1),
                 Ambient = 0.3f,
                 Shininess = 32.0f,
@@ -150,14 +147,14 @@ namespace Aximo.Marbles
                 DrawPriority = 100,
             });
 
-            GameContext.AddActor(new Actor(new PointLightComponent()
+            SceneContext.AddActor(new Actor(new PointLightComponent()
             {
                 RelativeTranslation = new Vector3(0, 2, 3.5f),
                 Name = "MovingLight",
                 //Enabled = false,
             }));
 
-            GameContext.AddActor(new Actor(new PointLightComponent()
+            SceneContext.AddActor(new Actor(new PointLightComponent()
             {
                 RelativeTranslation = new Vector3(2f, 0.5f, 4.25f),
                 Name = "StaticLight",
@@ -171,7 +168,7 @@ namespace Aximo.Marbles
                 Location = new Vector2(600, 0),
                 Size = new Vector2(200, 0),
             };
-            GameContext.AddActor(new Actor(flowContainer));
+            SceneContext.AddActor(new Actor(flowContainer));
 
             // flowContainer.AddComponent(new UIMarbles()
             // {
@@ -189,7 +186,7 @@ namespace Aximo.Marbles
                 Color = Color.White,
             });
 
-            GameContext.AddActor(new Actor(new StatsComponent()
+            SceneContext.AddActor(new Actor(new StatsComponent()
             {
                 Name = "Stats",
             }));
@@ -211,7 +208,7 @@ namespace Aximo.Marbles
                 Stop();
             };
 
-            GameContext.AddAnimation(SelectorAnim = new Animation()
+            SceneContext.AddAnimation(SelectorAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(10),
                 AnimationFunc = AnimationFuncs.Linear(MathF.PI * 2),
@@ -219,21 +216,21 @@ namespace Aximo.Marbles
             });
             SelectorAnim.Start();
 
-            GameContext.AddAnimation(RemoveAnim = new Animation()
+            SceneContext.AddAnimation(RemoveAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
             });
             RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleRemoved;
 
-            GameContext.AddAnimation(CreateAnim = new Animation()
+            SceneContext.AddAnimation(CreateAnim = new Animation()
             {
                 Duration = TimeSpan.FromSeconds(0.75),
                 AnimationFunc = AnimationFuncs.Linear(MarbleScale),
             });
             CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
 
-            GameContext.AddAnimation(MoveAnim = new Animation()
+            SceneContext.AddAnimation(MoveAnim = new Animation()
             {
             });
             MoveAnim.AnimationFinished += OnAnimFinished_MarbleMoved;
@@ -352,8 +349,8 @@ namespace Aximo.Marbles
             }
 
             BoardActor.GetComponent<SceneComponent>("MarbleSelector").RelativeRotation = Quaternion.FromEulerAngles(0, 0, SelectorAnim.Value);
-            GameContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
-            GameContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
+            SceneContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
+            SceneContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
 
             if (CurrentMouseWorldPositionIsValid)
             {
@@ -381,7 +378,7 @@ namespace Aximo.Marbles
 
             var comp = new StaticMeshComponent(tmp);
 
-            comp.AddMaterial(new GameMaterial()
+            comp.AddMaterial(new Material()
             {
                 Color = new Vector4(0.2f, 0.2f, 0.2f, 1),
                 Ambient = 0.5f,
@@ -390,7 +387,7 @@ namespace Aximo.Marbles
                 CastShadow = true,
             });
 
-            comp.AddMaterial(new GameMaterial()
+            comp.AddMaterial(new Material()
             {
                 Color = new Vector4(0.1f, 0.1f, 0.1f, 1),
                 Ambient = 0.5f,
@@ -399,7 +396,7 @@ namespace Aximo.Marbles
                 CastShadow = true,
             });
 
-            comp.AddMaterial(new GameMaterial()
+            comp.AddMaterial(new Material()
             {
                 Color = new Vector4(0.5f, 1 / 255f * 165 * 0.5f, 0, 1),
                 Ambient = 0.5f,
@@ -491,9 +488,9 @@ namespace Aximo.Marbles
 
         private Marble SelectedMarble;
 
-        private GameMaterial GetMaterial(Marble marble)
+        private Material GetMaterial(Marble marble)
         {
-            var material = new GameMaterial()
+            var material = new Material()
             {
                 Color = GetMaterialColorShader(marble.Color1),
                 Ambient = 0.5f,

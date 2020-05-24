@@ -30,7 +30,7 @@ namespace Aximo.Marbles
                 return;
             LastStatUpdate = DateTime.UtcNow;
             Image.Mutate(ctx => ctx.Fill(Color.Transparent));
-            var app = RenderApplication.Current as MarblesApplication;
+            var app = Application.Current as MarblesApplication;
             var board = app.Board;
             if (board == null)
                 return;
