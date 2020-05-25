@@ -204,40 +204,40 @@ namespace Aximo.Marbles
                 Stop();
             };
 
-            SceneContext.AddAnimation(SelectorAnim = new Animation()
+            SceneContext.AddTween(SelectorTween = new Tween1
             {
                 Duration = TimeSpan.FromSeconds(10),
-                AnimationFunc = AnimationFuncs.Linear(MathF.PI * 2),
+                TweenFunc = Tween1.Linear(MathF.PI * 2),
                 Repeat = true,
             });
-            SelectorAnim.Start();
+            SelectorTween.Start();
 
-            SceneContext.AddAnimation(RemoveAnim = new Animation()
+            SceneContext.AddTween(RemoveTween = new Tween1
             {
                 Duration = TimeSpan.FromSeconds(0.75),
-                AnimationFunc = AnimationFuncs.LinearReverse(MarbleScale),
+                TweenFunc = Tween1.LinearReverse(MarbleScale),
             });
-            RemoveAnim.AnimationFinished += OnAnimFinshed_MarbleRemoved;
+            RemoveTween.TweenFinished += OnAnimFinshed_MarbleRemoved;
 
-            SceneContext.AddAnimation(CreateAnim = new Animation()
+            SceneContext.AddTween(CreateTween = new Tween1
             {
                 Duration = TimeSpan.FromSeconds(0.75),
-                AnimationFunc = AnimationFuncs.Linear(MarbleScale),
+                TweenFunc = Tween1.Linear(MarbleScale),
             });
-            CreateAnim.AnimationFinished += OnAnimationFinished_MarbleCreated;
+            CreateTween.TweenFinished += OnAnimationFinished_MarbleCreated;
 
-            SceneContext.AddAnimation(MoveAnim = new Animation()
+            SceneContext.AddTween(MoveTween = new Tween1()
             {
             });
-            MoveAnim.AnimationFinished += OnAnimFinished_MarbleMoved;
+            MoveTween.TweenFinished += OnAnimFinished_MarbleMoved;
         }
 
         public MarbleBoard Board;
 
-        private Animation RemoveAnim;
-        private Animation CreateAnim;
-        private Animation MoveAnim;
-        private Animation SelectorAnim;
+        private Tween1 RemoveTween;
+        private Tween1 CreateTween;
+        private Tween1 MoveTween;
+        private Tween1 SelectorTween;
 
         private const float MarbleScale = MathF.PI / 2f / 2f;
         private const float MarbleZ = MarbleScale / 2f;
@@ -321,15 +321,15 @@ namespace Aximo.Marbles
                 if (marble.State == MarbleState.Adding || marble.State == MarbleState.PreAdding)
                 {
                     if (marble.OnBoard)
-                        ro.RelativeScale = new Vector3(CreateAnim.Value);
+                        ro.RelativeScale = new Vector3(CreateTween.Value);
                     else if (Board.PreviewMode == MarblePreview.Board)
-                        ro.RelativeScale = new Vector3(CreateAnim.Value * 0.35f);
+                        ro.RelativeScale = new Vector3(CreateTween.Value * 0.35f);
                 }
                 if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
                 {
-                    ro.RelativeScale = new Vector3(RemoveAnim.Value);
+                    ro.RelativeScale = new Vector3(RemoveTween.Value);
                 }
-                if (marble == SelectedMarble && CurrentPath != null && MoveAnim.Enabled)
+                if (marble == SelectedMarble && CurrentPath != null && MoveTween.Enabled)
                 {
                     var result = GetPathPosition(marble);
                     ro.RelativeTranslation = result.Position;
@@ -344,7 +344,7 @@ namespace Aximo.Marbles
                 }
             }
 
-            BoardActor.GetComponent<SceneComponent>("MarbleSelector").RelativeRotation = Quaternion.FromEulerAngles(0, 0, SelectorAnim.Value);
+            BoardActor.GetComponent<SceneComponent>("MarbleSelector").RelativeRotation = Quaternion.FromEulerAngles(0, 0, SelectorTween.Value);
             SceneContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
             SceneContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
 
@@ -407,7 +407,7 @@ namespace Aximo.Marbles
         private (Vector3 Position, Quaternion Rotate) GetPathPosition(Marble marble)
         {
             var steps = CurrentPath.Count - 1;
-            var scaledPos = MoveAnim.Position * steps;
+            var scaledPos = MoveTween.Position * steps;
             var step = (int)MathF.Floor(scaledPos);
 
             // Prevent rare exception
@@ -426,7 +426,7 @@ namespace Aximo.Marbles
 
         private void OnMatch()
         {
-            RemoveAnim.Start();
+            RemoveTween.Start();
             if (!Board.MatchHasBomb)
                 AudioManager.Default.PlayAsync("Sounds/marble-removing.wav");
             else
@@ -435,7 +435,7 @@ namespace Aximo.Marbles
 
         private void OnNewMarbles()
         {
-            CreateAnim.Start();
+            CreateTween.Start();
             AudioManager.Default.PlayAsync("Sounds/marble-adding.wav");
         }
 
@@ -547,7 +547,7 @@ namespace Aximo.Marbles
                 //ScaleAnim.Start();
                 var selector = BoardActor.GetComponent<SceneComponent>("MarbleSelector");
 
-                if (MoveAnim.Enabled || RemoveAnim.Enabled || CreateAnim.Enabled)
+                if (MoveTween.Enabled || RemoveTween.Enabled || CreateTween.Enabled)
                     return;
 
                 if (Board[pos]?.Color == MarbleColor.BombJoker)
@@ -572,8 +572,8 @@ namespace Aximo.Marbles
                             CurrentPath = path;
                             var moveStepDuration = TimeSpan.FromSeconds(0.1);
                             //var moveStepDuration = TimeSpan.FromSeconds(2);
-                            MoveAnim.Duration = moveStepDuration.Multiply(path.Count);
-                            MoveAnim.Start();
+                            MoveTween.Duration = moveStepDuration.Multiply(path.Count);
+                            MoveTween.Start();
                             AudioManager.Default.PlayAsync("Sounds/marble-moving.wav");
                             selector.Visible = false;
                         }
