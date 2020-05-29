@@ -2,7 +2,6 @@
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 
 using Aximo.Engine;
-using Aximo.Engine.Windows;
 using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
 

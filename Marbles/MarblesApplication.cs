@@ -204,32 +204,33 @@ namespace Aximo.Marbles
                 Stop();
             };
 
-            SceneContext.AddTween(SelectorTween = new Tween1
+            SelectorTween = new Tween1
             {
                 Duration = TimeSpan.FromSeconds(10),
-                TweenFunc = Tween1.Linear(MathF.PI * 2),
+                ScaleFunc = ScaleFuncs.Linear(MathF.PI * 2),
                 Repeat = true,
-            });
+            };
             SelectorTween.Start();
 
-            SceneContext.AddTween(RemoveTween = new Tween1
+            RemoveTween = new Tween1
             {
                 Duration = TimeSpan.FromSeconds(0.75),
-                TweenFunc = Tween1.LinearReverse(MarbleScale),
-            });
-            RemoveTween.TweenFinished += OnAnimFinshed_MarbleRemoved;
+                ScaleFunc = ScaleFuncs.LinearReverse(MarbleScale),
+            };
+            RemoveTween.TweenComplete += OnAnimFinshed_MarbleRemoved;
 
-            SceneContext.AddTween(CreateTween = new Tween1
+            CreateTween = new Tween1
             {
                 Duration = TimeSpan.FromSeconds(0.75),
-                TweenFunc = Tween1.Linear(MarbleScale),
-            });
-            CreateTween.TweenFinished += OnAnimationFinished_MarbleCreated;
+                ScaleFunc = ScaleFuncs.Linear(MarbleScale),
+            };
+            CreateTween.TweenComplete += OnAnimationFinished_MarbleCreated;
 
-            SceneContext.AddTween(MoveTween = new Tween1()
+            MoveTween = new Tween1()
             {
-            });
-            MoveTween.TweenFinished += OnAnimFinished_MarbleMoved;
+                ScaleFunc = ScaleFuncs.Power10EaseInOut,
+            };
+            MoveTween.TweenComplete += OnAnimFinished_MarbleMoved;
         }
 
         public MarbleBoard Board;
@@ -321,13 +322,13 @@ namespace Aximo.Marbles
                 if (marble.State == MarbleState.Adding || marble.State == MarbleState.PreAdding)
                 {
                     if (marble.OnBoard)
-                        ro.RelativeScale = new Vector3(CreateTween.Value);
+                        ro.RelativeScale = new Vector3(CreateTween.ScaledPosition);
                     else if (Board.PreviewMode == MarblePreview.Board)
-                        ro.RelativeScale = new Vector3(CreateTween.Value * 0.35f);
+                        ro.RelativeScale = new Vector3(CreateTween.ScaledPosition * 0.35f);
                 }
                 if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
                 {
-                    ro.RelativeScale = new Vector3(RemoveTween.Value);
+                    ro.RelativeScale = new Vector3(RemoveTween.ScaledPosition);
                 }
                 if (marble == SelectedMarble && CurrentPath != null && MoveTween.Enabled)
                 {
@@ -344,7 +345,7 @@ namespace Aximo.Marbles
                 }
             }
 
-            BoardActor.GetComponent<SceneComponent>("MarbleSelector").RelativeRotation = Quaternion.FromEulerAngles(0, 0, SelectorTween.Value);
+            BoardActor.GetComponent<SceneComponent>("MarbleSelector").RelativeRotation = Quaternion.FromEulerAngles(0, 0, SelectorTween.ScaledPosition);
             SceneContext.GetActor("UI").GetComponent<UILabelComponent>("TotalScore").Text = Board.TotalScore.ToString();
             SceneContext.GetActor("UI").GetComponent<UILabelComponent>("LastScore").Text = Board.LastMoveScore.ToString();
 
@@ -407,7 +408,7 @@ namespace Aximo.Marbles
         private (Vector3 Position, Quaternion Rotate) GetPathPosition(Marble marble)
         {
             var steps = CurrentPath.Count - 1;
-            var scaledPos = MoveTween.Position * steps;
+            var scaledPos = MoveTween.ScaledPosition * steps;
             var step = (int)MathF.Floor(scaledPos);
 
             // Prevent rare exception
