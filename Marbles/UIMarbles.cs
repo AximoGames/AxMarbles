@@ -17,9 +17,8 @@ namespace Aximo.Marbles
     public class UIMarbles : UIComponent
     {
         private DateTime LastStatUpdate;
-        private Font DefaultFont = new Font(SystemFonts.Families.First(), 15, FontStyle.Regular);
 
-        public UIMarbles() : base(new Vector2i(RenderContext.Current.ScreenSize.X, RenderContext.Current.ScreenSize.Y))
+        public UIMarbles() : base(new Vector2(RenderContext.Current.ScreenPixelSize.X, RenderContext.Current.ScreenPixelSize.Y))
         {
         }
 
@@ -28,7 +27,7 @@ namespace Aximo.Marbles
             if ((DateTime.UtcNow - LastStatUpdate).TotalSeconds < 0.5)
                 return;
             LastStatUpdate = DateTime.UtcNow;
-            Image.Mutate(ctx => ctx.Fill(Color.Transparent));
+            ImageContext.Clear(Color.Transparent);
             var app = Application.Current as MarblesApplication;
             var board = app.Board;
             if (board == null)
@@ -36,7 +35,7 @@ namespace Aximo.Marbles
             var txt = board.TotalScore.ToString();
             if (board.LastMoveScore > 0)
                 txt += "\n+" + board.LastMoveScore.ToString();
-            Image.Mutate(ctx => ctx.DrawText(txt, DefaultFont, Color.White, new PointF(620, 20)));
+            ImageContext.DrawText(txt, Color.White, new Vector2(620, 20));
             UpdateTexture();
         }
     }

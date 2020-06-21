@@ -23,6 +23,7 @@ namespace Aximo.Marbles
                 IdleRenderFrequency = 0,
                 IdleUpdateFrequency = 0,
                 VSync = VSyncMode.Off,
+                NormalizedUISize = new Vector2(1000 * (4f / 3f), 1000),
                 //FlushRenderBackend = FlushRenderBackend.Draw,
             };
 

@@ -161,7 +161,7 @@ namespace Aximo.Marbles
                 Name = "UI",
                 DefaultChildSizes = new Vector2(0, 50),
                 ExtraChildMargin = new UIAnchors(10, 10, 10, 0),
-                Location = new Vector2(600, 0),
+                Location = new Vector2(1000, 0),
                 Size = new Vector2(200, 0),
             };
             SceneContext.AddActor(new Actor(flowContainer));
@@ -326,6 +326,13 @@ namespace Aximo.Marbles
                     else if (Board.PreviewMode == MarblePreview.Board)
                         ro.RelativeScale = new Vector3(CreateTween.ScaledPosition * 0.35f);
                 }
+                else
+                {
+                    if (marble.OnBoard)
+                        ro.RelativeScale = new Vector3(CreateTween.ScaleFunc(1));
+                    else if (Board.PreviewMode == MarblePreview.Board)
+                        ro.RelativeScale = new Vector3(CreateTween.ScaleFunc(1) * 0.35f);
+                }
                 if (marble.State == MarbleState.Removing || marble.State == MarbleState.Exploding)
                 {
                     ro.RelativeScale = new Vector3(RemoveTween.ScaledPosition);
@@ -366,12 +373,12 @@ namespace Aximo.Marbles
             var m2 = Mesh.CreateCylinder();
             m2.Scale(0.3f, 0.3f);
             m2.Translate(new Vector3(0, 0, 0.05f));
-            tmp.AddMesh(m2, 0, 1);
+            tmp.AddMesh(m2, 1);
 
             var m3 = Mesh.CreateCylinder();
             m2.Scale(0.15f, 0.15f);
             m2.Translate(new Vector3(0, 0, 0.3f));
-            tmp.AddMesh(m2, 0, 2);
+            tmp.AddMesh(m2, 2);
 
             var comp = new StaticMeshComponent(tmp);
 
@@ -582,5 +589,6 @@ namespace Aximo.Marbles
                 }
             }
         }
+
     }
 }
